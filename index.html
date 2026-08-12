@@ -111,7 +111,8 @@
         "
     >
 
-        👀 تعداد بدبخت هایی که از ابزار ها استفاده کردن
+        👀 تعداد بدبخت‌هایی که از ابزارها استفاده کردن
+
         <strong
             id="totalViews"
             style="
@@ -123,7 +124,7 @@
             ...
         </strong>
 
-        نفر  
+        نفر 😂
 
     </div>
 
@@ -145,12 +146,12 @@
 
 
 <!-- =========================
-     TOTAL VIEWS
+     COUNTER API
 ========================= -->
 
 <script>
 
-async function updateTotalViews(){
+function counterCallback(data){
 
     const counter =
         document.getElementById(
@@ -165,77 +166,21 @@ async function updateTotalViews(){
     }
 
 
-    try{
+    if(
+        data &&
+        typeof data.value !== "undefined"
+    ){
 
-        /*
-         * افزایش شمارنده
-         * namespace:
-         * badbakhti-tools
-         *
-         * counter:
-         * view
-         */
-
-        const response =
-            await fetch(
-                "https://api.counterapi.dev/v1/badbakhti-tools/view/up"
+        counter.textContent =
+            Number(
+                data.value
+            ).toLocaleString(
+                "fa-IR"
             );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                "Counter API error"
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        /*
-         * نمایش عدد
-         */
-
-        if(
-            data &&
-            typeof data.count !== "undefined"
-        ){
-
-            counter.textContent =
-                Number(
-                    data.count
-                ).toLocaleString(
-                    "fa-IR"
-                );
-
-        }
-
-        else{
-
-            counter.textContent =
-                "...";
-
-        }
 
     }
 
-
-    catch(error){
-
-        console.error(
-            "خطا در شمارنده بازدید:",
-            error
-        );
-
-
-        /*
-         * اگر سرویس موقتاً
-         * جواب نداد،
-         * سایت خراب نمی‌شود.
-         */
+    else{
 
         counter.textContent =
             "...";
@@ -244,15 +189,13 @@ async function updateTotalViews(){
 
 }
 
-
-/*
- * ثبت بازدید و نمایش
- * تعداد کل بازدیدها
- */
-
-updateTotalViews();
-
 </script>
+
+
+<script
+    async
+    src="https://counterapi.com/api/badbakhti-tools/view/site?callback=counterCallback"
+></script>
 
 
 </body>
