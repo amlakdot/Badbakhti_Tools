@@ -565,6 +565,172 @@ textarea{
 
 
 /* =========================
+   DICE
+========================= */
+
+.dice-options{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(6,1fr);
+
+    gap:10px;
+
+    margin:
+        20px 0 25px;
+}
+
+.dice-option{
+
+    position:relative;
+}
+
+.dice-option input{
+
+    position:absolute;
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+.dice-option label{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    height:65px;
+
+    background:#0d0d12;
+
+    border:
+        1px solid
+        #ffffff15;
+
+    border-radius:16px;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.dice-option label:hover{
+
+    border-color:
+        var(--pink);
+
+    transform:
+        translateY(-3px);
+}
+
+.dice-option input:checked + label{
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            #ff2865
+        );
+
+    border-color:
+        var(--pink);
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 8px 25px
+        #ff4f8140;
+}
+
+.dice{
+
+    font-size:90px;
+
+    line-height:1;
+
+    margin:
+        20px 0;
+
+    display:inline-block;
+}
+
+.dice.roll{
+
+    animation:
+        diceRoll .7s ease;
+}
+
+@keyframes diceRoll{
+
+    0%{
+        transform:
+            rotate(0)
+            scale(1);
+    }
+
+    20%{
+        transform:
+            rotate(-20deg)
+            scale(1.15);
+    }
+
+    40%{
+        transform:
+            rotate(20deg)
+            scale(.9);
+    }
+
+    60%{
+        transform:
+            rotate(-15deg)
+            scale(1.1);
+    }
+
+    80%{
+        transform:
+            rotate(10deg)
+            scale(.95);
+    }
+
+    100%{
+        transform:
+            rotate(0)
+            scale(1);
+    }
+
+}
+
+.dice-result-success{
+
+    color:
+        var(--green);
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+.dice-result-fail{
+
+    color:
+        var(--red);
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+
+/* =========================
    FOOTER
 ========================= */
 
@@ -621,6 +787,23 @@ footer{
     .box h2{
 
         font-size:25px;
+    }
+
+    .dice-options{
+
+        gap:7px;
+    }
+
+    .dice-option label{
+
+        height:55px;
+
+        font-size:20px;
+    }
+
+    .dice{
+
+        font-size:75px;
     }
 
 }
@@ -851,6 +1034,33 @@ footer{
             onclick="openApp('brain')"
         >
             تست مغز
+        </button>
+
+    </div>
+
+
+
+    <!-- DICE -->
+
+    <div class="tool">
+
+        <div class="emoji">
+            🎲
+        </div>
+
+        <h2>
+            تاس بدبختی
+        </h2>
+
+        <p>
+            عددهایی که می‌خوای اتفاق بیفته رو انتخاب کن و تاس بنداز.
+        </p>
+
+        <button
+            class="open"
+            onclick="openApp('dice')"
+        >
+            تاس بنداز 🎲
         </button>
 
     </div>
@@ -1395,6 +1605,123 @@ footer{
 
 <div
     id="brainResult"
+    class="result"
+></div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================
+     DICE APP
+========================= -->
+
+<section
+    id="dice"
+    class="app"
+>
+
+<button
+    class="back"
+    onclick="goHome()"
+>
+    ← برگشت
+</button>
+
+
+<div class="box">
+
+<h2>
+    🎲 تاس بدبختی
+</h2>
+
+<p class="desc">
+    عددهایی که می‌خوای با اومدنشون کار انجام بشه رو انتخاب کن.
+    مثلاً اگر ۱، ۳ و ۶ رو انتخاب کنی، فقط با آمدن یکی از این سه عدد، کار انجام می‌شود.
+</p>
+
+
+<div class="question">
+    کدوم عددها باعث انجام کار بشن؟
+</div>
+
+
+<div class="dice-options">
+
+    <div class="dice-option">
+        <input
+            type="checkbox"
+            id="dice1"
+            value="1"
+        >
+        <label for="dice1">۱</label>
+    </div>
+
+
+    <div class="dice-option">
+        <input
+            type="checkbox"
+            id="dice2"
+            value="2"
+        >
+        <label for="dice2">۲</label>
+    </div>
+
+
+    <div class="dice-option">
+        <input
+            type="checkbox"
+            id="dice3"
+            value="3"
+        >
+        <label for="dice3">۳</label>
+    </div>
+
+
+    <div class="dice-option">
+        <input
+            type="checkbox"
+            id="dice4"
+            value="4"
+        >
+        <label for="dice4">۴</label>
+    </div>
+
+
+    <div class="dice-option">
+        <input
+            type="checkbox"
+            id="dice5"
+            value="5"
+        >
+        <label for="dice5">۵</label>
+    </div>
+
+
+    <div class="dice-option">
+        <input
+            type="checkbox"
+            id="dice6"
+            value="6"
+        >
+        <label for="dice6">۶</label>
+    </div>
+
+</div>
+
+
+<button
+    class="primary"
+    onclick="rollDice()"
+>
+    🎲 تاس بنداز
+</button>
+
+
+<div
+    id="diceResult"
     class="result"
 ></div>
 
@@ -2220,6 +2547,130 @@ function brainTest(){
             امروز یکم کمتر به خودت فشار بیار.
         </p>
         `
+    );
+
+}
+
+
+
+/* =========================
+   DICE
+========================= */
+
+function rollDice(){
+
+    let selected = [
+
+        ...document.querySelectorAll(
+            ".dice-option input:checked"
+        )
+
+    ];
+
+
+    if(selected.length===0){
+
+        alert(
+            "حداقل یک عدد انتخاب کن 🎲"
+        );
+
+        return;
+
+    }
+
+
+    let selectedNumbers =
+        selected.map(
+            input =>
+                Number(input.value)
+        );
+
+
+    let dice =
+        Math.floor(
+            Math.random()*6
+        ) + 1;
+
+
+    let diceFaces = {
+
+        1:"⚀",
+        2:"⚁",
+        3:"⚂",
+        4:"⚃",
+        5:"⚄",
+        6:"⚅"
+
+    };
+
+
+    let success =
+        selectedNumbers.includes(dice);
+
+
+    let message;
+
+
+    if(success){
+
+        message = `
+
+            <div class="dice-result-success">
+                ✅ انجامش بده!
+            </div>
+
+            <p>
+                عدد ${dice.toLocaleString("fa-IR")}
+                اومد و جزو عددهای انتخابی تو بود.
+            </p>
+
+        `;
+
+    }
+
+    else{
+
+        message = `
+
+            <div class="dice-result-fail">
+                ❌ انجامش نده!
+            </div>
+
+            <p>
+                عدد ${dice.toLocaleString("fa-IR")}
+                اومد و جزو عددهای انتخابی تو نبود.
+            </p>
+
+        `;
+
+    }
+
+
+    showResult(
+
+        "diceResult",
+
+        `
+
+        <div
+            class="dice roll"
+            id="diceAnimation"
+        >
+            ${diceFaces[dice]}
+        </div>
+
+        <div>
+            عدد تاس:
+        </div>
+
+        <div class="score">
+            ${dice.toLocaleString("fa-IR")}
+        </div>
+
+        ${message}
+
+        `
+
     );
 
 }
