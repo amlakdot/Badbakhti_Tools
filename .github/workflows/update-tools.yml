@@ -1,0 +1,132 @@
+name: Update Tools Manifest
+
+
+on:
+
+  push:
+
+    branches:
+      - main
+
+    paths:
+
+      - "tools/*.js"
+
+      - ".github/workflows/update-tools.yml"
+
+
+  workflow_dispatch:
+
+
+
+permissions:
+
+  contents: write
+
+
+
+jobs:
+
+  update-manifest:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+
+      - name:
+          Checkout
+
+        uses:
+          actions/checkout@v4
+
+        with:
+
+          fetch-depth: 0
+
+
+
+      - name:
+          Build tools.json
+
+        shell:
+          bash
+
+        run: |
+
+          python - <<'PY'
+
+          import json
+
+          from pathlib import Path
+
+
+          files = sorted(
+
+              p.name
+
+              for p in Path("tools").glob("*.js")
+
+              if p.is_file()
+
+          )
+
+
+          Path(
+              "tools.json"
+          ).write_text(
+
+              json.dumps(
+                  files,
+                  ensure_ascii=False,
+                  indent=2
+              ) + "\n",
+
+              encoding="utf-8"
+
+          )
+
+
+          print(
+              "Tools:",
+              files
+          )
+
+          PY
+
+
+
+      - name:
+          Commit manifest if changed
+
+        shell:
+          bash
+
+        run: |
+
+          git config \
+            user.name \
+            "github-actions[bot]"
+
+
+          git config \
+            user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+
+          git add tools.json
+
+
+          if git diff --cached --quiet; then
+
+            echo "tools.json is already up to date."
+
+          else
+
+            git commit \
+              -m "Update tools manifest"
+
+            git push
+
+          fi
