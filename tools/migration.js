@@ -337,7 +337,7 @@ export default {
                     `${result.title}\n` +
                     `شانس فرار از بدبختی: ${chance}٪\n\n` +
                     `${result.desc}\n\n` +
-                    `جعبه ابزار بدبختی:\nhttps://amlakdot.github.io/Badbakhti_Tools/`;
+                    `جعبه ابزار بدبختی:\nhttps://xixtelegram.github.io/Badbakhti_Tools/`;
 
                 navigator.clipboard.writeText(text).then(() => {
                     const btn = document.getElementById("shareMigration");
