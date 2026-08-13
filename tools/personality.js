@@ -9,7 +9,7 @@ export default {
 
     icon: "💀",
 
-    title: "تست شخصیت بدبختی",
+    title: "تست MBTI بدبختی",
 
     description:
     "ببین چه مدل بدبختی هستی و نقطه ضعف پنهانت چیه ",
