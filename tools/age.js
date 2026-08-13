@@ -16,7 +16,7 @@ export default {
 
 
     description:
-        "تاریخ تولدت رو بده ببین چند ساله داری دوام میاری. 😂",
+        "تاریخ تولدت رو انتخاب کن ببین چند ساله داری این زندگی رو تحمل می‌کنی. 😂",
 
 
     buttonText:
@@ -33,16 +33,99 @@ export default {
 
 
     <p class="desc">
-        تاریخ تولدت رو به شمسی وارد کن تا میزان بدبختی محاسبه شود. 💀
+        تاریخ تولدت رو انتخاب کن تا میزان بدبختی‌ات محاسبه شود. 💀
     </p>
 
 
 
-    <input
-        id="jalaliBirth"
-        type="text"
-        placeholder="مثلاً 1381/01/08"
+    <div
+        style="
+        display:grid;
+        grid-template-columns:
+        1fr 1.5fr 1.2fr;
+        gap:10px;
+        "
     >
+
+
+        <select id="birthDay">
+
+            <option value="">
+                روز
+            </option>
+
+        </select>
+
+
+
+        <select id="birthMonth">
+
+            <option value="">
+                ماه
+            </option>
+
+            <option value="1">
+                فروردین
+            </option>
+
+            <option value="2">
+                اردیبهشت
+            </option>
+
+            <option value="3">
+                خرداد
+            </option>
+
+            <option value="4">
+                تیر
+            </option>
+
+            <option value="5">
+                مرداد
+            </option>
+
+            <option value="6">
+                شهریور
+            </option>
+
+            <option value="7">
+                مهر
+            </option>
+
+            <option value="8">
+                آبان
+            </option>
+
+            <option value="9">
+                آذر
+            </option>
+
+            <option value="10">
+                دی
+            </option>
+
+            <option value="11">
+                بهمن
+            </option>
+
+            <option value="12">
+                اسفند
+            </option>
+
+        </select>
+
+
+
+        <select id="birthYear">
+
+            <option value="">
+                سال
+            </option>
+
+        </select>
+
+
+    </div>
 
 
 
@@ -50,7 +133,7 @@ export default {
         class="primary"
         id="ageBtn"
     >
-        محاسبه بدبختی
+        محاسبه بدبختی 🎂
     </button>
 
 
@@ -68,6 +151,89 @@ export default {
     init(){
 
 
+        const daySelect =
+            document.getElementById(
+                "birthDay"
+            );
+
+
+        const yearSelect =
+            document.getElementById(
+                "birthYear"
+            );
+
+
+
+        /*
+        =========================
+        روزها
+        =========================
+        */
+
+
+        for(
+            let day = 1;
+            day <= 31;
+            day++
+        ){
+
+            daySelect.innerHTML += `
+
+                <option value="${day}">
+                    ${toPersianNumber(day)}
+                </option>
+
+            `;
+
+        }
+
+
+
+        /*
+        =========================
+        سال‌ها
+        =========================
+        */
+
+
+        const currentGregorianYear =
+            new Date()
+            .getFullYear();
+
+
+        const currentJalaliYear =
+            currentGregorianYear - 621;
+
+
+
+        for(
+            let year =
+                currentJalaliYear;
+
+            year >= 1300;
+
+            year--
+        ){
+
+            yearSelect.innerHTML += `
+
+                <option value="${year}">
+                    ${toPersianNumber(year)}
+                </option>
+
+            `;
+
+        }
+
+
+
+        /*
+        =========================
+        محاسبه
+        =========================
+        */
+
+
         document
         .getElementById(
             "ageBtn"
@@ -75,20 +241,44 @@ export default {
         .onclick = ()=>{
 
 
-            let value =
-            document
-            .getElementById(
-                "jalaliBirth"
-            )
-            .value
-            .trim();
+            const jy =
+                Number(
+                    yearSelect.value
+                );
+
+
+            const jm =
+                Number(
+                    document
+                    .getElementById(
+                        "birthMonth"
+                    )
+                    .value
+                );
+
+
+            const jd =
+                Number(
+                    daySelect.value
+                );
 
 
 
-            if(!value){
+            /*
+            =========================
+            بررسی انتخاب
+            =========================
+            */
+
+
+            if(
+                !jy ||
+                !jm ||
+                !jd
+            ){
 
                 alert(
-                    "تاریخ تولدت رو وارد کن بدبخت."
+                    "تاریخ تولدت رو انتخاب کن بدبخت. 😂"
                 );
 
                 return;
@@ -97,15 +287,30 @@ export default {
 
 
 
-            let parts =
-            value.split("/");
+            /*
+            =========================
+            بررسی روز معتبر
+            =========================
+            */
+
+
+            const maxDay =
+                jm <= 6
+                ? 31
+                : jm <= 11
+                ? 30
+                : isJalaliLeap(jy)
+                ? 30
+                : 29;
 
 
 
-            if(parts.length !== 3){
+            if(
+                jd > maxDay
+            ){
 
                 alert(
-                    "فرمت درست: 1381/01/08"
+                    "این تاریخی که انتخاب کردی وجود نداره بدبخت. 😂"
                 );
 
                 return;
@@ -114,60 +319,59 @@ export default {
 
 
 
-            let jy =
-            Number(parts[0]);
+            /*
+            =========================
+            تبدیل شمسی به میلادی
+            =========================
+            */
 
 
-            let jm =
-            Number(parts[1]);
-
-
-            let jd =
-            Number(parts[2]);
-
-
-
-            let g =
-            jalaliToGregorian(
-                jy,
-                jm,
-                jd
-            );
+            const gregorian =
+                jalaliToGregorian(
+                    jy,
+                    jm,
+                    jd
+                );
 
 
 
-            let birth =
-            new Date(
-                g[0],
-                g[1]-1,
-                g[2]
-            );
+            const birth =
+                new Date(
+                    gregorian[0],
+                    gregorian[1] - 1,
+                    gregorian[2]
+                );
 
 
 
-            let now =
-            new Date();
+            const now =
+                new Date();
 
+
+
+            /*
+            =========================
+            محاسبه سن
+            =========================
+            */
 
 
             let years =
-            now.getFullYear()
-            -
-            birth.getFullYear();
-
+                now.getFullYear()
+                -
+                birth.getFullYear();
 
 
             let months =
-            now.getMonth()
-            -
-            birth.getMonth();
-
+                now.getMonth()
+                -
+                birth.getMonth();
 
 
             let days =
-            now.getDate()
-            -
-            birth.getDate();
+                now.getDate()
+                -
+                birth.getDate();
 
 
 
@@ -175,13 +379,14 @@ export default {
 
                 months--;
 
+
                 days +=
-                new Date(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    0
-                )
-                .getDate();
+                    new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        0
+                    )
+                    .getDate();
 
             }
 
@@ -191,58 +396,151 @@ export default {
 
                 years--;
 
-                months+=12;
+                months += 12;
 
             }
 
 
 
+            /*
+            =========================
+            اگر تاریخ آینده باشد
+            =========================
+            */
+
+
+            if(
+                birth > now
+            ){
+
+                alert(
+                    "داداش هنوز به دنیا نیومدی! 😂"
+                );
+
+                return;
+
+            }
+
+
+
+            /*
+            =========================
+            تولد بعدی
+            =========================
+            */
+
 
             let nextBirthday =
-            new Date(
-                now.getFullYear(),
-                birth.getMonth(),
-                birth.getDate()
-            );
+                new Date(
+                    now.getFullYear(),
+                    birth.getMonth(),
+                    birth.getDate()
+                );
 
 
 
-            if(nextBirthday < now){
+            if(
+                nextBirthday < now
+            ){
 
                 nextBirthday.setFullYear(
-                    now.getFullYear()+1
+                    now.getFullYear() + 1
                 );
 
             }
 
 
 
-            let remain =
-            Math.ceil(
-                (
-                    nextBirthday-now
-                )
-                /
-                (1000*60*60*24)
-            );
+            const remainingMilliseconds =
+                nextBirthday - now;
 
 
 
+            const remainingDays =
+                Math.ceil(
+                    remainingMilliseconds
+                    /
+                    (
+                        1000 *
+                        60 *
+                        60 *
+                        24
+                    )
+                );
 
-            let zodiac =
-            animals[
-                jy % 12
+
+
+            /*
+            =========================
+            تاریخ میلادی
+            =========================
+            */
+
+
+            const europeanDate =
+                String(
+                    gregorian[2]
+                ).padStart(2,"0")
+                +
+                "/"
+                +
+                String(
+                    gregorian[1]
+                ).padStart(2,"0")
+                +
+                "/"
+                +
+                gregorian[0];
+
+
+
+            /*
+            =========================
+            حیوان سال
+            =========================
+            */
+
+
+            const animal =
+                getChineseAnimal(
+                    jy
+                );
+
+
+
+            /*
+            =========================
+            روز هفته
+            =========================
+            */
+
+
+            const weekDays = [
+
+                "یکشنبه",
+                "دوشنبه",
+                "سه‌شنبه",
+                "چهارشنبه",
+                "پنجشنبه",
+                "جمعه",
+                "شنبه"
+
             ];
 
 
 
+            const birthWeekDay =
+                weekDays[
+                    birth.getDay()
+                ];
 
-            let european =
-            birth.toLocaleDateString(
-                "en-GB"
-            );
 
 
+            /*
+            =========================
+            نمایش
+            =========================
+            */
 
 
             showResult(
@@ -253,7 +551,9 @@ export default {
                 `
 
 
-                <div class="big">
+                <div
+                    class="big"
+                >
                     🎂
                 </div>
 
@@ -265,21 +565,31 @@ export default {
 
 
 
-                <h3>
+                <div
+                    style="
+                    font-size:24px;
+                    font-weight:bold;
+                    line-height:2;
+                    "
+                >
 
-                ${years}
-                سال،
+                    ${toPersianNumber(years)}
+                    سال،
 
-                ${months}
-                ماه،
+                    ${toPersianNumber(months)}
+                    ماه،
 
-                ${days}
-                روز
+                    ${toPersianNumber(days)}
+                    روز
 
-                است داری زندگی می‌کنی. 💀
+                </div>
 
-                </h3>
 
+
+                <p>
+                    از این زندگی می‌گذره و هنوز
+                    تسلیم نشدی. 💀
+                </p>
 
 
 
@@ -287,67 +597,127 @@ export default {
 
 
 
-
-                <p>
-
-                🌍 اگر در اروپا به دنیا می‌اومدی:
-
-                <br><br>
-
-                <b>
-                ${european}
-                </b>
-
-                </p>
-
-
-
-
-
-                <p>
-
-                ⏳ تا تولد بعدی:
-
-                <br><br>
-
-                ${remain}
-                روز
-
-                مانده بدبخت. 😂
-
-                </p>
-
-
-
-
                 <div
-                style="
-                padding:20px;
-                background:#ffffff08;
-                border-radius:18px;
-                margin-top:20px;
-                "
+                    style="
+                    margin-top:20px;
+                    padding:20px;
+                    background:#ffffff08;
+                    border-radius:18px;
+                    "
                 >
 
+                    🌍 اگر تو اروپا به دنیا می‌اومدی:
 
-                🐉 تو متولد سال:
+                    <br><br>
 
-                <h2>
-                ${zodiac}
-                </h2>
+                    <b
+                        style="
+                        font-size:22px;
+                        "
+                    >
+                        ${europeanDate}
+                    </b>
 
+                    <br><br>
+
+                    یعنی دقیقاً
+                    <b>
+                        ${birthWeekDay}
+                    </b>
+                    به دنیا اومدی.
 
                 </div>
 
 
 
+                <div
+                    style="
+                    margin-top:20px;
+                    padding:20px;
+                    background:#ffffff08;
+                    border-radius:18px;
+                    "
+                >
+
+                    🎂 تا تولد بعدی:
+
+                    <br><br>
+
+                    <strong
+                        style="
+                        font-size:28px;
+                        "
+                    >
+                        ${toPersianNumber(remainingDays)}
+                    </strong>
+
+                    روز
+
+                    <br>
+
+                    مونده بدبخت. 😂
+
+                </div>
+
+
+
+                <div
+                    style="
+                    margin-top:20px;
+                    padding:20px;
+                    background:#ffffff08;
+                    border-radius:18px;
+                    "
+                >
+
+                    🐉 تو متولد سال:
+
+                    <h2
+                        style="
+                        margin-bottom:0;
+                        "
+                    >
+                        ${animal}
+                    </h2>
+
+                </div>
+
+
+
+                <p
+                    style="
+                    color:var(--muted);
+                    margin-top:25px;
+                    "
+                >
+
+                    تاریخ تولد شمسی:
+
+                    <br>
+
+                    <b>
+                        ${toPersianNumber(jy)}
+                        /
+                        ${toPersianNumber(
+                            String(jm).padStart(2,"0")
+                        )}
+                        /
+                        ${toPersianNumber(
+                            String(jd).padStart(2,"0")
+                        )}
+                    </b>
+
+                </p>
+
+
 
                 <small>
 
-                این ابزار فقط برای خراب کردن روحیه ساخته شده. 😂
+                    این ابزار هیچ کاربرد علمی ندارد؛
+                    فقط آمده یادآوری کند که
+                    چقدر از عمرت گذشته. 😂
 
                 </small>
-
 
 
                 `
@@ -367,88 +737,213 @@ export default {
 
 
 
-function jalaliToGregorian(jy,jm,jd){
+/*
+=================================
+تبدیل عدد انگلیسی به فارسی
+=================================
+*/
 
+
+function toPersianNumber(
+    value
+){
+
+    return String(value)
+
+        .replace(
+            /0/g,
+            "۰"
+        )
+
+        .replace(
+            /1/g,
+            "۱"
+        )
+
+        .replace(
+            /2/g,
+            "۲"
+        )
+
+        .replace(
+            /3/g,
+            "۳"
+        )
+
+        .replace(
+            /4/g,
+            "۴"
+        )
+
+        .replace(
+            /5/g,
+            "۵"
+        )
+
+        .replace(
+            /6/g,
+            "۶"
+        )
+
+        .replace(
+            /7/g,
+            "۷"
+        )
+
+        .replace(
+            /8/g,
+            "۸"
+        )
+
+        .replace(
+            /9/g,
+            "۹"
+        );
+
+}
+
+
+
+
+
+/*
+=================================
+سال کبیسه شمسی
+=================================
+*/
+
+
+function isJalaliLeap(
+    year
+){
+
+    const remainder =
+        year % 33;
+
+
+    return [
+
+        1,
+        5,
+        9,
+        13,
+        17,
+        22,
+        26,
+        30
+
+    ].includes(
+        remainder
+    );
+
+}
+
+
+
+
+
+/*
+=================================
+تبدیل شمسی به میلادی
+=================================
+*/
+
+
+function jalaliToGregorian(
+    jy,
+    jm,
+    jd
+){
 
     jy -= 979;
 
+
     let days =
-    365*jy
-    +
-    Math.floor(jy/33)*8
-    +
-    Math.floor(
-        ((jy%33)+3)/4
-    );
+        365 * jy
+        +
+        Math.floor(
+            jy / 33
+        ) * 8
+        +
+        Math.floor(
+            ((jy % 33) + 3) / 4
+        );
 
 
 
     for(
-        let i=0;
-        i<jm-1;
+        let i = 0;
+        i < jm - 1;
         i++
     ){
 
         days +=
-        i<6
-        ?
-        31
-        :
-        30;
+            i < 6
+            ? 31
+            : 30;
 
     }
 
 
 
-    days += jd-1;
+    days +=
+        jd - 1;
 
 
 
-    let gd =
-    days+79;
+    let gDay =
+        days + 79;
 
 
 
     let gy =
-    1600
-    +
-    400*
-    Math.floor(
-        gd/146097
-    );
-
-
-
-    gd %=146097;
-
-
-
-    let leap=true;
-
-
-
-    if(gd>=36525){
-
-        gd--;
-
-        gy +=
-        100*
+        1600
+        +
+        400 *
         Math.floor(
-            gd/36524
+            gDay / 146097
         );
 
-        gd %=36524;
 
 
-        if(gd>=365){
+    gDay %=
+        146097;
 
-            gd++;
+
+
+    let leap =
+        true;
+
+
+
+    if(
+        gDay >= 36525
+    ){
+
+        gDay--;
+
+        gy +=
+            100 *
+            Math.floor(
+                gDay / 36524
+            );
+
+        gDay %=
+            36524;
+
+
+
+        if(
+            gDay >= 365
+        ){
+
+            gDay++;
 
         }
 
         else{
 
-            leap=false;
+            leap = false;
 
         }
 
@@ -457,93 +952,17 @@ function jalaliToGregorian(jy,jm,jd){
 
 
     gy +=
-    4*
-    Math.floor(
-        gd/1461
-    );
-
-
-
-    gd %=1461;
-
-
-
-    if(gd>=366){
-
-        leap=false;
-
-        gd--;
-
-        gy +=
+        4 *
         Math.floor(
-            gd/365
+            gDay / 1461
         );
 
-        gd %=365;
-
-    }
 
 
-
-    let salMonth =
-    [
-        31,28,31,30,31,30,
-        31,31,30,31,30,31
-    ];
+    gDay %=
+        1461;
 
 
 
     if(
-        leap
-    ){
-
-        salMonth[1]=29;
-
-    }
-
-
-
-    let gm=0;
-
-
-
-    while(
-        gd>=salMonth[gm]
-    ){
-
-        gd -=
-        salMonth[gm];
-
-        gm++;
-
-    }
-
-
-
-    return [
-        gy,
-        gm+1,
-        gd+1
-    ];
-
-}
-
-
-
-
-const animals=[
-
-"موش 🐭",
-"گاو 🐮",
-"ببر 🐯",
-"خرگوش 🐰",
-"اژدها 🐉",
-"مار 🐍",
-"اسب 🐴",
-"بز 🐐",
-"میمون 🐒",
-"خروس 🐓",
-"سگ 🐕",
-"خوک 🐷"
-
-];
+        gDay >= 366
