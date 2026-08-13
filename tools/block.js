@@ -326,7 +326,7 @@ export default {
                     `در مورد: ${personName}\n` +
                     `نتیجه: ${title}\n\n` +
                     `${longText}\n\n` +
-                    `جعبه ابزار بدبختی:\nhttps://amlakdot.github.io/Badbakhti_Tools/`;
+                    `جعبه ابزار بدبختی:\nhttps://xixtelegram.github.io/Badbakhti_Tools/`;
 
                 navigator.clipboard.writeText(text).then(() => {
                     const btn = document.getElementById("shareBlock");
