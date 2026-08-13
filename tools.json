@@ -3,6 +3,7 @@
   "brain.js",
   "decision.js",
   "dice.js",
+  "fal.js",
   "life.js",
   "message.js",
   "money.js",
