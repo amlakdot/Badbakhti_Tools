@@ -106,9 +106,27 @@ async function loadTools(){
 
 async function renderHome(){
 
-    // اول کارت‌ها رو بدون عدد می‌کشیم
+    // حالت لودینگ
+    home.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: var(--muted);">
+            در حال بارگذاری ابزارها و آمار...
+        </div>
+    `;
+
+    // گرفتن آمار همه ابزارها
+    const toolsWithCount = await Promise.all(
+        tools.map(async (tool) => {
+            const count = await getCount(tool.id);
+            return { ...tool, count: count || 0 };
+        })
+    );
+
+    // مرتب‌سازی بر اساس بیشترین استفاده
+    toolsWithCount.sort((a, b) => b.count - a.count);
+
+    // رندر نهایی
     home.innerHTML =
-        tools.map(tool => `
+        toolsWithCount.map(tool => `
             <div class="tool" data-id="${escapeHTML(tool.id)}">
                 <div class="emoji">
                     ${tool.icon || "🧰"}
@@ -128,7 +146,11 @@ async function renderHome(){
                     margin: 8px 0 4px;
                     opacity: 0.85;
                 ">
-                    در حال دریافت آمار...
+                    ${
+                        tool.count > 0
+                        ? `استفاده شده توسط <b style="color:var(--pink)">${tool.count.toLocaleString("fa-IR")}</b> نفر`
+                        : `هنوز کسی استفاده نکرده`
+                    }
                 </div>
 
                 <button class="open" data-tool="${escapeHTML(tool.id)}">
@@ -137,37 +159,11 @@ async function renderHome(){
             </div>
         `).join("");
 
-
     // رویداد کلیک
     home.querySelectorAll("[data-tool]").forEach(button => {
         button.addEventListener("click", () => {
             openApp(button.dataset.tool);
         });
-    });
-
-
-    // گرفتن آمار همه ابزارها به صورت موازی
-    const counts = await Promise.all(
-        tools.map(async (tool) => {
-            const count = await getCount(tool.id);
-            return { id: tool.id, count };
-        })
-    );
-
-
-    // آپدیت عدد روی کارت‌ها
-    counts.forEach(item => {
-        const card = home.querySelector(`.tool[data-id="${item.id}"]`);
-        if (!card) return;
-
-        const usageEl = card.querySelector(".tool-usage");
-        if (usageEl) {
-            if (item.count > 0) {
-                usageEl.innerHTML = `استفاده شده توسط <b style="color:var(--pink)">${item.count.toLocaleString("fa-IR")}</b> نفر`;
-            } else {
-                usageEl.innerHTML = `هنوز کسی استفاده نکرده`;
-            }
-        }
     });
 }
 
