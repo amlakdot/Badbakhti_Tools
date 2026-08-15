@@ -327,6 +327,14 @@ export default {
 
     // ========== حالت سازنده ==========
     function startCreatorMode() {
+      // برگردوندن عنوان و توضیح به حالت عادی
+      const titleEl = box.querySelector("h2");
+      const descEl = box.querySelector(".desc");
+      if (titleEl) titleEl.innerHTML = `🤝 رفیقم من بدبخت چقدر می‌شناسه؟`;
+      if (descEl) {
+        descEl.innerHTML = `اول خودت جواب بده، بعد لینک رو بده به رفیقت. ببین چند تا رو درست حدس می‌زنه.`;
+      }
+
       let name = "";
       let answers = [];
       let index = 0;
@@ -417,25 +425,33 @@ export default {
         descEl.innerHTML = `کسی برات لینک فرستاده تا ثابت کنی چقدر می‌شناسیش.`;
       }
 
-      // صفحه شروع برای دوست
+      // صفحه شروع برای دوست + دکمه دوم
       area.innerHTML = `
         <div style="text-align:center; padding: 10px 0 20px;">
           <div style="font-size: 64px; margin-bottom: 18px;">👀</div>
+          
           <h3 style="margin-bottom: 14px; font-size: 1.35rem; line-height: 1.6;">
             میخوام ثابت کنم چقدر 
             <span style="color:var(--pink)">${data.name}</span> 
             رو می‌شناسم
           </h3>
+          
           <p style="color:var(--muted); margin-bottom: 28px; line-height:1.8">
             ۲۰ تا سؤال چهارگزینه‌ای ازت پرسیده می‌شه.<br>
             ببین چند تا رو درست حدس می‌زنی.
           </p>
+
           <button class="primary" id="startFriendBtn">
             شروع کن، ثابت کن می‌شناسیش 🔥
+          </button>
+
+          <button class="secondary" id="makeMyOwnBtn" style="margin-top: 12px;">
+            خودم میخوام تست بدم
           </button>
         </div>
       `;
 
+      // دکمه شروع تست دوست
       document.getElementById("startFriendBtn").onclick = () => {
         let index = 0;
         let score = 0;
@@ -510,6 +526,7 @@ export default {
               <p style="line-height:1.8;margin-bottom:18px">${desc}</p>
               <p>از ۲۰ سؤال، <b>${score}</b> تا رو درست جواب دادی.</p>
               <button class="primary" id="shareBtn" style="margin-top:18px">کپی نتیجه</button>
+              <button class="secondary" id="makeMyOwnBtn2" style="margin-top:10px">خودم میخوام تست بدم</button>
             </div>
           `;
 
@@ -518,9 +535,21 @@ export default {
             navigator.clipboard.writeText(text);
             document.getElementById("shareBtn").innerText = "کپی شد ✅";
           };
+
+          document.getElementById("makeMyOwnBtn2").onclick = () => {
+            // پاک کردن پارامتر q از آدرس
+            history.replaceState(null, "", location.pathname);
+            startCreatorMode();
+          };
         }
 
         renderQuestion();
+      };
+
+      // دکمه «خودم میخوام تست بدم»
+      document.getElementById("makeMyOwnBtn").onclick = () => {
+        history.replaceState(null, "", location.pathname);
+        startCreatorMode();
       };
     }
   }
