@@ -20,6 +20,7 @@ export default {
 
   init() {
     const area = document.getElementById("friendQuizArea");
+    const box = area.closest(".box");
 
     const questions = [
       {
@@ -293,7 +294,6 @@ export default {
       return a;
     }
 
-    // کد کردن داده‌ها (کوتاه)
     function encodeData(name, answers) {
       const raw = name.slice(0, 12) + "|" + answers.join("");
       return btoa(unescape(encodeURIComponent(raw)))
@@ -302,7 +302,6 @@ export default {
         .replace(/=+$/, "");
     }
 
-    // دیکد کردن
     function decodeData(str) {
       try {
         const padded = str + "===".slice((str.length + 3) % 4);
@@ -316,7 +315,7 @@ export default {
       }
     }
 
-    // ========== تشخیص حالت ==========
+    // تشخیص حالت
     const params = new URLSearchParams(window.location.search);
     const code = params.get("q");
 
@@ -403,95 +402,126 @@ export default {
     // ========== حالت دوست ==========
     function startFriendMode(code) {
       const data = decodeData(code);
+
       if (!data) {
         area.innerHTML = `<p style="text-align:center;color:var(--red)">لینک نامعتبره 💀</p>`;
         return;
       }
 
-      let index = 0;
-      let score = 0;
+      // تغییر عنوان و توضیح
+      const titleEl = box.querySelector("h2");
+      const descEl = box.querySelector(".desc");
 
-      function renderQuestion() {
-        if (index >= 20) {
-          showResult();
-          return;
+      if (titleEl) titleEl.innerHTML = `🤝 چقدر ${data.name} رو می‌شناسی؟`;
+      if (descEl) {
+        descEl.innerHTML = `کسی برات لینک فرستاده تا ثابت کنی چقدر می‌شناسیش.`;
+      }
+
+      // صفحه شروع برای دوست
+      area.innerHTML = `
+        <div style="text-align:center; padding: 10px 0 20px;">
+          <div style="font-size: 64px; margin-bottom: 18px;">👀</div>
+          <h3 style="margin-bottom: 14px; font-size: 1.35rem; line-height: 1.6;">
+            میخوام ثابت کنم چقدر 
+            <span style="color:var(--pink)">${data.name}</span> 
+            رو می‌شناسم
+          </h3>
+          <p style="color:var(--muted); margin-bottom: 28px; line-height:1.8">
+            ۲۰ تا سؤال چهارگزینه‌ای ازت پرسیده می‌شه.<br>
+            ببین چند تا رو درست حدس می‌زنی.
+          </p>
+          <button class="primary" id="startFriendBtn">
+            شروع کن، ثابت کن می‌شناسیش 🔥
+          </button>
+        </div>
+      `;
+
+      document.getElementById("startFriendBtn").onclick = () => {
+        let index = 0;
+        let score = 0;
+
+        function renderQuestion() {
+          if (index >= 20) {
+            showFinalResult();
+            return;
+          }
+
+          const item = questions[index];
+          const correctIndex = data.answers[index];
+          const correctText = item.bank[correctIndex];
+
+          let wrongs = item.bank
+            .map((t, i) => ({ t, i }))
+            .filter(x => x.i !== correctIndex);
+
+          wrongs = shuffle(wrongs).slice(0, 3);
+
+          const options = shuffle([
+            { t: correctText, correct: true },
+            ...wrongs.map(w => ({ t: w.t, correct: false }))
+          ]);
+
+          area.innerHTML = `
+            <div class="progress-box">
+              <p>سؤال ${index + 1} از ۲۰</p>
+              <div class="bar"><span style="width:${(index / 20) * 100}%"></span></div>
+            </div>
+            <div class="question">${item.q}</div>
+            <div>
+              ${options.map((opt, i) => `
+                <button class="secondary answer" data-correct="${opt.correct}">
+                  ${String.fromCharCode(65 + i)} - ${opt.t}
+                </button>
+              `).join("")}
+            </div>
+          `;
+
+          document.querySelectorAll(".answer").forEach(btn => {
+            btn.onclick = () => {
+              if (btn.dataset.correct === "true") score++;
+              index++;
+              renderQuestion();
+            };
+          });
         }
 
-        const item = questions[index];
-        const correctIndex = data.answers[index];
-        const correctText = item.bank[correctIndex];
+        function showFinalResult() {
+          const percent = Math.round((score / 20) * 100);
+          let title, desc;
 
-        // ۳ گزینه غلط
-        let wrongs = item.bank
-          .map((t, i) => ({ t, i }))
-          .filter(x => x.i !== correctIndex);
+          if (percent >= 85) {
+            title = "رفیق واقعی پیدا شد 🔥";
+            desc = `${data.name} رو خیلی خوب می‌شناسی. این رفاقت بوی اعتماد می‌ده.`;
+          } else if (percent >= 65) {
+            title = "رفاقت قابل قبول";
+            desc = `بدک نیست. ${data.name} رو تا حد خوبی می‌شناسی.`;
+          } else if (percent >= 40) {
+            title = "رفاقت نصفه‌نصفه‌ست";
+            desc = `چند تا رو درست گفتی، ولی هنوز خیلی چیزا از ${data.name} نمی‌دونی.`;
+          } else {
+            title = "این رفاقت بیشتر بوی تعارفات می‌ده 💀";
+            desc = `راستش ${data.name} رو خیلی سطحی می‌شناسی.`;
+          }
 
-        wrongs = shuffle(wrongs).slice(0, 3);
-        const options = shuffle([
-          { t: correctText, correct: true },
-          ...wrongs.map(w => ({ t: w.t, correct: false }))
-        ]);
+          area.innerHTML = `
+            <div style="text-align:center">
+              <h2>${title}</h2>
+              <div class="big" style="font-size:2.8rem;margin:14px 0">${percent}٪</div>
+              <p style="line-height:1.8;margin-bottom:18px">${desc}</p>
+              <p>از ۲۰ سؤال، <b>${score}</b> تا رو درست جواب دادی.</p>
+              <button class="primary" id="shareBtn" style="margin-top:18px">کپی نتیجه</button>
+            </div>
+          `;
 
-        area.innerHTML = `
-          <div class="progress-box">
-            <p>سؤال ${index + 1} از ۲۰</p>
-            <div class="bar"><span style="width:${(index / 20) * 100}%"></span></div>
-          </div>
-          <div class="question">${item.q}</div>
-          <div>
-            ${options.map((opt, i) => `
-              <button class="secondary answer" data-correct="${opt.correct}">
-                ${String.fromCharCode(65 + i)} - ${opt.t}
-              </button>
-            `).join("")}
-          </div>
-        `;
-
-        document.querySelectorAll(".answer").forEach(btn => {
-          btn.onclick = () => {
-            if (btn.dataset.correct === "true") score++;
-            index++;
-            renderQuestion();
+          document.getElementById("shareBtn").onclick = () => {
+            const text = `نتیجه تست رفاقت\n\nدرصد شناخت از ${data.name}: ${percent}%\n${score} از ۲۰ درست\n\n${title}\n${desc}\n\nhttps://xixtelegram.github.io/Badbakhti_Tools/`;
+            navigator.clipboard.writeText(text);
+            document.getElementById("shareBtn").innerText = "کپی شد ✅";
           };
-        });
-      }
-
-      function showResult() {
-        const percent = Math.round((score / 20) * 100);
-        let title, desc;
-
-        if (percent >= 85) {
-          title = "رفیق واقعی پیدا شد 🔥";
-          desc = `${data.name} رو خیلی خوب می‌شناسی. این رفاقت بوی اعتماد می‌ده.`;
-        } else if (percent >= 65) {
-          title = "رفاقت قابل قبول";
-          desc = `بدک نیست. ${data.name} رو تا حد خوبی می‌شناسی.`;
-        } else if (percent >= 40) {
-          title = "رفاقت نصفه‌نصفه‌ست";
-          desc = `چند تا رو درست گفتی، ولی هنوز خیلی چیزا از ${data.name} نمی‌دونی.`;
-        } else {
-          title = "این رفاقت بیشتر بوی تعارفات می‌ده 💀";
-          desc = `راستش ${data.name} رو خیلی سطحی می‌شناسی.`;
         }
 
-        area.innerHTML = `
-          <div style="text-align:center">
-            <h2>${title}</h2>
-            <div class="big" style="font-size:2.8rem;margin:14px 0">${percent}٪</div>
-            <p style="line-height:1.8;margin-bottom:18px">${desc}</p>
-            <p>از ۲۰ سؤال، <b>${score}</b> تا رو درست جواب دادی.</p>
-            <button class="primary" id="shareBtn" style="margin-top:18px">کپی نتیجه</button>
-          </div>
-        `;
-
-        document.getElementById("shareBtn").onclick = () => {
-          const text = `نتیجه تست رفاقت\n\nدرصد شناخت از ${data.name}: ${percent}%\n${score} از ۲۰ درست\n\n${title}\n${desc}\n\nhttps://xixtelegram.github.io/Badbakhti_Tools/`;
-          navigator.clipboard.writeText(text);
-          document.getElementById("shareBtn").innerText = "کپی شد ✅";
-        };
-      }
-
-      renderQuestion();
+        renderQuestion();
+      };
     }
   }
 };
