@@ -793,8 +793,8 @@ input:checked
         translateY(-3px);
 
     box-shadow:
-        0 8px 25px
-        #ff4f8140;
+    0 8px 25px
+    rgba(43, 82, 120, 0.25);
 
 }
 
