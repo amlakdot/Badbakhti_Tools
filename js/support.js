@@ -13,7 +13,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--pink), #ff2865);
+            background: linear-gradient(135deg, var(--counter), #ff2865);
             border: none;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(255, 79, 129, 0.4);
@@ -123,7 +123,7 @@
         }
 
         .support-modal-btn-primary {
-            background: linear-gradient(135deg, var(--pink), #ff2865);
+            background: linear-gradient(135deg, var(--counter), #ff2865);
             color: white;
         }
 
