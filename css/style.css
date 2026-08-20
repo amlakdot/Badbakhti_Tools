@@ -526,7 +526,7 @@ textarea {
         linear-gradient(
             135deg,
             var(--pink),
-            #ff2865
+            #2b5278
         );
 
     color: white;
@@ -783,7 +783,7 @@ input:checked
         linear-gradient(
             135deg,
             var(--pink),
-            #ff2865
+            #2b5278
         );
 
     border-color:
