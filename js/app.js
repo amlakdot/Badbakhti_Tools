@@ -148,7 +148,7 @@ async function renderHome(){
                 ">
                     ${
                         tool.count > 0
-                        ? `استفاده شده توسط <b style="color:var(--pink)">${tool.count.toLocaleString("fa-IR")}</b> نفر`
+                        ? `استفاده شده توسط <b style="color:var(--counter)">${tool.count.toLocaleString("fa-IR")}</b> نفر`
                         : `هنوز کسی استفاده نکرده`
                     }
                 </div>
@@ -225,7 +225,7 @@ async function openApp(id){
 
         const counterEl = document.getElementById("toolCounter");
         if (counterEl) {
-            counterEl.innerHTML = `این ابزار تا حالا توسط <b style="color: var(--pink)">${Number(count).toLocaleString("fa-IR")}</b> نفر استفاده شده`;
+            counterEl.innerHTML = `این ابزار تا حالا توسط <b style="color: var(--counter)">${Number(count).toLocaleString("fa-IR")}</b> نفر استفاده شده`;
         }
     } catch (e) {
         const counterEl = document.getElementById("toolCounter");
