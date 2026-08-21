@@ -310,7 +310,7 @@ async function renderHome(){
 
                 ${
                     isNew
-                    ? `<div class="new-tool-badge">🆕 ابزار جدید</div>`
+                    ? `<div class="new-tool-badge"> ابزار جدید</div>`
                     : ""
                 }
 
