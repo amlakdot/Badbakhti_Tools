@@ -1,166 +1,206 @@
 import {
-    showResult
+    escapeHTML
 } from "../js/app.js";
+
+
+/*
+==================================================
+   SPIN WHEEL
+==================================================
+
+   فقط همین فایل برای گردونه استفاده می‌شود.
+   هیچ تغییری در app.js یا style.css لازم نیست.
+
+==================================================
+*/
+
+
+import {
+    Wheel
+} from "https://cdn.jsdelivr.net/npm/spin-wheel@5.0.2/dist/spin-wheel-esm.js";
 
 
 export default {
 
-    id:"wheel",
+    id: "wheel",
 
-    icon:"🎡",
+    icon: "🎡",
 
-    title:"گردونه بدبختی",
+    title: "گردونه بدبختی",
 
     description:
-        "بذار شانس تصمیم بگیره امروز کدوم ابزار قراره بدبختت کنه.",
+        "نمی‌دونی با کدوم ابزار ور بری؟ بذار خود گردونه برات تصمیم بگیره.",
 
     buttonText:
-        "بچرخونش 🎡",
+        "بچرخون 🎡",
 
 
-    html:`
-
-        <h2>
-            🎡 گردونه بدبختی
-        </h2>
-
-
-        <p class="desc">
-            نمی‌دونی کدوم ابزار رو انتخاب کنی؟
-            بذار گردونه به جات تصمیم بگیره. 💀
-        </p>
-
+    html: `
 
         <div
-            id="wheelArea"
+            id="badbakhtiWheel"
             style="
-                margin-top:25px;
-                text-align:center;
-                user-select:none;
+                width:100%;
+                max-width:650px;
+                margin:0 auto;
             "
         >
 
-            <!--
-            =========================
-            فلش انتخاب
-            =========================
-            -->
-
             <div
                 style="
-                    position:relative;
-                    z-index:50;
-                    width:0;
-                    height:0;
-                    margin:0 auto -4px;
-
-                    border-left:16px solid transparent;
-                    border-right:16px solid transparent;
-                    border-top:34px solid var(--red);
-
-                    filter:
-                        drop-shadow(
-                            0 4px 8px #0009
-                        );
-                "
-            ></div>
-
-
-            <!--
-            =========================
-            قاب گردونه
-            =========================
-            -->
-
-            <div
-                style="
-                    width:min(440px, 94vw);
-                    aspect-ratio:1;
-                    margin:0 auto;
-
-                    position:relative;
-
-                    border-radius:50%;
-
-                    padding:8px;
-
-                    background:
-                        linear-gradient(
-                            145deg,
-                            #ffffff25,
-                            #ffffff08
-                        );
-
-                    box-shadow:
-                        0 25px 70px #0009,
-                        0 0 0 1px #ffffff12;
-
-                    overflow:hidden;
+                    text-align:center;
+                    margin-bottom:20px;
                 "
             >
 
-                <svg
-                    id="wheelSvg"
-                    viewBox="0 0 500 500"
+                <h2
                     style="
-                        width:100%;
-                        height:100%;
-                        display:block;
-
-                        border-radius:50%;
-
-                        transition:
-                            transform
-                            5.5s
-                            cubic-bezier(
-                                .12,
-                                .72,
-                                .16,
-                                1
-                            );
-
-                        filter:
-                            drop-shadow(
-                                0 8px 20px #0008
-                            );
+                        margin-bottom:8px;
                     "
                 >
+                    🎡 گردونه بدبختی
+                </h2>
 
-                    <g id="wheelGroup">
-
-                    </g>
-
-                </svg>
+                <p
+                    class="desc"
+                    style="
+                        margin:0;
+                    "
+                >
+                    بذار شانس تصمیم بگیره امروز با کدوم ابزار بدبخت بشی.
+                </p>
 
             </div>
 
 
-            <!--
-            =========================
-            دکمه
-            =========================
-            -->
+            <!-- WHEEL -->
 
-            <button
-                class="primary"
-                id="spinWheelBtn"
+            <div
+                id="wheelContainer"
                 style="
-                    margin-top:28px;
+                    position:relative;
+                    width:min(90vw,620px);
+                    aspect-ratio:1;
+                    margin:25px auto 0;
                 "
             >
-                بچرخونش 💀
+
+                <div
+                    id="wheelCanvas"
+                    style="
+                        width:100%;
+                        height:100%;
+                    "
+                ></div>
+
+
+                <!-- POINTER -->
+
+                <div
+                    style="
+                        position:absolute;
+                        z-index:20;
+                        top:-2px;
+                        left:50%;
+                        transform:translateX(-50%);
+                        width:0;
+                        height:0;
+                        border-left:18px solid transparent;
+                        border-right:18px solid transparent;
+                        border-top:34px solid var(--red);
+                        filter:
+                            drop-shadow(
+                                0 4px 7px
+                                rgba(0,0,0,.45)
+                            );
+                        pointer-events:none;
+                    "
+                ></div>
+
+
+                <!-- CENTER BUTTON -->
+
+                <button
+                    id="wheelCenterButton"
+                    type="button"
+                    style="
+                        position:absolute;
+                        z-index:30;
+
+                        top:50%;
+                        left:50%;
+
+                        transform:
+                            translate(-50%,-50%);
+
+                        width:82px;
+                        height:82px;
+
+                        border-radius:50%;
+
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+
+                        background:
+                            radial-gradient(
+                                circle at 35% 30%,
+                                #2c4358,
+                                #142536
+                            );
+
+                        border:
+                            5px solid
+                            rgba(255,255,255,.16);
+
+                        box-shadow:
+                            0 8px 30px
+                            rgba(0,0,0,.5),
+
+                            inset
+                            0 2px 5px
+                            rgba(255,255,255,.12);
+
+                        font-size:36px;
+
+                        cursor:pointer;
+
+                        transition:
+                            transform .2s,
+                            box-shadow .2s;
+                    "
+                >
+                    💀
+                </button>
+
+            </div>
+
+
+            <!-- SPIN BUTTON -->
+
+            <button
+                id="wheelSpinButton"
+                class="primary"
+                type="button"
+                style="
+                    max-width:500px;
+                    margin:
+                        25px auto 0;
+                    display:block;
+                "
+            >
+                🎡 بچرخون!
             </button>
 
 
-            <!--
-            =========================
-            نتیجه
-            =========================
-            -->
+            <!-- RESULT -->
 
             <div
                 id="wheelResult"
                 class="result"
+                style="
+                    margin-top:25px;
+                "
             ></div>
 
         </div>
@@ -168,23 +208,31 @@ export default {
     `,
 
 
-    init(){
+    init() {
 
-        const svg =
+
+        /*
+        ==================================================
+           ELEMENTS
+        ==================================================
+        */
+
+
+        const wheelContainer =
             document.getElementById(
-                "wheelSvg"
-            );
-
-
-        const group =
-            document.getElementById(
-                "wheelGroup"
+                "wheelCanvas"
             );
 
 
         const spinButton =
             document.getElementById(
-                "spinWheelBtn"
+                "wheelSpinButton"
+            );
+
+
+        const centerButton =
+            document.getElementById(
+                "wheelCenterButton"
             );
 
 
@@ -194,898 +242,352 @@ export default {
             );
 
 
-        /*
-        =========================
-        ابزارهای موجود
-        =========================
-        */
-
-        const toolCards =
-            Array.from(
-                document.querySelectorAll(
-                    ".tool[data-id]"
-                )
-            );
-
-
-        /*
-        =========================
-        حذف خود گردونه
-        =========================
-        */
-
-        const wheelTools =
-            toolCards.filter(
-                card =>
-                    card.dataset.id !== "wheel"
-            );
-
-
-        /*
-        =========================
-        اگر ابزار وجود نداشت
-        =========================
-        */
-
-        if(!wheelTools.length){
-
-            group.innerHTML = `
-
-                <text
-                    x="250"
-                    y="250"
-                    text-anchor="middle"
-                    fill="white"
-                    font-size="22"
-                    direction="rtl"
-                >
-                    ابزار دیگری وجود ندارد 💀
-                </text>
-
-            `;
-
-            spinButton.disabled = true;
+        if(
+            !wheelContainer ||
+            !spinButton ||
+            !centerButton
+        ){
 
             return;
 
         }
 
 
+
         /*
-        =========================
-        استخراج اطلاعات
-        =========================
+        ==================================================
+           LOAD TOOLS
+        ==================================================
         */
 
-        const tools =
-            wheelTools.map(
-                card => {
-
-                    const title =
-                        card.querySelector(
-                            "h2"
-                        );
+        let availableTools = [];
 
 
-                    const emoji =
-                        card.querySelector(
-                            ".emoji"
-                        );
+        async function loadWheelTools(){
+
+            try{
+
+                const response =
+                    await fetch(
+                        "../tools.json",
+                        {
+                            cache:"no-store"
+                        }
+                    );
 
 
-                    return {
+                if(!response.ok){
 
-                        id:
-                            card.dataset.id,
-
-                        title:
-                            title
-                            ? title.textContent.trim()
-                            : "ابزار بدبختی",
-
-                        icon:
-                            emoji
-                            ? emoji.textContent.trim()
-                            : "💀"
-
-                    };
+                    throw new Error(
+                        "tools.json not found"
+                    );
 
                 }
-            );
+
+
+                const files =
+                    await response.json();
+
+
+                const modules =
+                    await Promise.all(
+
+                        files.map(
+                            file =>
+                                import(
+                                    `../tools/${file}?wheel=${Date.now()}`
+                                )
+                        )
+
+                    );
+
+
+                availableTools =
+                    modules
+
+                        .map(
+                            module =>
+                                module.default ||
+                                module.tool
+                        )
+
+                        .filter(
+                            tool =>
+                                tool &&
+                                tool.id &&
+                                tool.id !== "wheel"
+                        );
+
+
+                if(
+                    availableTools.length === 0
+                ){
+
+                    throw new Error(
+                        "No tools found"
+                    );
+
+                }
+
+
+                createWheel();
+
+
+            }
+
+            catch(error){
+
+                console.error(
+                    "Wheel tools error:",
+                    error
+                );
+
+
+                wheelContainer.innerHTML = `
+
+                    <div
+                        style="
+                            height:100%;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            text-align:center;
+                            padding:30px;
+                            color:var(--muted);
+                        "
+                    >
+
+                        ⚠️
+
+                        <br>
+
+                        ابزارها قابل بارگذاری نیستند.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
 
 
         /*
-        =========================
-        تنظیمات گردونه
-        =========================
+        ==================================================
+           WHEEL COLORS
+        ==================================================
         */
 
-        const size = 500;
 
-        const center = 250;
+        const wheelColors = [
 
-        const radius = 235;
-
-        const segmentCount =
-            tools.length;
-
-        const segmentAngle =
-            360 / segmentCount;
-
-
-        /*
-        =========================
-        رنگ سگمنت‌ها
-        =========================
-        */
-
-        const colors = [
-
-            "#243f58",
             "#2b5278",
-            "#315d7c",
-            "#34495e",
+            "#344f68",
+            "#385d78",
+            "#29445c",
             "#3b5870",
-            "#29465f",
-            "#365b75",
-            "#2f526d"
+            "#31536f",
+            "#263f55",
+            "#42657e"
 
         ];
 
 
+
         /*
-        =========================
-        تبدیل درجه به مختصات
-        =========================
+        ==================================================
+           CREATE WHEEL
+        ==================================================
         */
 
-        function polarToCartesian(
-            cx,
-            cy,
-            r,
-            angle
-        ){
 
-            const radians =
-                (
-                    angle - 90
-                )
-                *
-                Math.PI
-                /
-                180;
+        let wheel = null;
 
 
-            return {
+        function createWheel(){
 
-                x:
-                    cx +
-                    r *
-                    Math.cos(
-                        radians
-                    ),
 
-                y:
-                    cy +
-                    r *
-                    Math.sin(
-                        radians
-                    )
+            const items =
+                availableTools.map(
+                    (tool,index) => ({
+
+                        label:
+                            tool.title || tool.id,
+
+                        backgroundColor:
+                            wheelColors[
+                                index %
+                                wheelColors.length
+                            ],
+
+                        labelColor:
+                            "#ffffff",
+
+                        value:
+                            tool,
+
+                        weight:1
+
+                    })
+                );
+
+
+
+            wheel = new Wheel(
+
+                wheelContainer,
+
+                {
+
+                    items:items,
+
+
+                    /*
+                    ----------------------------------
+                       GENERAL
+                    ----------------------------------
+                    */
+
+                    radius:0.94,
+
+                    borderWidth:2,
+
+                    borderColor:
+                        "rgba(255,255,255,.16)",
+
+                    lineWidth:1.5,
+
+                    lineColor:
+                        "rgba(255,255,255,.20)",
+
+
+                    /*
+                    ----------------------------------
+                       LABELS
+                    ----------------------------------
+                    */
+
+                    itemLabelFont:
+                        "Tahoma, Arial, sans-serif",
+
+                    itemLabelAlign:
+                        "right",
+
+                    itemLabelColors:[
+                        "#ffffff"
+                    ],
+
+                    itemLabelFontSizeMax:
+                        24,
+
+                    itemLabelRadius:
+                        0.78,
+
+                    itemLabelRadiusMax:
+                        0.34,
+
+                    itemLabelRotation:
+                        0,
+
+                    itemLabelBaselineOffset:
+                        0,
+
+
+                    /*
+                    ----------------------------------
+                       POINTER
+                    ----------------------------------
+                    */
+
+                    pointerAngle:
+                        0,
+
+
+                    /*
+                    ----------------------------------
+                       QUALITY
+                    ----------------------------------
+                    */
+
+                    pixelRatio:
+                        window.devicePixelRatio || 1,
+
+
+                    /*
+                    ----------------------------------
+                       INTERACTION
+                    ----------------------------------
+                    */
+
+                    isInteractive:false
+
+                }
+
+            );
+
+
+            /*
+            ----------------------------------
+               RESULT AFTER SPIN
+            ----------------------------------
+            */
+
+
+            wheel.onRest = event => {
+
+                const index =
+                    event.currentIndex;
+
+
+                const selectedTool =
+                    availableTools[index];
+
+
+                if(!selectedTool){
+
+                    return;
+
+                }
+
+
+                showWinner(
+                    selectedTool
+                );
 
             };
 
-        }
 
+            /*
+            ----------------------------------
+               PRELOAD READY
+            ----------------------------------
+            */
 
-        /*
-        =========================
-        ساخت مسیر هر سگمنت
-        =========================
-        */
-
-        function createSegmentPath(
-            startAngle,
-            endAngle
-        ){
-
-            const start =
-                polarToCartesian(
-                    center,
-                    center,
-                    radius,
-                    endAngle
-                );
-
-
-            const end =
-                polarToCartesian(
-                    center,
-                    center,
-                    radius,
-                    startAngle
-                );
-
-
-            const largeArc =
-                endAngle -
-                startAngle
-                <= 180
-                ? 0
-                : 1;
-
-
-            return `
-
-                M
-                ${center}
-                ${center}
-
-                L
-                ${start.x}
-                ${start.y}
-
-                A
-                ${radius}
-                ${radius}
-                0
-                ${largeArc}
-                0
-                ${end.x}
-                ${end.y}
-
-                Z
-
-            `;
+            spinButton.disabled = false;
 
         }
 
 
-        /*
-        =========================
-        ساخت گردونه
-        =========================
-        */
-
-        group.innerHTML = "";
-
-
-        tools.forEach(
-            (tool, index) => {
-
-                /*
-                زاویه سگمنت
-                */
-
-                const startAngle =
-                    index *
-                    segmentAngle;
-
-
-                const endAngle =
-                    (index + 1) *
-                    segmentAngle;
-
-
-                const middleAngle =
-                    (
-                        startAngle +
-                        endAngle
-                    ) / 2;
-
-
-                /*
-                =========================
-                سگمنت
-                =========================
-                */
-
-                const path =
-                    document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "path"
-                    );
-
-
-                path.setAttribute(
-                    "d",
-                    createSegmentPath(
-                        startAngle,
-                        endAngle
-                    )
-                );
-
-
-                path.setAttribute(
-                    "fill",
-                    colors[
-                        index %
-                        colors.length
-                    ]
-                );
-
-
-                path.setAttribute(
-                    "stroke",
-                    "#ffffff18"
-                );
-
-
-                path.setAttribute(
-                    "stroke-width",
-                    "2"
-                );
-
-
-                group.appendChild(
-                    path
-                );
-
-
-                /*
-                =========================
-                خط جداکننده
-                =========================
-                */
-
-                const separator =
-                    document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "line"
-                    );
-
-
-                const separatorEnd =
-                    polarToCartesian(
-                        center,
-                        center,
-                        radius,
-                        startAngle
-                    );
-
-
-                separator.setAttribute(
-                    "x1",
-                    center
-                );
-
-
-                separator.setAttribute(
-                    "y1",
-                    center
-                );
-
-
-                separator.setAttribute(
-                    "x2",
-                    separatorEnd.x
-                );
-
-
-                separator.setAttribute(
-                    "y2",
-                    separatorEnd.y
-                );
-
-
-                separator.setAttribute(
-                    "stroke",
-                    "#ffffff28"
-                );
-
-
-                separator.setAttribute(
-                    "stroke-width",
-                    "2"
-                );
-
-
-                group.appendChild(
-                    separator
-                );
-
-
-                /*
-                =========================
-                فاصله متن از مرکز
-                =========================
-                */
-
-                const textRadius =
-                    segmentCount > 16
-                    ? 158
-                    : segmentCount > 12
-                    ? 165
-                    : 170;
-
-
-                const textPoint =
-                    polarToCartesian(
-                        center,
-                        center,
-                        textRadius,
-                        middleAngle
-                    );
-
-
-                /*
-                =========================
-                گروه متن
-                =========================
-                */
-
-                const textGroup =
-                    document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "g"
-                    );
-
-
-                /*
-                =========================
-                جهت نوشته
-                =========================
-                */
-
-                let textRotation =
-                    middleAngle;
-
-
-                /*
-                کاری می‌کنیم نوشته
-                وارونه نشود
-                */
-
-                if(
-                    middleAngle > 90 &&
-                    middleAngle < 270
-                ){
-
-                    textRotation += 180;
-
-                }
-
-
-                textGroup.setAttribute(
-                    "transform",
-                    `
-                    rotate(
-                        ${textRotation}
-                        ${textPoint.x}
-                        ${textPoint.y}
-                    )
-                    `
-                );
-
-
-                /*
-                =========================
-                آیکون
-                =========================
-                */
-
-                const icon =
-                    document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "text"
-                    );
-
-
-                icon.setAttribute(
-                    "x",
-                    textPoint.x
-                );
-
-
-                icon.setAttribute(
-                    "y",
-                    textPoint.y - 12
-                );
-
-
-                icon.setAttribute(
-                    "text-anchor",
-                    "middle"
-                );
-
-
-                icon.setAttribute(
-                    "dominant-baseline",
-                    "middle"
-                );
-
-
-                icon.setAttribute(
-                    "font-size",
-                    segmentCount > 16
-                    ? "18"
-                    : "22"
-                );
-
-
-                icon.textContent =
-                    tool.icon;
-
-
-                textGroup.appendChild(
-                    icon
-                );
-
-
-                /*
-                =========================
-                نام ابزار
-                =========================
-                */
-
-                const text =
-                    document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "text"
-                    );
-
-
-                text.setAttribute(
-                    "x",
-                    textPoint.x
-                );
-
-
-                text.setAttribute(
-                    "y",
-                    textPoint.y + 14
-                );
-
-
-                text.setAttribute(
-                    "text-anchor",
-                    "middle"
-                );
-
-
-                text.setAttribute(
-                    "dominant-baseline",
-                    "middle"
-                );
-
-
-                text.setAttribute(
-                    "fill",
-                    "#ffffff"
-                );
-
-
-                text.setAttribute(
-                    "font-size",
-                    segmentCount > 16
-                    ? "10"
-                    : segmentCount > 12
-                    ? "11"
-                    : "12"
-                );
-
-
-                text.setAttribute(
-                    "font-weight",
-                    "bold"
-                );
-
-
-                text.setAttribute(
-                    "direction",
-                    "rtl"
-                );
-
-
-                text.setAttribute(
-                    "unicode-bidi",
-                    "plaintext"
-                );
-
-
-                text.setAttribute(
-                    "style",
-                    `
-                    paint-order:stroke;
-                    stroke:#0008;
-                    stroke-width:3px;
-                    `
-                );
-
-
-                /*
-                اگر اسم خیلی طولانی بود
-                دو خطش می‌کنیم
-                */
-
-                const words =
-                    tool.title
-                        .split(" ");
-
-
-                if(
-                    tool.title.length > 13 &&
-                    words.length > 1
-                ){
-
-                    const firstLine =
-                        words
-                            .slice(
-                                0,
-                                Math.ceil(
-                                    words.length / 2
-                                )
-                            )
-                            .join(" ");
-
-
-                    const secondLine =
-                        words
-                            .slice(
-                                Math.ceil(
-                                    words.length / 2
-                                )
-                            )
-                            .join(" ");
-
-
-                    const tspan1 =
-                        document.createElementNS(
-                            "http://www.w3.org/2000/svg",
-                            "tspan"
-                        );
-
-
-                    tspan1.setAttribute(
-                        "x",
-                        textPoint.x
-                    );
-
-
-                    tspan1.setAttribute(
-                        "dy",
-                        "0"
-                    );
-
-
-                    tspan1.textContent =
-                        firstLine;
-
-
-                    const tspan2 =
-                        document.createElementNS(
-                            "http://www.w3.org/2000/svg",
-                            "tspan"
-                        );
-
-
-                    tspan2.setAttribute(
-                        "x",
-                        textPoint.x
-                    );
-
-
-                    tspan2.setAttribute(
-                        "dy",
-                        "14"
-                    );
-
-
-                    tspan2.textContent =
-                        secondLine;
-
-
-                    text.appendChild(
-                        tspan1
-                    );
-
-
-                    text.appendChild(
-                        tspan2
-                    );
-
-                }
-
-                else{
-
-                    text.textContent =
-                        tool.title;
-
-                }
-
-
-                textGroup.appendChild(
-                    text
-                );
-
-
-                group.appendChild(
-                    textGroup
-                );
-
-            }
-        );
-
 
         /*
-        =========================
-        حلقه بیرونی
-        =========================
+        ==================================================
+           SPIN
+        ==================================================
         */
 
-        const outerCircle =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-
-        outerCircle.setAttribute(
-            "cx",
-            center
-        );
-
-
-        outerCircle.setAttribute(
-            "cy",
-            center
-        );
-
-
-        outerCircle.setAttribute(
-            "r",
-            radius
-        );
-
-
-        outerCircle.setAttribute(
-            "fill",
-            "none"
-        );
-
-
-        outerCircle.setAttribute(
-            "stroke",
-            "#ffffff30"
-        );
-
-
-        outerCircle.setAttribute(
-            "stroke-width",
-            "6"
-        );
-
-
-        group.appendChild(
-            outerCircle
-        );
-
-
-        /*
-        =========================
-        مرکز گردونه
-        =========================
-        */
-
-        const centerCircle =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-
-        centerCircle.setAttribute(
-            "cx",
-            center
-        );
-
-
-        centerCircle.setAttribute(
-            "cy",
-            center
-        );
-
-
-        centerCircle.setAttribute(
-            "r",
-            "39"
-        );
-
-
-        centerCircle.setAttribute(
-            "fill",
-            "#0e1621"
-        );
-
-
-        centerCircle.setAttribute(
-            "stroke",
-            "#ffffff30"
-        );
-
-
-        centerCircle.setAttribute(
-            "stroke-width",
-            "6"
-        );
-
-
-        group.appendChild(
-            centerCircle
-        );
-
-
-        /*
-        =========================
-        💀 وسط گردونه
-        =========================
-        */
-
-        const skull =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "text"
-            );
-
-
-        skull.setAttribute(
-            "x",
-            center
-        );
-
-
-        skull.setAttribute(
-            "y",
-            center
-        );
-
-
-        skull.setAttribute(
-            "text-anchor",
-            "middle"
-        );
-
-
-        skull.setAttribute(
-            "dominant-baseline",
-            "central"
-        );
-
-
-        skull.setAttribute(
-            "font-size",
-            "31"
-        );
-
-
-        skull.textContent =
-            "💀";
-
-
-        group.appendChild(
-            skull
-        );
-
-
-        /*
-        =========================
-        وضعیت چرخش
-        =========================
-        */
-
-        let currentRotation = 0;
 
         let spinning = false;
 
 
-        /*
-        =========================
-        چرخاندن
-        =========================
-        */
+        function spinWheel(){
 
-        spinButton.onclick = () => {
 
-            if(spinning){
+            if(
+                spinning ||
+                !wheel ||
+                availableTools.length === 0
+            ){
 
                 return;
 
@@ -1095,12 +597,10 @@ export default {
             spinning = true;
 
 
-            spinButton.disabled =
-                true;
+            spinButton.disabled = true;
 
 
-            spinButton.style.opacity =
-                "0.5";
+            centerButton.disabled = true;
 
 
             result.classList.remove(
@@ -1108,240 +608,285 @@ export default {
             );
 
 
+            result.innerHTML = "";
+
+
             /*
-            =========================
-            انتخاب تصادفی
-            =========================
+            ----------------------------------
+               RANDOM TOOL
+            ----------------------------------
             */
 
-            const selectedIndex =
+
+            const randomIndex =
                 Math.floor(
                     Math.random() *
-                    tools.length
-                );
-
-
-            const selectedTool =
-                tools[selectedIndex];
-
-
-            /*
-            =========================
-            مرکز سگمنت انتخابی
-            =========================
-            */
-
-            const selectedCenter =
-                (
-                    selectedIndex *
-                    segmentAngle
-                )
-                +
-                segmentAngle / 2;
-
-
-            /*
-            =========================
-            دورهای اضافه
-            =========================
-            */
-
-            const extraRounds =
-                5 +
-                Math.floor(
-                    Math.random() * 3
+                    availableTools.length
                 );
 
 
             /*
-            =========================
-            چرخش نهایی
-            =========================
-
-            فلش همیشه بالاست.
-
+            ----------------------------------
+               SPIN
+            ----------------------------------
             */
 
-            const rotation =
-                (
-                    extraRounds * 360
-                )
-                -
-                selectedCenter;
+            wheel.spinToItem(
 
+                randomIndex,
 
-            currentRotation +=
-                rotation;
+                5000,
 
+                true,
 
-            svg.style.transform =
-                `
-                rotate(
-                    ${currentRotation}deg
-                )
-                `;
+                7,
 
-
-            /*
-            =========================
-            پایان انیمیشن
-            =========================
-            */
-
-            setTimeout(
-                () => {
-
-                    spinning = false;
-
-
-                    spinButton.disabled =
-                        false;
-
-
-                    spinButton.style.opacity =
-                        "1";
-
-
-                    showResult(
-
-                        "wheelResult",
-
-                        `
-
-                        <div
-                            style="
-                                font-size:45px;
-                                margin-bottom:8px;
-                            "
-                        >
-                            ${selectedTool.icon}
-                        </div>
-
-
-                        <div
-                            style="
-                                color:var(--muted);
-                                font-size:14px;
-                            "
-                        >
-                            گردونه انتخاب کرد:
-                        </div>
-
-
-                        <div
-                            style="
-                                font-size:25px;
-                                font-weight:bold;
-                                margin:12px 0;
-                            "
-                        >
-                            ${escapeToolText(
-                                selectedTool.title
-                            )}
-                        </div>
-
-
-                        <p>
-                            خب... ظاهراً امروز
-                            قرعه به نام این یکی افتاد. 💀
-                        </p>
-
-
-                        <button
-                            class="primary"
-                            id="openSelectedTool"
-                        >
-                            بریم سراغش 💀
-                        </button>
-
-                        `
-
-                    );
-
-
-                    /*
-                    =========================
-                    باز کردن ابزار
-                    =========================
-                    */
-
-                    const openButton =
-                        document.getElementById(
-                            "openSelectedTool"
-                        );
-
-
-                    if(openButton){
-
-                        openButton.onclick =
-                            () => {
-
-                                const originalButton =
-                                    document.querySelector(
-                                        `[data-tool="${selectedTool.id}"]`
-                                    );
-
-
-                                if(
-                                    originalButton
-                                ){
-
-                                    originalButton.click();
-
-                                }
-
-                            };
-
-                    }
-
-                },
-
-                5700
+                1
 
             );
 
-        };
+        }
+
+
+
+        /*
+        ==================================================
+           SHOW WINNER
+        ==================================================
+        */
+
+
+        function showWinner(tool){
+
+
+            const icon =
+                tool.icon ||
+                "🧰";
+
+
+            result.innerHTML = `
+
+                <div
+                    style="
+                        font-size:48px;
+                        margin-bottom:10px;
+                    "
+                >
+                    ${icon}
+                </div>
+
+
+                <div
+                    style="
+                        color:var(--muted);
+                        font-size:14px;
+                    "
+                >
+                    گردونه تصمیمش رو گرفت...
+                </div>
+
+
+                <div
+                    style="
+                        font-size:28px;
+                        font-weight:bold;
+                        margin:10px 0;
+                    "
+                >
+                    ${escapeHTML(
+                        tool.title || tool.id
+                    )}
+                </div>
+
+
+                <p
+                    style="
+                        color:var(--muted);
+                        line-height:2;
+                    "
+                >
+                    امروز نوبت این ابزار بدبختیه.
+                </p>
+
+
+                <button
+                    id="wheelOpenWinner"
+                    class="primary"
+                    type="button"
+                    style="
+                        margin-top:15px;
+                    "
+                >
+                    ${escapeHTML(
+                        tool.buttonText ||
+                        "بریم سراغش"
+                    )}
+                </button>
+
+            `;
+
+
+            result.classList.add(
+                "show"
+            );
+
+
+            const openButton =
+                document.getElementById(
+                    "wheelOpenWinner"
+                );
+
+
+            if(openButton){
+
+                openButton.onclick = () => {
+
+                    openSelectedTool(
+                        tool
+                    );
+
+                };
+
+            }
+
+
+            spinning = false;
+
+
+            spinButton.disabled = false;
+
+
+            centerButton.disabled = false;
+
+        }
+
+
+
+        /*
+        ==================================================
+           OPEN SELECTED TOOL
+        ==================================================
+        */
+
+
+        function openSelectedTool(tool){
+
+
+            /*
+            app.js خودش دکمه ابزار انتخاب‌شده
+            را ساخته و listener به آن وصل کرده.
+
+            بنابراین به جای دست زدن به app.js،
+            همان دکمه موجود را پیدا می‌کنیم
+            و کلیک می‌کنیم.
+            */
+
+
+            const button =
+                document.querySelector(
+                    `[data-tool="${CSS.escape(tool.id)}"]`
+                );
+
+
+            if(button){
+
+                button.click();
+
+                return;
+
+            }
+
+
+            /*
+            ----------------------------------
+               Fallback
+            ----------------------------------
+            */
+
+
+            console.warn(
+                "Tool button not found:",
+                tool.id
+            );
+
+        }
+
+
+
+        /*
+        ==================================================
+           BUTTON EVENTS
+        ==================================================
+        */
+
+
+        spinButton.onclick =
+            spinWheel;
+
+
+        centerButton.onclick =
+            spinWheel;
+
+
+
+        /*
+        ==================================================
+           CENTER BUTTON HOVER
+        ==================================================
+        */
+
+
+        centerButton.addEventListener(
+            "mouseenter",
+            () => {
+
+                if(!spinning){
+
+                    centerButton.style.transform =
+                        "translate(-50%,-50%) scale(1.08)";
+
+                    centerButton.style.boxShadow =
+                        `
+                        0 10px 35px rgba(0,0,0,.55),
+                        inset 0 2px 5px rgba(255,255,255,.15)
+                        `;
+
+                }
+
+            }
+        );
+
+
+        centerButton.addEventListener(
+            "mouseleave",
+            () => {
+
+                centerButton.style.transform =
+                    "translate(-50%,-50%) scale(1)";
+
+                centerButton.style.boxShadow =
+                    `
+                    0 8px 30px rgba(0,0,0,.5),
+                    inset 0 2px 5px rgba(255,255,255,.12)
+                    `;
+
+            }
+        );
+
+
+
+        /*
+        ==================================================
+           START
+        ==================================================
+        */
+
+
+        spinButton.disabled = true;
+
+
+        loadWheelTools();
 
     }
 
 };
-
-
-/*
-=================================
-Escape HTML
-=================================
-*/
-
-function escapeToolText(
-    text
-){
-
-    return String(text)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
