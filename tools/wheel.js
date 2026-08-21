@@ -67,49 +67,68 @@ export default {
             }
 
 
+            /*
+            =========================
+            WHEEL CONTAINER
+            =========================
+            */
+
             .wheel-container {
 
                 position: relative;
 
-                width: min(620px, 94vw);
+                width: min(
+                    560px,
+                    calc(100vw - 50px)
+                );
 
                 aspect-ratio: 1 / 1;
 
-                margin: 10px auto 25px;
+                margin:
+                    15px auto
+                    28px;
+
+                flex-shrink: 0;
 
             }
 
+
+            /*
+            =========================
+            POINTER
+            =========================
+            */
 
             .wheel-pointer {
 
                 position: absolute;
 
-                z-index: 20;
+                z-index: 30;
 
-                top: -7px;
+                top: -2px;
 
                 left: 50%;
 
-                transform: translateX(-50%);
+                transform:
+                    translateX(-50%);
 
                 width: 0;
 
                 height: 0;
 
-                border-left: 18px solid transparent;
+                border-left:
+                    17px solid transparent;
 
-                border-right: 18px solid transparent;
+                border-right:
+                    17px solid transparent;
 
-                border-top: 42px solid var(--red);
+                border-top:
+                    38px solid var(--red);
 
                 filter:
-
                     drop-shadow(
-
                         0 5px 8px
-
                         rgba(0,0,0,.45)
-
                     );
 
             }
@@ -121,58 +140,65 @@ export default {
 
                 position: absolute;
 
-                top: -42px;
+                top: -38px;
 
-                left: -9px;
+                left: -8px;
 
-                width: 18px;
+                width: 16px;
 
-                height: 18px;
+                height: 16px;
 
-                background: var(--red);
+                background:
+                    var(--red);
 
                 border-radius: 50%;
 
             }
 
 
+            /*
+            =========================
+            WHEEL
+            =========================
+            */
+
             .wheel {
 
                 position: absolute;
 
-                inset: 8px;
+                inset: 4px;
 
                 border-radius: 50%;
 
                 overflow: hidden;
 
                 border:
-
-                    7px solid
-
-                    rgba(255,255,255,.12);
+                    6px solid
+                    rgba(255,255,255,.14);
 
                 box-shadow:
 
-                    0 20px 60px
-
+                    0 18px 50px
                     rgba(0,0,0,.45),
 
                     inset 0 0 0 2px
-
                     rgba(255,255,255,.08);
 
-                transform: rotate(0deg);
+                transform:
+                    rotate(0deg);
 
                 transition:
-
                     transform
+                    5.8s
+                    cubic-bezier(
+                        .12,
+                        .72,
+                        .08,
+                        1
+                    );
 
-                    5.5s
-
-                    cubic-bezier(.12,.72,.08,1);
-
-                background: #182b3d;
+                background:
+                    #182b3d;
 
             }
 
@@ -190,32 +216,45 @@ export default {
             }
 
 
+            /*
+            =========================
+            SEGMENTS
+            =========================
+            */
+
             .wheel-segment {
 
                 stroke:
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .25
+                    );
 
-                    rgba(255,255,255,.22);
-
-                stroke-width: 1.5;
+                stroke-width: 2;
 
             }
 
+
+            /*
+            =========================
+            TEXT
+            =========================
+            */
 
             .wheel-label {
 
                 fill: white;
 
                 font-family:
-
                     Tahoma,
-
                     Arial,
-
                     sans-serif;
 
                 font-weight: bold;
 
-                font-size: 12px;
+                font-size: 17px;
 
                 text-anchor: middle;
 
@@ -223,33 +262,57 @@ export default {
 
                 pointer-events: none;
 
+                paint-order: stroke;
+
+                stroke:
+                    rgba(0,0,0,.45);
+
+                stroke-width: 3px;
+
+                stroke-linejoin: round;
+
             }
 
 
             .wheel-label-small {
 
-                font-size: 10px;
+                font-size: 14px;
 
             }
 
+
+            .wheel-icon {
+
+                font-size: 27px;
+
+            }
+
+
+            /*
+            =========================
+            CENTER
+            =========================
+            */
 
             .wheel-center {
 
                 position: absolute;
 
-                z-index: 15;
+                z-index: 20;
 
                 top: 50%;
 
                 left: 50%;
 
-                width: 88px;
+                width: 78px;
 
-                height: 88px;
+                height: 78px;
 
                 transform:
-
-                    translate(-50%, -50%);
+                    translate(
+                        -50%,
+                        -50%
+                    );
 
                 border-radius: 50%;
 
@@ -262,32 +325,34 @@ export default {
                 background:
 
                     radial-gradient(
-
                         circle at 35% 30%,
-
                         #304b63,
-
                         #142434 70%
-
                     );
 
                 border:
-
                     5px solid
-
-                    rgba(255,255,255,.18);
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .18
+                    );
 
                 box-shadow:
 
                     0 8px 25px
-
                     rgba(0,0,0,.5),
 
                     inset 0 0 20px
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .08
+                    );
 
-                    rgba(255,255,255,.08);
-
-                font-size: 42px;
+                font-size: 38px;
 
                 user-select: none;
 
@@ -305,13 +370,22 @@ export default {
                 border-radius: 50%;
 
                 border:
-
                     2px solid
-
-                    rgba(255,255,255,.08);
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .08
+                    );
 
             }
 
+
+            /*
+            =========================
+            SPIN BUTTON
+            =========================
+            */
 
             .wheel-spin {
 
@@ -324,13 +398,9 @@ export default {
                 background:
 
                     linear-gradient(
-
                         135deg,
-
                         var(--pink),
-
                         #386c9d
-
                     );
 
                 color: white;
@@ -342,8 +412,12 @@ export default {
                 box-shadow:
 
                     0 10px 30px
-
-                    rgba(43,82,120,.3);
+                    rgba(
+                        43,
+                        82,
+                        120,
+                        .3
+                    );
 
                 transition: .2s;
 
@@ -353,14 +427,17 @@ export default {
             .wheel-spin:hover {
 
                 transform:
-
                     translateY(-2px);
 
                 box-shadow:
 
                     0 14px 35px
-
-                    rgba(43,82,120,.4);
+                    rgba(
+                        43,
+                        82,
+                        120,
+                        .4
+                    );
 
             }
 
@@ -368,7 +445,6 @@ export default {
             .wheel-spin:active {
 
                 transform:
-
                     scale(.98);
 
             }
@@ -378,12 +454,19 @@ export default {
 
                 opacity: .55;
 
-                cursor: not-allowed;
+                cursor:
+                    not-allowed;
 
                 transform: none;
 
             }
 
+
+            /*
+            =========================
+            RESULT
+            =========================
+            */
 
             .wheel-result {
 
@@ -395,12 +478,11 @@ export default {
 
                 border-radius: 22px;
 
-                background: #ffffff08;
+                background:
+                    #ffffff08;
 
                 border:
-
                     1px solid
-
                     #ffffff0d;
 
                 text-align: center;
@@ -415,11 +497,8 @@ export default {
                 display: block;
 
                 animation:
-
                     wheelResultAppear
-
                     .4s
-
                     ease;
 
             }
@@ -432,9 +511,7 @@ export default {
                     opacity: 0;
 
                     transform:
-
                         translateY(10px)
-
                         scale(.97);
 
                 }
@@ -444,9 +521,7 @@ export default {
                     opacity: 1;
 
                     transform:
-
                         translateY(0)
-
                         scale(1);
 
                 }
@@ -495,7 +570,8 @@ export default {
 
                 border-radius: 15px;
 
-                background: var(--pink);
+                background:
+                    var(--pink);
 
                 color: white;
 
@@ -506,69 +582,145 @@ export default {
             }
 
 
+            /*
+            =========================
+            MOBILE
+            =========================
+            */
+
             @media(max-width:600px) {
+
+                .wheel-wrapper {
+
+                    width: 100%;
+
+                }
+
 
                 .wheel-container {
 
-                    width: min(94vw, 430px);
+                    width:
+                        min(
+                            390px,
+                            calc(100vw - 44px)
+                        );
+
+                    margin-top: 10px;
+
+                    margin-bottom: 24px;
 
                 }
 
 
                 .wheel {
 
-                    inset: 4px;
+                    inset: 3px;
 
-                    border-width: 5px;
-
-                }
-
-
-                .wheel-center {
-
-                    width: 70px;
-
-                    height: 70px;
-
-                    font-size: 34px;
-
-                }
-
-
-                .wheel-label {
-
-                    font-size: 9px;
-
-                }
-
-
-                .wheel-label-small {
-
-                    font-size: 8px;
+                    border-width: 4px;
 
                 }
 
 
                 .wheel-pointer {
 
-                    border-left-width: 14px;
+                    border-left-width: 13px;
 
-                    border-right-width: 14px;
+                    border-right-width: 13px;
 
-                    border-top-width: 34px;
+                    border-top-width: 31px;
 
                 }
 
 
                 .wheel-pointer::after {
 
-                    top: -34px;
+                    top: -31px;
 
-                    left: -7px;
+                    left: -6px;
 
-                    width: 14px;
+                    width: 12px;
 
-                    height: 14px;
+                    height: 12px;
+
+                }
+
+
+                .wheel-center {
+
+                    width: 62px;
+
+                    height: 62px;
+
+                    font-size: 30px;
+
+                    border-width: 4px;
+
+                }
+
+
+                .wheel-label {
+
+                    font-size: 14px;
+
+                    stroke-width: 2.5px;
+
+                }
+
+
+                .wheel-label-small {
+
+                    font-size: 12px;
+
+                }
+
+
+                .wheel-icon {
+
+                    font-size: 22px;
+
+                }
+
+            }
+
+
+            @media(max-width:380px) {
+
+                .wheel-container {
+
+                    width:
+                        calc(100vw - 34px);
+
+                }
+
+
+                .wheel-label {
+
+                    font-size: 12px;
+
+                }
+
+
+                .wheel-label-small {
+
+                    font-size: 10px;
+
+                }
+
+
+                .wheel-icon {
+
+                    font-size: 19px;
+
+                }
+
+
+                .wheel-center {
+
+                    width: 56px;
+
+                    height: 56px;
+
+                    font-size: 27px;
 
                 }
 
@@ -589,6 +741,7 @@ export default {
 
 
         <div class="wheel-wrapper">
+
 
             <div class="wheel-title">
 
@@ -633,6 +786,7 @@ export default {
                 class="wheel-result"
                 id="wheelResult"
             ></div>
+
 
         </div>
 
@@ -797,7 +951,7 @@ export default {
 
         /*
         =========================
-        ساخت SVG گردونه
+        SVG
         =========================
         */
 
@@ -805,7 +959,7 @@ export default {
 
         const center = size / 2;
 
-        const radius = 465;
+        const radius = 470;
 
         const count =
             wheelTools.length;
@@ -817,38 +971,24 @@ export default {
         let svg = `
 
             <svg
-                viewBox="0 0 ${size} ${size}"
-                xmlns="http://www.w3.org/2000/svg"
+                viewBox="
+                    0 0
+                    ${size}
+                    ${size}
+                "
+                xmlns="
+                    http://www.w3.org/2000/svg
+                "
             >
 
-                <defs>
+                <g>
 
-                    <filter
-                        id="wheelShadow"
-                        x="-30%"
-                        y="-30%"
-                        width="160%"
-                        height="160%"
-                    >
-
-                        <filter
-                            id="none"
-                        >
-                        </filter>
-
-                    </filter>
-
-                </defs>
-
-                <g
-                    transform="rotate(-90 ${center} ${center})"
-                >
         `;
 
 
         /*
         =========================
-        رنگ قطاع‌ها
+        COLORS
         =========================
         */
 
@@ -866,7 +1006,7 @@ export default {
 
         /*
         =========================
-        تبدیل مختصات
+        POLAR
         =========================
         */
 
@@ -881,6 +1021,7 @@ export default {
                 degrees *
                 Math.PI /
                 180;
+
 
             return {
 
@@ -898,6 +1039,12 @@ export default {
 
         }
 
+
+        /*
+        =========================
+        ARC
+        =========================
+        */
 
         function createArc(
             startAngle,
@@ -929,35 +1076,31 @@ export default {
                 : 0;
 
 
-            return [
+            return `
 
-                "M",
-                center,
-                center,
+                M ${center} ${center}
 
-                "L",
-                start.x,
-                start.y,
+                L ${start.x} ${start.y}
 
-                "A",
-                radius,
-                radius,
-                0,
-                largeArc,
-                1,
-                end.x,
-                end.y,
+                A ${radius} ${radius}
 
-                "Z"
+                0
+                ${largeArc}
+                1
 
-            ].join(" ");
+                ${end.x}
+                ${end.y}
+
+                Z
+
+            `;
 
         }
 
 
         /*
         =========================
-        ساخت قطاع‌ها
+        SEGMENTS
         =========================
         */
 
@@ -971,6 +1114,10 @@ export default {
                 const end =
                     start + angle;
 
+
+                /*
+                مرکز قطاع
+                */
 
                 const middle =
                     start +
@@ -987,25 +1134,31 @@ export default {
                 svg += `
 
                     <path
+
                         class="wheel-segment"
-                        d="${createArc(
-                            start,
-                            end
-                        )}"
+
+                        d="
+                            ${createArc(
+                                start,
+                                end
+                            )}
+                        "
+
                         fill="${color}"
-                    ></path>
+
+                    />
 
                 `;
 
 
                 /*
                 =========================
-                جای متن
+                متن
                 =========================
                 */
 
                 const textRadius =
-                    radius * .68;
+                    radius * .64;
 
 
                 const textPoint =
@@ -1018,64 +1171,102 @@ export default {
 
 
                 /*
-                متن را در راستای شعاع قرار می‌دهیم.
+                هر متن در راستای شعاع
+                خودش قرار می‌گیرد.
                 */
 
-                const textRotation =
+                let textRotation =
                     middle;
 
 
-                const shortTitle =
-                    tool.title.length > 17
-                    ? tool.title.slice(
-                        0,
-                        16
-                    ) + "…"
-                    : tool.title;
+                /*
+                اگر متن وارد نیمه پایین
+                شود، برعکس نمی‌شود.
+                */
+
+                if(
+                    textRotation > 90 &&
+                    textRotation < 270
+                ){
+
+                    textRotation += 180;
+
+                }
+
+
+                /*
+                کوتاه کردن اسم‌های خیلی بلند
+                */
+
+                let title =
+                    tool.title;
+
+
+                if(
+                    title.length > 15
+                ){
+
+                    title =
+                        title.slice(
+                            0,
+                            14
+                        ) + "…";
+
+                }
 
 
                 svg += `
 
                     <g
+
                         transform="
                             translate(
-                                ${textPoint.x}
+                                ${textPoint.x},
                                 ${textPoint.y}
                             )
                             rotate(
                                 ${textRotation}
                             )
                         "
+
                     >
 
                         <text
+
                             class="
                                 wheel-label
-                                ${
-                                    shortTitle.length > 13
-                                    ? "wheel-label-small"
-                                    : ""
-                                }
+                                wheel-icon
                             "
+
                             x="0"
-                            y="-8"
+
+                            y="-16"
+
                         >
                             ${tool.icon}
+
                         </text>
 
+
                         <text
+
                             class="
                                 wheel-label
                                 ${
-                                    shortTitle.length > 13
+                                    title.length > 11
                                     ? "wheel-label-small"
                                     : ""
                                 }
                             "
+
                             x="0"
+
                             y="13"
+
                         >
-                            ${shortTitle}
+
+                            ${title}
+
                         </text>
 
                     </g>
@@ -1090,26 +1281,43 @@ export default {
 
                 </g>
 
+
                 <circle
+
                     cx="${center}"
+
                     cy="${center}"
+
                     r="${radius}"
+
                     fill="none"
-                    stroke="rgba(255,255,255,.18)"
+
+                    stroke="
+                        rgba(
+                            255,
+                            255,
+                            255,
+                            .22
+                        )
+                    "
+
                     stroke-width="5"
+
                 />
+
 
             </svg>
 
         `;
 
 
-        wheel.innerHTML = svg;
+        wheel.innerHTML =
+            svg;
 
 
         /*
         =========================
-        وضعیت
+        ROTATION STATE
         =========================
         */
 
@@ -1122,32 +1330,41 @@ export default {
 
         /*
         =========================
-        چرخاندن
+        SPIN
         =========================
         */
 
         spinButton.onclick = () => {
 
-            if(spinning) return;
+            if(spinning){
+
+                return;
+
+            }
 
 
             spinning = true;
 
             selectedTool = null;
 
+
             result.classList.remove(
                 "show"
             );
 
-            spinButton.disabled = true;
+
+            spinButton.disabled =
+                true;
+
 
             spinButton.textContent =
                 "💀 داره تصمیم می‌گیره...";
 
 
             /*
-            حداقل ۵ دور کامل
-            + انتخاب تصادفی
+            =========================
+            انتخاب تصادفی
+            =========================
             */
 
             const randomIndex =
@@ -1158,20 +1375,56 @@ export default {
 
 
             /*
-            مرکز قطاع انتخاب‌شده
+            =========================
+            محاسبه مرکز قطاع
+            =========================
+
+            نکته مهم:
+
+            اولین قطاع از زاویه 0 شروع
+            می‌شود و مرکز آن angle / 2 است.
+
+            فلش دقیقاً در بالای گردونه
+            یعنی -90 درجه قرار دارد.
+
+            بنابراین برای اینکه مرکز قطاع
+            انتخاب‌شده دقیقاً زیر فلش قرار
+            بگیرد، باید اختلاف این دو زاویه
+            محاسبه شود.
             */
 
-            const targetAngle =
+            const segmentCenter =
                 randomIndex *
                 angle +
                 angle / 2;
 
 
+            const pointerAngle =
+                -90;
+
+
+            let requiredRotation =
+                pointerAngle -
+                segmentCenter;
+
+
             /*
-            فلش در بالای گردونه است.
-            برای قرار دادن قطاع انتخاب‌شده
-            زیر فلش، به اندازه منفی زاویه
-            می‌چرخانیم.
+            نرمال کردن زاویه
+            */
+
+            requiredRotation =
+                (
+                    requiredRotation
+                    % 360
+                    + 360
+                )
+                % 360;
+
+
+            /*
+            =========================
+            دورهای اضافه
+            =========================
             */
 
             const extraTurns =
@@ -1181,36 +1434,55 @@ export default {
                 );
 
 
-            const targetRotation =
+            const finalRotation =
 
                 currentRotation +
 
                 extraTurns * 360 +
 
-                (
-                    360 -
-                    targetAngle
-                );
+                requiredRotation;
 
 
             currentRotation =
-                targetRotation;
+                finalRotation;
 
+
+            /*
+            =========================
+            اجرای چرخش
+            =========================
+            */
 
             wheel.style.transform =
-                `rotate(${currentRotation}deg)`;
+                `
+                    rotate(
+                        ${finalRotation}deg
+                    )
+                `;
 
+
+            /*
+            =========================
+            پایان انیمیشن
+            =========================
+            */
 
             setTimeout(() => {
 
                 spinning = false;
 
+
                 spinButton.disabled =
                     false;
+
 
                 spinButton.textContent =
                     "🎡 دوباره بچرخون";
 
+
+                /*
+                ابزار واقعی همان قطاع
+                */
 
                 selectedTool =
                     wheelTools[
@@ -1218,37 +1490,61 @@ export default {
                     ];
 
 
+                /*
+                =========================
+                نمایش نتیجه
+                =========================
+                */
+
                 result.innerHTML = `
 
                     <div
-                        class="wheel-result-icon"
+                        class="
+                            wheel-result-icon
+                        "
                     >
                         ${selectedTool.icon}
                     </div>
 
 
                     <div
-                        class="wheel-result-title"
+                        class="
+                            wheel-result-title
+                        "
                     >
                         ${selectedTool.title}
                     </div>
 
 
                     <div
-                        class="wheel-result-text"
+                        class="
+                            wheel-result-text
+                        "
                     >
-                        گردونه تصمیمش رو گرفته!
+                        گردونه تصمیمش رو گرفته! 🎯
+
                         <br>
-                        این ابزار امروز مال توئه. 💀
+
+                        این ابزار امروز مال توئه.
+                        💀
+
                     </div>
 
 
                     <button
+
                         class="wheel-open"
-                        id="wheelOpenTool"
+
+                        id="
+                            wheelOpenTool
+                        "
+
                     >
+
                         باز کردن ابزار
+
                         ${selectedTool.icon}
+
                     </button>
 
                 `;
@@ -1259,6 +1555,12 @@ export default {
                 );
 
 
+                /*
+                =========================
+                OPEN TOOL
+                =========================
+                */
+
                 const openButton =
                     document.getElementById(
                         "wheelOpenTool"
@@ -1266,13 +1568,6 @@ export default {
 
 
                 openButton.onclick = () => {
-
-                    /*
-                    ابزار اصلی پروژه
-                    از طریق دکمه‌ای که app.js
-                    برای هر ابزار ساخته،
-                    باز می‌شود.
-                    */
 
                     const targetButton =
                         document.querySelector(
@@ -1290,9 +1585,7 @@ export default {
 
 
                     /*
-                    اگر دکمه در DOM نبود،
-                    تلاش می‌کنیم openApp موجود
-                    پروژه را صدا بزنیم.
+                    fallback
                     */
 
                     if(
@@ -1308,7 +1601,8 @@ export default {
 
                 };
 
-            }, 5700);
+
+            }, 5900);
 
         };
 
