@@ -26,7 +26,7 @@ export default {
 
 
         <p class="desc">
-            حوصله نداری خودت انتخاب کنی؟
+            نمی‌دونی کدوم ابزار رو انتخاب کنی؟
             بذار گردونه به جات تصمیم بگیره. 💀
         </p>
 
@@ -36,55 +36,127 @@ export default {
             style="
                 margin-top:25px;
                 text-align:center;
+                user-select:none;
             "
         >
 
+            <!--
+            =========================
+            فلش انتخاب
+            =========================
+            -->
+
             <div
-                id="wheelPointer"
                 style="
                     position:relative;
-                    z-index:10;
+                    z-index:50;
                     width:0;
                     height:0;
-                    margin:0 auto -10px;
-                    border-left:14px solid transparent;
-                    border-right:14px solid transparent;
-                    border-top:30px solid var(--red);
-                    filter:drop-shadow(0 5px 8px #0008);
+                    margin:0 auto -4px;
+
+                    border-left:16px solid transparent;
+                    border-right:16px solid transparent;
+                    border-top:34px solid var(--red);
+
+                    filter:
+                        drop-shadow(
+                            0 4px 8px #0009
+                        );
                 "
             ></div>
 
+
+            <!--
+            =========================
+            قاب گردونه
+            =========================
+            -->
 
             <div
-                id="wheel"
                 style="
-                    width:min(360px, 82vw);
-                    height:min(360px, 82vw);
+                    width:min(440px, 94vw);
+                    aspect-ratio:1;
                     margin:0 auto;
-                    border-radius:50%;
-                    position:relative;
-                    overflow:hidden;
-                    border:8px solid #ffffff18;
-                    box-shadow:
-                        0 20px 60px #0008,
-                        inset 0 0 0 2px #ffffff12;
-                    transition:
-                        transform 5s cubic-bezier(.12,.72,.18,1);
-                    background:#182b3d;
-                "
-            ></div>
 
+                    position:relative;
+
+                    border-radius:50%;
+
+                    padding:8px;
+
+                    background:
+                        linear-gradient(
+                            145deg,
+                            #ffffff25,
+                            #ffffff08
+                        );
+
+                    box-shadow:
+                        0 25px 70px #0009,
+                        0 0 0 1px #ffffff12;
+
+                    overflow:hidden;
+                "
+            >
+
+                <svg
+                    id="wheelSvg"
+                    viewBox="0 0 500 500"
+                    style="
+                        width:100%;
+                        height:100%;
+                        display:block;
+
+                        border-radius:50%;
+
+                        transition:
+                            transform
+                            5.5s
+                            cubic-bezier(
+                                .12,
+                                .72,
+                                .16,
+                                1
+                            );
+
+                        filter:
+                            drop-shadow(
+                                0 8px 20px #0008
+                            );
+                    "
+                >
+
+                    <g id="wheelGroup">
+
+                    </g>
+
+                </svg>
+
+            </div>
+
+
+            <!--
+            =========================
+            دکمه
+            =========================
+            -->
 
             <button
                 class="primary"
                 id="spinWheelBtn"
                 style="
-                    margin-top:25px;
+                    margin-top:28px;
                 "
             >
                 بچرخونش 💀
             </button>
 
+
+            <!--
+            =========================
+            نتیجه
+            =========================
+            -->
 
             <div
                 id="wheelResult"
@@ -98,9 +170,15 @@ export default {
 
     init(){
 
-        const wheel =
+        const svg =
             document.getElementById(
-                "wheel"
+                "wheelSvg"
+            );
+
+
+        const group =
+            document.getElementById(
+                "wheelGroup"
             );
 
 
@@ -118,7 +196,7 @@ export default {
 
         /*
         =========================
-        دریافت ابزارها
+        ابزارهای موجود
         =========================
         */
 
@@ -132,7 +210,7 @@ export default {
 
         /*
         =========================
-        حذف گردونه از گزینه‌ها
+        حذف خود گردونه
         =========================
         */
 
@@ -145,26 +223,25 @@ export default {
 
         /*
         =========================
-        اگر ابزاری وجود نداشت
+        اگر ابزار وجود نداشت
         =========================
         */
 
         if(!wheelTools.length){
 
-            wheel.innerHTML = `
-                <div
-                    style="
-                        height:100%;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        padding:30px;
-                        text-align:center;
-                        color:var(--muted);
-                    "
+            group.innerHTML = `
+
+                <text
+                    x="250"
+                    y="250"
+                    text-anchor="middle"
+                    fill="white"
+                    font-size="22"
+                    direction="rtl"
                 >
-                    هنوز ابزار دیگری برای چرخاندن وجود ندارد. 💀
-                </div>
+                    ابزار دیگری وجود ندارد 💀
+                </text>
+
             `;
 
             spinButton.disabled = true;
@@ -176,7 +253,7 @@ export default {
 
         /*
         =========================
-        اطلاعات ابزارها
+        استخراج اطلاعات
         =========================
         */
 
@@ -189,10 +266,12 @@ export default {
                             "h2"
                         );
 
+
                     const emoji =
                         card.querySelector(
                             ".emoji"
                         );
+
 
                     return {
 
@@ -217,225 +296,610 @@ export default {
 
         /*
         =========================
-        ساخت گردونه
+        تنظیمات گردونه
         =========================
         */
+
+        const size = 500;
+
+        const center = 250;
+
+        const radius = 235;
 
         const segmentCount =
             tools.length;
 
-
-        const segmentSize =
+        const segmentAngle =
             360 / segmentCount;
 
 
-        const segmentColors = [
+        /*
+        =========================
+        رنگ سگمنت‌ها
+        =========================
+        */
 
+        const colors = [
+
+            "#243f58",
             "#2b5278",
+            "#315d7c",
             "#34495e",
-            "#3d566e",
-            "#264653",
-            "#315f72",
-            "#40566d",
-            "#355070",
-            "#2f4858"
+            "#3b5870",
+            "#29465f",
+            "#365b75",
+            "#2f526d"
 
         ];
 
 
-        const gradientParts =
-            tools.map(
-                (tool, index) => {
+        /*
+        =========================
+        تبدیل درجه به مختصات
+        =========================
+        */
 
-                    const start =
-                        index *
-                        segmentSize;
+        function polarToCartesian(
+            cx,
+            cy,
+            r,
+            angle
+        ){
 
-                    const end =
-                        (index + 1) *
-                        segmentSize;
-
-                    const color =
-                        segmentColors[
-                            index %
-                            segmentColors.length
-                        ];
-
-                    return `
-                        ${color}
-                        ${start}deg
-                        ${end}deg
-                    `;
-
-                }
-            );
+            const radians =
+                (
+                    angle - 90
+                )
+                *
+                Math.PI
+                /
+                180;
 
 
-        wheel.style.background =
-            `
-            conic-gradient(
-                from -90deg,
-                ${gradientParts.join(",")}
-            )
+            return {
+
+                x:
+                    cx +
+                    r *
+                    Math.cos(
+                        radians
+                    ),
+
+                y:
+                    cy +
+                    r *
+                    Math.sin(
+                        radians
+                    )
+
+            };
+
+        }
+
+
+        /*
+        =========================
+        ساخت مسیر هر سگمنت
+        =========================
+        */
+
+        function createSegmentPath(
+            startAngle,
+            endAngle
+        ){
+
+            const start =
+                polarToCartesian(
+                    center,
+                    center,
+                    radius,
+                    endAngle
+                );
+
+
+            const end =
+                polarToCartesian(
+                    center,
+                    center,
+                    radius,
+                    startAngle
+                );
+
+
+            const largeArc =
+                endAngle -
+                startAngle
+                <= 180
+                ? 0
+                : 1;
+
+
+            return `
+
+                M
+                ${center}
+                ${center}
+
+                L
+                ${start.x}
+                ${start.y}
+
+                A
+                ${radius}
+                ${radius}
+                0
+                ${largeArc}
+                0
+                ${end.x}
+                ${end.y}
+
+                Z
+
             `;
 
-
-        /*
-        =========================
-        ساخت مرکز گردونه
-        =========================
-        */
-
-        const center =
-            document.createElement(
-                "div"
-            );
-
-
-        center.style.cssText = `
-
-            position:absolute;
-
-            top:50%;
-            left:50%;
-
-            transform:
-                translate(-50%, -50%);
-
-            width:72px;
-            height:72px;
-
-            border-radius:50%;
-
-            background:#0e1621;
-
-            border:6px solid #ffffff18;
-
-            display:flex;
-
-            align-items:center;
-
-            justify-content:center;
-
-            font-size:28px;
-
-            z-index:20;
-
-            box-shadow:
-                0 5px 20px #0008;
-
-            pointer-events:none;
-
-        `;
-
-
-        center.innerHTML =
-            "💀";
-
-
-        wheel.appendChild(
-            center
-        );
+        }
 
 
         /*
         =========================
-        نام ابزارها روی گردونه
+        ساخت گردونه
         =========================
         */
+
+        group.innerHTML = "";
+
 
         tools.forEach(
             (tool, index) => {
 
-                const label =
-                    document.createElement(
-                        "div"
-                    );
+                /*
+                زاویه سگمنت
+                */
 
-
-                const angle =
+                const startAngle =
                     index *
-                    segmentSize +
-                    segmentSize / 2;
+                    segmentAngle;
+
+
+                const endAngle =
+                    (index + 1) *
+                    segmentAngle;
+
+
+                const middleAngle =
+                    (
+                        startAngle +
+                        endAngle
+                    ) / 2;
 
 
                 /*
-                موقعیت متن در بخش خودش
+                =========================
+                سگمنت
+                =========================
                 */
 
-                const radius =
-                    Math.min(
-                        125,
-                        150 -
-                        segmentCount * 2
+                const path =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "path"
                     );
 
 
-                label.style.cssText = `
-
-                    position:absolute;
-
-                    top:50%;
-                    left:50%;
-
-                    width:80px;
-
-                    transform:
-                        translate(-50%, -50%)
-                        rotate(${angle}deg)
-                        translateY(-${radius}px);
-
-                    transform-origin:center;
-
-                    text-align:center;
-
-                    color:white;
-
-                    font-size:${
-                        segmentCount > 12
-                        ? "9px"
-                        : "11px"
-                    };
-
-                    font-weight:bold;
-
-                    line-height:1.5;
-
-                    text-shadow:
-                        0 2px 5px #000b;
-
-                    pointer-events:none;
-
-                `;
+                path.setAttribute(
+                    "d",
+                    createSegmentPath(
+                        startAngle,
+                        endAngle
+                    )
+                );
 
 
-                label.innerHTML = `
-
-                    <div
-                        style="
-                            font-size:${
-                                segmentCount > 12
-                                ? "17px"
-                                : "21px"
-                            };
-                            margin-bottom:3px;
-                        "
-                    >
-                        ${tool.icon}
-                    </div>
+                path.setAttribute(
+                    "fill",
+                    colors[
+                        index %
+                        colors.length
+                    ]
+                );
 
 
-                    <div>
-                        ${escapeToolText(
-                            tool.title
-                        )}
-                    </div>
-
-                `;
+                path.setAttribute(
+                    "stroke",
+                    "#ffffff18"
+                );
 
 
-                wheel.appendChild(
-                    label
+                path.setAttribute(
+                    "stroke-width",
+                    "2"
+                );
+
+
+                group.appendChild(
+                    path
+                );
+
+
+                /*
+                =========================
+                خط جداکننده
+                =========================
+                */
+
+                const separator =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "line"
+                    );
+
+
+                const separatorEnd =
+                    polarToCartesian(
+                        center,
+                        center,
+                        radius,
+                        startAngle
+                    );
+
+
+                separator.setAttribute(
+                    "x1",
+                    center
+                );
+
+
+                separator.setAttribute(
+                    "y1",
+                    center
+                );
+
+
+                separator.setAttribute(
+                    "x2",
+                    separatorEnd.x
+                );
+
+
+                separator.setAttribute(
+                    "y2",
+                    separatorEnd.y
+                );
+
+
+                separator.setAttribute(
+                    "stroke",
+                    "#ffffff28"
+                );
+
+
+                separator.setAttribute(
+                    "stroke-width",
+                    "2"
+                );
+
+
+                group.appendChild(
+                    separator
+                );
+
+
+                /*
+                =========================
+                فاصله متن از مرکز
+                =========================
+                */
+
+                const textRadius =
+                    segmentCount > 16
+                    ? 158
+                    : segmentCount > 12
+                    ? 165
+                    : 170;
+
+
+                const textPoint =
+                    polarToCartesian(
+                        center,
+                        center,
+                        textRadius,
+                        middleAngle
+                    );
+
+
+                /*
+                =========================
+                گروه متن
+                =========================
+                */
+
+                const textGroup =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "g"
+                    );
+
+
+                /*
+                =========================
+                جهت نوشته
+                =========================
+                */
+
+                let textRotation =
+                    middleAngle;
+
+
+                /*
+                کاری می‌کنیم نوشته
+                وارونه نشود
+                */
+
+                if(
+                    middleAngle > 90 &&
+                    middleAngle < 270
+                ){
+
+                    textRotation += 180;
+
+                }
+
+
+                textGroup.setAttribute(
+                    "transform",
+                    `
+                    rotate(
+                        ${textRotation}
+                        ${textPoint.x}
+                        ${textPoint.y}
+                    )
+                    `
+                );
+
+
+                /*
+                =========================
+                آیکون
+                =========================
+                */
+
+                const icon =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "text"
+                    );
+
+
+                icon.setAttribute(
+                    "x",
+                    textPoint.x
+                );
+
+
+                icon.setAttribute(
+                    "y",
+                    textPoint.y - 12
+                );
+
+
+                icon.setAttribute(
+                    "text-anchor",
+                    "middle"
+                );
+
+
+                icon.setAttribute(
+                    "dominant-baseline",
+                    "middle"
+                );
+
+
+                icon.setAttribute(
+                    "font-size",
+                    segmentCount > 16
+                    ? "18"
+                    : "22"
+                );
+
+
+                icon.textContent =
+                    tool.icon;
+
+
+                textGroup.appendChild(
+                    icon
+                );
+
+
+                /*
+                =========================
+                نام ابزار
+                =========================
+                */
+
+                const text =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "text"
+                    );
+
+
+                text.setAttribute(
+                    "x",
+                    textPoint.x
+                );
+
+
+                text.setAttribute(
+                    "y",
+                    textPoint.y + 14
+                );
+
+
+                text.setAttribute(
+                    "text-anchor",
+                    "middle"
+                );
+
+
+                text.setAttribute(
+                    "dominant-baseline",
+                    "middle"
+                );
+
+
+                text.setAttribute(
+                    "fill",
+                    "#ffffff"
+                );
+
+
+                text.setAttribute(
+                    "font-size",
+                    segmentCount > 16
+                    ? "10"
+                    : segmentCount > 12
+                    ? "11"
+                    : "12"
+                );
+
+
+                text.setAttribute(
+                    "font-weight",
+                    "bold"
+                );
+
+
+                text.setAttribute(
+                    "direction",
+                    "rtl"
+                );
+
+
+                text.setAttribute(
+                    "unicode-bidi",
+                    "plaintext"
+                );
+
+
+                text.setAttribute(
+                    "style",
+                    `
+                    paint-order:stroke;
+                    stroke:#0008;
+                    stroke-width:3px;
+                    `
+                );
+
+
+                /*
+                اگر اسم خیلی طولانی بود
+                دو خطش می‌کنیم
+                */
+
+                const words =
+                    tool.title
+                        .split(" ");
+
+
+                if(
+                    tool.title.length > 13 &&
+                    words.length > 1
+                ){
+
+                    const firstLine =
+                        words
+                            .slice(
+                                0,
+                                Math.ceil(
+                                    words.length / 2
+                                )
+                            )
+                            .join(" ");
+
+
+                    const secondLine =
+                        words
+                            .slice(
+                                Math.ceil(
+                                    words.length / 2
+                                )
+                            )
+                            .join(" ");
+
+
+                    const tspan1 =
+                        document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "tspan"
+                        );
+
+
+                    tspan1.setAttribute(
+                        "x",
+                        textPoint.x
+                    );
+
+
+                    tspan1.setAttribute(
+                        "dy",
+                        "0"
+                    );
+
+
+                    tspan1.textContent =
+                        firstLine;
+
+
+                    const tspan2 =
+                        document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "tspan"
+                        );
+
+
+                    tspan2.setAttribute(
+                        "x",
+                        textPoint.x
+                    );
+
+
+                    tspan2.setAttribute(
+                        "dy",
+                        "14"
+                    );
+
+
+                    tspan2.textContent =
+                        secondLine;
+
+
+                    text.appendChild(
+                        tspan1
+                    );
+
+
+                    text.appendChild(
+                        tspan2
+                    );
+
+                }
+
+                else{
+
+                    text.textContent =
+                        tool.title;
+
+                }
+
+
+                textGroup.appendChild(
+                    text
+                );
+
+
+                group.appendChild(
+                    textGroup
                 );
 
             }
@@ -444,7 +908,167 @@ export default {
 
         /*
         =========================
-        وضعیت گردونه
+        حلقه بیرونی
+        =========================
+        */
+
+        const outerCircle =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
+
+
+        outerCircle.setAttribute(
+            "cx",
+            center
+        );
+
+
+        outerCircle.setAttribute(
+            "cy",
+            center
+        );
+
+
+        outerCircle.setAttribute(
+            "r",
+            radius
+        );
+
+
+        outerCircle.setAttribute(
+            "fill",
+            "none"
+        );
+
+
+        outerCircle.setAttribute(
+            "stroke",
+            "#ffffff30"
+        );
+
+
+        outerCircle.setAttribute(
+            "stroke-width",
+            "6"
+        );
+
+
+        group.appendChild(
+            outerCircle
+        );
+
+
+        /*
+        =========================
+        مرکز گردونه
+        =========================
+        */
+
+        const centerCircle =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
+
+
+        centerCircle.setAttribute(
+            "cx",
+            center
+        );
+
+
+        centerCircle.setAttribute(
+            "cy",
+            center
+        );
+
+
+        centerCircle.setAttribute(
+            "r",
+            "39"
+        );
+
+
+        centerCircle.setAttribute(
+            "fill",
+            "#0e1621"
+        );
+
+
+        centerCircle.setAttribute(
+            "stroke",
+            "#ffffff30"
+        );
+
+
+        centerCircle.setAttribute(
+            "stroke-width",
+            "6"
+        );
+
+
+        group.appendChild(
+            centerCircle
+        );
+
+
+        /*
+        =========================
+        💀 وسط گردونه
+        =========================
+        */
+
+        const skull =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "text"
+            );
+
+
+        skull.setAttribute(
+            "x",
+            center
+        );
+
+
+        skull.setAttribute(
+            "y",
+            center
+        );
+
+
+        skull.setAttribute(
+            "text-anchor",
+            "middle"
+        );
+
+
+        skull.setAttribute(
+            "dominant-baseline",
+            "central"
+        );
+
+
+        skull.setAttribute(
+            "font-size",
+            "31"
+        );
+
+
+        skull.textContent =
+            "💀";
+
+
+        group.appendChild(
+            skull
+        );
+
+
+        /*
+        =========================
+        وضعیت چرخش
         =========================
         */
 
@@ -462,13 +1086,18 @@ export default {
         spinButton.onclick = () => {
 
             if(spinning){
+
                 return;
+
             }
 
 
             spinning = true;
 
-            spinButton.disabled = true;
+
+            spinButton.disabled =
+                true;
+
 
             spinButton.style.opacity =
                 "0.5";
@@ -480,7 +1109,9 @@ export default {
 
 
             /*
-            انتخاب تصادفی ابزار
+            =========================
+            انتخاب تصادفی
+            =========================
             */
 
             const selectedIndex =
@@ -495,17 +1126,24 @@ export default {
 
 
             /*
-            مرکز قطعه انتخاب‌شده
+            =========================
+            مرکز سگمنت انتخابی
+            =========================
             */
 
             const selectedCenter =
-                selectedIndex *
-                segmentSize +
-                segmentSize / 2;
+                (
+                    selectedIndex *
+                    segmentAngle
+                )
+                +
+                segmentAngle / 2;
 
 
             /*
-            مقدار چرخش
+            =========================
+            دورهای اضافه
+            =========================
             */
 
             const extraRounds =
@@ -515,23 +1153,38 @@ export default {
                 );
 
 
-            const targetRotation =
-                extraRounds * 360
-                +
-                (360 - selectedCenter);
+            /*
+            =========================
+            چرخش نهایی
+            =========================
+
+            فلش همیشه بالاست.
+
+            */
+
+            const rotation =
+                (
+                    extraRounds * 360
+                )
+                -
+                selectedCenter;
 
 
             currentRotation +=
-                targetRotation;
+                rotation;
 
 
-            wheel.style.transform =
-                `rotate(${currentRotation}deg)`;
+            svg.style.transform =
+                `
+                rotate(
+                    ${currentRotation}deg
+                )
+                `;
 
 
             /*
             =========================
-            پایان چرخش
+            پایان انیمیشن
             =========================
             */
 
@@ -540,8 +1193,10 @@ export default {
 
                     spinning = false;
 
+
                     spinButton.disabled =
                         false;
+
 
                     spinButton.style.opacity =
                         "1";
@@ -555,8 +1210,8 @@ export default {
 
                         <div
                             style="
-                                font-size:42px;
-                                margin-bottom:10px;
+                                font-size:45px;
+                                margin-bottom:8px;
                             "
                         >
                             ${selectedTool.icon}
@@ -565,17 +1220,17 @@ export default {
 
                         <div
                             style="
-                                font-size:14px;
                                 color:var(--muted);
+                                font-size:14px;
                             "
                         >
-                            گردونه تصمیمش رو گرفت...
+                            گردونه انتخاب کرد:
                         </div>
 
 
                         <div
                             style="
-                                font-size:24px;
+                                font-size:25px;
                                 font-weight:bold;
                                 margin:12px 0;
                             "
@@ -586,13 +1241,9 @@ export default {
                         </div>
 
 
-                        <p
-                            style="
-                                margin-bottom:18px;
-                            "
-                        >
-                            امروز این ابزار قراره
-                            بدبختت کنه. 💀
+                        <p>
+                            خب... ظاهراً امروز
+                            قرعه به نام این یکی افتاد. 💀
                         </p>
 
 
@@ -645,7 +1296,7 @@ export default {
 
                 },
 
-                5100
+                5700
 
             );
 
@@ -658,7 +1309,7 @@ export default {
 
 /*
 =================================
-محافظت متن
+Escape HTML
 =================================
 */
 
