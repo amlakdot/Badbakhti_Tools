@@ -75,28 +75,6 @@ export default {
             ></div>
 
 
-            <div
-                id="wheelCenter"
-                style="
-                    position:relative;
-                    width:72px;
-                    height:72px;
-                    margin:-36px auto 0;
-                    border-radius:50%;
-                    background:#0e1621;
-                    border:6px solid #ffffff18;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:28px;
-                    z-index:5;
-                    box-shadow:0 5px 20px #0008;
-                "
-            >
-                💀
-            </div>
-
-
             <button
                 class="primary"
                 id="spinWheelBtn"
@@ -304,6 +282,64 @@ export default {
 
         /*
         =========================
+        ساخت مرکز گردونه
+        =========================
+        */
+
+        const center =
+            document.createElement(
+                "div"
+            );
+
+
+        center.style.cssText = `
+
+            position:absolute;
+
+            top:50%;
+            left:50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width:72px;
+            height:72px;
+
+            border-radius:50%;
+
+            background:#0e1621;
+
+            border:6px solid #ffffff18;
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            font-size:28px;
+
+            z-index:20;
+
+            box-shadow:
+                0 5px 20px #0008;
+
+            pointer-events:none;
+
+        `;
+
+
+        center.innerHTML =
+            "💀";
+
+
+        wheel.appendChild(
+            center
+        );
+
+
+        /*
+        =========================
         نام ابزارها روی گردونه
         =========================
         */
@@ -323,6 +359,18 @@ export default {
                     segmentSize / 2;
 
 
+                /*
+                موقعیت متن در بخش خودش
+                */
+
+                const radius =
+                    Math.min(
+                        125,
+                        150 -
+                        segmentCount * 2
+                    );
+
+
                 label.style.cssText = `
 
                     position:absolute;
@@ -330,16 +378,12 @@ export default {
                     top:50%;
                     left:50%;
 
-                    width:42%;
+                    width:80px;
 
                     transform:
                         translate(-50%, -50%)
                         rotate(${angle}deg)
-                        translateY(-${Math.min(
-                            115,
-                            145 - segmentCount * 2
-                        )}px)
-                        rotate(${-angle}deg);
+                        translateY(-${radius}px);
 
                     transform-origin:center;
 
@@ -347,7 +391,11 @@ export default {
 
                     color:white;
 
-                    font-size:${segmentCount > 12 ? "9px" : "11px"};
+                    font-size:${
+                        segmentCount > 12
+                        ? "9px"
+                        : "11px"
+                    };
 
                     font-weight:bold;
 
@@ -362,6 +410,7 @@ export default {
 
 
                 label.innerHTML = `
+
                     <div
                         style="
                             font-size:${
@@ -375,9 +424,13 @@ export default {
                         ${tool.icon}
                     </div>
 
+
                     <div>
-                        ${escapeToolText(tool.title)}
+                        ${escapeToolText(
+                            tool.title
+                        )}
                     </div>
+
                 `;
 
 
@@ -420,6 +473,7 @@ export default {
             spinButton.style.opacity =
                 "0.5";
 
+
             result.classList.remove(
                 "show"
             );
@@ -451,7 +505,7 @@ export default {
 
 
             /*
-            مقدار چرخش جدید
+            مقدار چرخش
             */
 
             const extraRounds =
@@ -476,7 +530,9 @@ export default {
 
 
             /*
-            بعد از پایان انیمیشن
+            =========================
+            پایان چرخش
+            =========================
             */
 
             setTimeout(
@@ -554,7 +610,7 @@ export default {
 
                     /*
                     =========================
-                    باز کردن ابزار انتخاب‌شده
+                    باز کردن ابزار
                     =========================
                     */
 
@@ -602,7 +658,7 @@ export default {
 
 /*
 =================================
-محافظت ساده از متن
+محافظت متن
 =================================
 */
 
