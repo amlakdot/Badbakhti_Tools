@@ -291,6 +291,48 @@ header p {
 
 
 /* =========================
+   NEW TOOL BADGE
+========================= */
+
+.new-tool-badge {
+
+    position: absolute;
+
+    top: 14px;
+
+    right: 14px;
+
+    background:
+        var(--green);
+
+    color:
+        #0e1621;
+
+    padding:
+        6px
+        10px;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    line-height: 1.4;
+
+    box-shadow:
+        0 5px 15px
+        rgba(
+            66,
+            211,
+            146,
+            .2
+        );
+
+}
+
+
+/* =========================
    OPEN
 ========================= */
 
