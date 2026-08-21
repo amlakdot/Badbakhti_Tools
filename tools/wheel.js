@@ -1,982 +1,982 @@
-export default {
-
-    id: "wheel",
-
-    icon: "🎡",
-
-    title: "گردونه بدبختی",
-
-    description:
-        "بچرخون ببین امروز کدوم ابزار بدبختی قراره سراغت بیاد.",
-
-    buttonText:
-        "بچرخون گردونه 🎡",
-
-
-    html: `
-
-        <style>
-
-            .wheel-wrapper {
-
-                width: 100%;
-
-                display: flex;
-
-                flex-direction: column;
-
-                align-items: center;
-
-                justify-content: center;
-
-                margin-top: 10px;
-
-                overflow: hidden;
-
-            }
-
-
-            .wheel-title {
-
-                text-align: center;
-
-                margin-bottom: 25px;
-
-            }
-
-
-            .wheel-title h3 {
-
-                margin: 0 0 8px;
-
-                font-size: 24px;
-
-            }
-
-
-            .wheel-title p {
-
-                margin: 0;
-
-                color: var(--muted);
-
-                line-height: 1.8;
-
-                font-size: 14px;
-
-            }
-
-
-            /*
-            =========================
-            WHEEL CONTAINER
-            =========================
-            */
-
-            .wheel-container {
-
-                position: relative;
-
-                width: min(
-                    560px,
-                    calc(100vw - 50px)
-                );
-
-                aspect-ratio: 1 / 1;
-
-                margin:
-                    15px auto
-                    28px;
-
-                flex-shrink: 0;
-
-            }
-
-
-            /*
-            =========================
-            POINTER
-            =========================
-            */
-
-            .wheel-pointer {
-
-                position: absolute;
-
-                z-index: 30;
-
-                top: -2px;
-
-                left: 50%;
-
-                transform:
-                    translateX(-50%);
-
-                width: 0;
-
-                height: 0;
-
-                border-left:
-                    17px solid transparent;
-
-                border-right:
-                    17px solid transparent;
-
-                border-top:
-                    38px solid var(--red);
-
-                filter:
-                    drop-shadow(
-                        0 5px 8px
-                        rgba(0,0,0,.45)
-                    );
-
-            }
-
-
-            .wheel-pointer::after {
-
-                content: "";
-
-                position: absolute;
-
-                top: -38px;
-
-                left: -8px;
-
-                width: 16px;
-
-                height: 16px;
-
-                background:
-                    var(--red);
-
-                border-radius: 50%;
-
-            }
-
-
-            /*
-            =========================
-            WHEEL
-            =========================
-            */
-
-            .wheel {
-
-                position: absolute;
-
-                inset: 4px;
-
-                border-radius: 50%;
-
-                overflow: hidden;
-
-                border:
-                    6px solid
-                    rgba(255,255,255,.14);
-
-                box-shadow:
-
-                    0 18px 50px
-                    rgba(0,0,0,.45),
-
-                    inset 0 0 0 2px
-                    rgba(255,255,255,.08);
-
-                transform:
-                    rotate(0deg);
-
-                transition:
-                    transform
-                    5.8s
-                    cubic-bezier(
-                        .12,
-                        .72,
-                        .08,
-                        1
-                    );
-
-                background:
-                    #182b3d;
-
-            }
-
-
-            .wheel svg {
-
-                width: 100%;
-
-                height: 100%;
-
-                display: block;
-
-                overflow: visible;
-
-            }
-
-
-            /*
-            =========================
-            SEGMENTS
-            =========================
-            */
-
-            .wheel-segment {
-
-                stroke:
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .25
-                    );
-
-                stroke-width: 2;
-
-            }
-
-
-            /*
-            =========================
-            TEXT
-            =========================
-            */
-
-            .wheel-label {
-
-                fill: white;
-
-                font-family:
-                    Tahoma,
-                    Arial,
-                    sans-serif;
-
-                font-weight: bold;
-
-                font-size: 17px;
-
-                text-anchor: middle;
-
-                dominant-baseline: middle;
-
-                pointer-events: none;
-
-                paint-order: stroke;
-
-                stroke:
-                    rgba(0,0,0,.45);
-
-                stroke-width: 3px;
-
-                stroke-linejoin: round;
-
-            }
-
-
-            .wheel-label-small {
-
-                font-size: 14px;
-
-            }
-
-
-            .wheel-icon {
-
-                font-size: 27px;
-
-            }
-
-
-            /*
-            =========================
-            CENTER
-            =========================
-            */
-
-            .wheel-center {
-
-                position: absolute;
-
-                z-index: 20;
-
-                top: 50%;
-
-                left: 50%;
-
-                width: 78px;
-
-                height: 78px;
-
-                transform:
-                    translate(
-                        -50%,
-                        -50%
-                    );
-
-                border-radius: 50%;
-
-                display: flex;
-
-                align-items: center;
-
-                justify-content: center;
-
-                background:
-
-                    radial-gradient(
-                        circle at 35% 30%,
-                        #304b63,
-                        #142434 70%
-                    );
-
-                border:
-                    5px solid
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .18
-                    );
-
-                box-shadow:
-
-                    0 8px 25px
-                    rgba(0,0,0,.5),
-
-                    inset 0 0 20px
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .08
-                    );
-
-                font-size: 38px;
-
-                user-select: none;
-
-            }
-
-
-            .wheel-center::after {
-
-                content: "";
-
-                position: absolute;
-
-                inset: -8px;
-
-                border-radius: 50%;
-
-                border:
-                    2px solid
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .08
-                    );
-
-            }
-
-
-            /*
-            =========================
-            SPIN BUTTON
-            =========================
-            */
-
-            .wheel-spin {
-
-                width: 100%;
-
-                padding: 16px;
-
-                border-radius: 17px;
-
-                background:
-
-                    linear-gradient(
-                        135deg,
-                        var(--pink),
-                        #386c9d
-                    );
-
-                color: white;
-
-                font-size: 18px;
-
-                font-weight: bold;
-
-                box-shadow:
-
-                    0 10px 30px
-                    rgba(
-                        43,
-                        82,
-                        120,
-                        .3
-                    );
-
-                transition: .2s;
-
-            }
-
-
-            .wheel-spin:hover {
-
-                transform:
-                    translateY(-2px);
-
-                box-shadow:
-
-                    0 14px 35px
-                    rgba(
-                        43,
-                        82,
-                        120,
-                        .4
-                    );
-
-            }
-
-
-            .wheel-spin:active {
-
-                transform:
-                    scale(.98);
-
-            }
-
-
-            .wheel-spin:disabled {
-
-                opacity: .55;
-
-                cursor:
-                    not-allowed;
-
-                transform: none;
-
-            }
-
-
-            /*
-            =========================
-            RESULT
-            =========================
-            */
-
-            .wheel-result {
-
-                width: 100%;
-
-                margin-top: 22px;
-
-                padding: 22px;
-
-                border-radius: 22px;
-
-                background:
-                    #ffffff08;
-
-                border:
-                    1px solid
-                    #ffffff0d;
-
-                text-align: center;
-
-                display: none;
-
-            }
-
-
-            .wheel-result.show {
-
-                display: block;
-
-                animation:
-                    wheelResultAppear
-                    .4s
-                    ease;
-
-            }
-
-
-            @keyframes wheelResultAppear {
-
-                from {
-
-                    opacity: 0;
-
-                    transform:
-                        translateY(10px)
-                        scale(.97);
-
-                }
-
-                to {
-
-                    opacity: 1;
-
-                    transform:
-                        translateY(0)
-                        scale(1);
-
-                }
-
-            }
-
-
-            .wheel-result-icon {
-
-                font-size: 48px;
-
-                margin-bottom: 8px;
-
-            }
-
-
-            .wheel-result-title {
-
-                font-size: 24px;
-
-                font-weight: bold;
-
-                margin-bottom: 8px;
-
-            }
-
-
-            .wheel-result-text {
-
-                color: var(--muted);
-
-                font-size: 14px;
-
-                line-height: 1.9;
-
-                margin-bottom: 18px;
-
-            }
-
-
-            .wheel-open {
-
-                width: 100%;
-
-                padding: 14px;
-
-                border-radius: 15px;
-
-                background:
-                    var(--pink);
-
-                color: white;
-
-                font-weight: bold;
-
-                font-size: 16px;
-
-            }
-
-
-            /*
-            =========================
-            MOBILE
-            =========================
-            */
-
-            @media(max-width:600px) {
-
-                .wheel-wrapper {
-
-                    width: 100%;
-
-                }
-
-
-                .wheel-container {
-
-                    width:
-                        min(
-                            390px,
-                            calc(100vw - 44px)
-                        );
-
-                    margin-top: 10px;
-
-                    margin-bottom: 24px;
-
-                }
-
-
-                .wheel {
-
-                    inset: 3px;
-
-                    border-width: 4px;
-
-                }
-
-
-                .wheel-pointer {
-
-                    border-left-width: 13px;
-
-                    border-right-width: 13px;
-
-                    border-top-width: 31px;
-
-                }
-
-
-                .wheel-pointer::after {
-
-                    top: -31px;
-
-                    left: -6px;
-
-                    width: 12px;
-
-                    height: 12px;
-
-                }
-
-
-                .wheel-center {
-
-                    width: 62px;
-
-                    height: 62px;
-
-                    font-size: 30px;
-
-                    border-width: 4px;
-
-                }
-
-
-                .wheel-label {
-
-                    font-size: 14px;
-
-                    stroke-width: 2.5px;
-
-                }
-
-
-                .wheel-label-small {
-
-                    font-size: 12px;
-
-                }
-
-
-                .wheel-icon {
-
-                    font-size: 22px;
-
-                }
-
-            }
-
-
-            @media(max-width:380px) {
-
-                .wheel-container {
-
-                    width:
-                        calc(100vw - 34px);
-
-                }
-
-
-                .wheel-label {
-
-                    font-size: 12px;
-
-                }
-
-
-                .wheel-label-small {
-
-                    font-size: 10px;
-
-                }
-
-
-                .wheel-icon {
-
-                    font-size: 19px;
-
-                }
-
-
-                .wheel-center {
-
-                    width: 56px;
-
-                    height: 56px;
-
-                    font-size: 27px;
-
-                }
-
-            }
-
-        </style>
-
-
-        <h2>
-            🎡 گردونه بدبختی
-        </h2>
-
-
-        <p class="desc">
-            نمی‌دونی با کدوم ابزار شروع کنی؟
-            بذار خود بدبختی برات تصمیم بگیره. 💀
-        </p>
-
-
-        <div class="wheel-wrapper">
-
-
-            <div class="wheel-title">
-
-                <h3>
-                    🎯 شانست رو امتحان کن
-                </h3>
-
-                <p>
-                    گردونه یکی از ابزارها رو تصادفی برات انتخاب می‌کنه.
-                </p>
-
-            </div>
-
-
-            <div class="wheel-container">
-
-                <div class="wheel-pointer"></div>
-
-
-                <div
-                    class="wheel"
-                    id="badbakhtiWheel"
-                ></div>
-
-
-                <div class="wheel-center">
-                    💀
-                </div>
-
-            </div>
-
-
-            <button
-                class="wheel-spin"
-                id="wheelSpinBtn"
-            >
-                🎡 بچرخون!
-            </button>
-
-
-            <div
-                class="wheel-result"
-                id="wheelResult"
-            ></div>
-
-
-        </div>
-
-    `,
-
-
-    init() {
-
-        const wheel =
-            document.getElementById(
-                "badbakhtiWheel"
-            );
-
-
-        const spinButton =
-            document.getElementById(
-                "wheelSpinBtn"
-            );
-
-
-        const result =
-            document.getElementById(
-                "wheelResult"
-            );
-
-
-        if (
-            !wheel ||
-            !spinButton ||
-            !result
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-        =========================
-        ابزارهای گردونه
-        =========================
-        */
-
-        const wheelTools = [
-
-            {
-                id: "age",
-                title: "سن یک بدبخت",
-                icon: "🎂"
-            },
-
-            {
-                id: "badbakhti",
-                title: "چقدر بدبختی؟",
-                icon: "💀"
-            },
-
-            {
-                id: "block",
-                title: "بلاک شده‌ای؟",
-                icon: "🚫"
-            },
-
-            {
-                id: "brain",
-                title: "مغزت چه وضعیه؟",
-                icon: "🧠"
-            },
-
-            {
-                id: "decision",
-                title: "تصمیم‌گیر",
-                icon: "🤔"
-            },
-
-            {
-                id: "dice",
-                title: "تاس بدبختی",
-                icon: "🎲"
-            },
-
-            {
-                id: "fal",
-                title: "فال بدبختی",
-                icon: "🔮"
-            },
-
-            {
-                id: "friend",
-                title: "دوست خوب یا بد؟",
-                icon: "👥"
-            },
-
-            {
-                id: "life",
-                title: "چقدر وقت داری؟",
-                icon: "⏳"
-            },
-
-            {
-                id: "madrak",
-                title: "مدرک بدبختی",
-                icon: "📜"
-            },
-
-            {
-                id: "message",
-                title: "بهش پیام بدم؟",
-                icon: "💬"
-            },
-
-            {
-                id: "migration",
-                title: "مهاجرت",
-                icon: "✈️"
-            },
-
-            {
-                id: "money",
-                title: "پولم چقدر می‌ارزه؟",
-                icon: "💸"
-            },
-
-            {
-                id: "personality",
-                title: "شخصیتت چیه؟",
-                icon: "🧩"
-            },
-
-            {
-                id: "phone",
-                title: "اعتیاد به گوشی",
-                icon: "📱"
-            },
-
-            {
-                id: "situationship",
-                title: "رابطه‌تون چیه؟",
-                icon: "❤️"
-            },
-
-            {
-                id: "sleep",
-                title: "الان باید بخوابم؟",
-                icon: "😴"
-            },
-
-            {
-                id: "versus",
-                title: "کدومتون بدبخت‌ترید؟",
-                icon: "⚔️"
-            },
-
-            {
-                id: "why-single",
-                title: "چرا سینگلی؟",
-                icon: "💔"
-            }
-
-        ];
-
-
-        /*
-        =========================
-        SVG
-        =========================
-        */
-
-        const size = 1000;
-
-        const center = size / 2;
-
-        const radius = 470;
-
-        const count =
-            wheelTools.length;
-
-        const angle =
-            360 / count;
-
-
-        let svg = `
-
-            <svg
-                viewBox="
-                    0 0
-                    ${size}
-                    ${size}
-                "
-                xmlns="
+export default { 
+ 
+    id: "wheel", 
+ 
+    icon: "🎡", 
+ 
+    title: "گردونه بدبختی", 
+ 
+    description: 
+        "بچرخون ببین امروز کدوم ابزار بدبختی قراره سراغت بیاد.", 
+ 
+    buttonText: 
+        "بچرخون گردونه 🎡", 
+ 
+ 
+    html: ` 
+ 
+        <style> 
+ 
+            .wheel-wrapper { 
+ 
+                width: 100%; 
+ 
+                display: flex; 
+ 
+                flex-direction: column; 
+ 
+                align-items: center; 
+ 
+                justify-content: center; 
+ 
+                margin-top: 10px; 
+ 
+                overflow: hidden; 
+ 
+            } 
+ 
+ 
+            .wheel-title { 
+ 
+                text-align: center; 
+ 
+                margin-bottom: 25px; 
+ 
+            } 
+ 
+ 
+            .wheel-title h3 { 
+ 
+                margin: 0 0 8px; 
+ 
+                font-size: 24px; 
+ 
+            } 
+ 
+ 
+            .wheel-title p { 
+ 
+                margin: 0; 
+ 
+                color: var(--muted); 
+ 
+                line-height: 1.8; 
+ 
+                font-size: 14px; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            WHEEL CONTAINER 
+            ========================= 
+            */ 
+ 
+            .wheel-container { 
+ 
+                position: relative; 
+ 
+                width: min( 
+                    560px, 
+                    calc(100vw - 50px) 
+                ); 
+ 
+                aspect-ratio: 1 / 1; 
+ 
+                margin: 
+                    15px auto 
+                    28px; 
+ 
+                flex-shrink: 0; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            POINTER 
+            ========================= 
+            */ 
+ 
+            .wheel-pointer { 
+ 
+                position: absolute; 
+ 
+                z-index: 30; 
+ 
+                top: -2px; 
+ 
+                left: 50%; 
+ 
+                transform: 
+                    translateX(-50%); 
+ 
+                width: 0; 
+ 
+                height: 0; 
+ 
+                border-left: 
+                    17px solid transparent; 
+ 
+                border-right: 
+                    17px solid transparent; 
+ 
+                border-top: 
+                    38px solid var(--red); 
+ 
+                filter: 
+                    drop-shadow( 
+                        0 5px 8px 
+                        rgba(0,0,0,.45) 
+                    ); 
+ 
+            } 
+ 
+ 
+            .wheel-pointer::after { 
+ 
+                content: ""; 
+ 
+                position: absolute; 
+ 
+                top: -38px; 
+ 
+                left: -8px; 
+ 
+                width: 16px; 
+ 
+                height: 16px; 
+ 
+                background: 
+                    var(--red); 
+ 
+                border-radius: 50%; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            WHEEL 
+            ========================= 
+            */ 
+ 
+            .wheel { 
+ 
+                position: absolute; 
+ 
+                inset: 4px; 
+ 
+                border-radius: 50%; 
+ 
+                overflow: hidden; 
+ 
+                border: 
+                    6px solid 
+                    rgba(255,255,255,.14); 
+ 
+                box-shadow: 
+ 
+                    0 18px 50px 
+                    rgba(0,0,0,.45), 
+ 
+                    inset 0 0 0 2px 
+                    rgba(255,255,255,.08); 
+ 
+                transform: 
+                    rotate(0deg); 
+ 
+                transition: 
+                    transform 
+                    5.8s 
+                    cubic-bezier( 
+                        .12, 
+                        .72, 
+                        .08, 
+                        1 
+                    ); 
+ 
+                background: 
+                    #182b3d; 
+ 
+            } 
+ 
+ 
+            .wheel svg { 
+ 
+                width: 100%; 
+ 
+                height: 100%; 
+ 
+                display: block; 
+ 
+                overflow: visible; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            SEGMENTS 
+            ========================= 
+            */ 
+ 
+            .wheel-segment { 
+ 
+                stroke: 
+                    rgba( 
+                        255, 
+                        255, 
+                        255, 
+                        .25 
+                    ); 
+ 
+                stroke-width: 2; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            TEXT 
+            ========================= 
+            */ 
+ 
+            .wheel-label { 
+ 
+                fill: white; 
+ 
+                font-family: 
+                    Tahoma, 
+                    Arial, 
+                    sans-serif; 
+ 
+                font-weight: bold; 
+ 
+                font-size: 17px; 
+ 
+                text-anchor: middle; 
+ 
+                dominant-baseline: middle; 
+ 
+                pointer-events: none; 
+ 
+                paint-order: stroke; 
+ 
+                stroke: 
+                    rgba(0,0,0,.45); 
+ 
+                stroke-width: 3px; 
+ 
+                stroke-linejoin: round; 
+ 
+            } 
+ 
+ 
+            .wheel-label-small { 
+ 
+                font-size: 14px; 
+ 
+            } 
+ 
+ 
+            .wheel-icon { 
+ 
+                font-size: 27px; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            CENTER 
+            ========================= 
+            */ 
+ 
+            .wheel-center { 
+ 
+                position: absolute; 
+ 
+                z-index: 20; 
+ 
+                top: 50%; 
+ 
+                left: 50%; 
+ 
+                width: 78px; 
+ 
+                height: 78px; 
+ 
+                transform: 
+                    translate( 
+                        -50%, 
+                        -50% 
+                    ); 
+ 
+                border-radius: 50%; 
+ 
+                display: flex; 
+ 
+                align-items: center; 
+ 
+                justify-content: center; 
+ 
+                background: 
+ 
+                    radial-gradient( 
+                        circle at 35% 30%, 
+                        #304b63, 
+                        #142434 70% 
+                    ); 
+ 
+                border: 
+                    5px solid 
+                    rgba( 
+                        255, 
+                        255, 
+                        255, 
+                        .18 
+                    ); 
+ 
+                box-shadow: 
+ 
+                    0 8px 25px 
+                    rgba(0,0,0,.5), 
+ 
+                    inset 0 0 20px 
+                    rgba( 
+                        255, 
+                        255, 
+                        255, 
+                        .08 
+                    ); 
+ 
+                font-size: 38px; 
+ 
+                user-select: none; 
+ 
+            } 
+ 
+ 
+            .wheel-center::after { 
+ 
+                content: ""; 
+ 
+                position: absolute; 
+ 
+                inset: -8px; 
+ 
+                border-radius: 50%; 
+ 
+                border: 
+                    2px solid 
+                    rgba( 
+                        255, 
+                        255, 
+                        255, 
+                        .08 
+                    ); 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            SPIN BUTTON 
+            ========================= 
+            */ 
+ 
+            .wheel-spin { 
+ 
+                width: 100%; 
+ 
+                padding: 16px; 
+ 
+                border-radius: 17px; 
+ 
+                background: 
+ 
+                    linear-gradient( 
+                        135deg, 
+                        var(--pink), 
+                        #386c9d 
+                    ); 
+ 
+                color: white; 
+ 
+                font-size: 18px; 
+ 
+                font-weight: bold; 
+ 
+                box-shadow: 
+ 
+                    0 10px 30px 
+                    rgba( 
+                        43, 
+                        82, 
+                        120, 
+                        .3 
+                    ); 
+ 
+                transition: .2s; 
+ 
+            } 
+ 
+ 
+            .wheel-spin:hover { 
+ 
+                transform: 
+                    translateY(-2px); 
+ 
+                box-shadow: 
+ 
+                    0 14px 35px 
+                    rgba( 
+                        43, 
+                        82, 
+                        120, 
+                        .4 
+                    ); 
+ 
+            } 
+ 
+ 
+            .wheel-spin:active { 
+ 
+                transform: 
+                    scale(.98); 
+ 
+            } 
+ 
+ 
+            .wheel-spin:disabled { 
+ 
+                opacity: .55; 
+ 
+                cursor: 
+                    not-allowed; 
+ 
+                transform: none; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            RESULT 
+            ========================= 
+            */ 
+ 
+            .wheel-result { 
+ 
+                width: 100%; 
+ 
+                margin-top: 22px; 
+ 
+                padding: 22px; 
+ 
+                border-radius: 22px; 
+ 
+                background: 
+                    #ffffff08; 
+ 
+                border: 
+                    1px solid 
+                    #ffffff0d; 
+ 
+                text-align: center; 
+ 
+                display: none; 
+ 
+            } 
+ 
+ 
+            .wheel-result.show { 
+ 
+                display: block; 
+ 
+                animation: 
+                    wheelResultAppear 
+                    .4s 
+                    ease; 
+ 
+            } 
+ 
+ 
+            @keyframes wheelResultAppear { 
+ 
+                from { 
+ 
+                    opacity: 0; 
+ 
+                    transform: 
+                        translateY(10px) 
+                        scale(.97); 
+ 
+                } 
+ 
+                to { 
+ 
+                    opacity: 1; 
+ 
+                    transform: 
+                        translateY(0) 
+                        scale(1); 
+ 
+                } 
+ 
+            } 
+ 
+ 
+            .wheel-result-icon { 
+ 
+                font-size: 48px; 
+ 
+                margin-bottom: 8px; 
+ 
+            } 
+ 
+ 
+            .wheel-result-title { 
+ 
+                font-size: 24px; 
+ 
+                font-weight: bold; 
+ 
+                margin-bottom: 8px; 
+ 
+            } 
+ 
+ 
+            .wheel-result-text { 
+ 
+                color: var(--muted); 
+ 
+                font-size: 14px; 
+ 
+                line-height: 1.9; 
+ 
+                margin-bottom: 18px; 
+ 
+            } 
+ 
+ 
+            .wheel-open { 
+ 
+                width: 100%; 
+ 
+                padding: 14px; 
+ 
+                border-radius: 15px; 
+ 
+                background: 
+                    var(--pink); 
+ 
+                color: white; 
+ 
+                font-weight: bold; 
+ 
+                font-size: 16px; 
+ 
+            } 
+ 
+ 
+            /* 
+            ========================= 
+            MOBILE 
+            ========================= 
+            */ 
+ 
+            @media(max-width:600px) { 
+ 
+                .wheel-wrapper { 
+ 
+                    width: 100%; 
+ 
+                } 
+ 
+ 
+                .wheel-container { 
+ 
+                    width: 
+                        min( 
+                            390px, 
+                            calc(100vw - 44px) 
+                        ); 
+ 
+                    margin-top: 10px; 
+ 
+                    margin-bottom: 24px; 
+ 
+                } 
+ 
+ 
+                .wheel { 
+ 
+                    inset: 3px; 
+ 
+                    border-width: 4px; 
+ 
+                } 
+ 
+ 
+                .wheel-pointer { 
+ 
+                    border-left-width: 13px; 
+ 
+                    border-right-width: 13px; 
+ 
+                    border-top-width: 31px; 
+ 
+                } 
+ 
+ 
+                .wheel-pointer::after { 
+ 
+                    top: -31px; 
+ 
+                    left: -6px; 
+ 
+                    width: 12px; 
+ 
+                    height: 12px; 
+ 
+                } 
+ 
+ 
+                .wheel-center { 
+ 
+                    width: 62px; 
+ 
+                    height: 62px; 
+ 
+                    font-size: 30px; 
+ 
+                    border-width: 4px; 
+ 
+                } 
+ 
+ 
+                .wheel-label { 
+ 
+                    font-size: 14px; 
+ 
+                    stroke-width: 2.5px; 
+ 
+                } 
+ 
+ 
+                .wheel-label-small { 
+ 
+                    font-size: 12px; 
+ 
+                } 
+ 
+ 
+                .wheel-icon { 
+ 
+                    font-size: 22px; 
+ 
+                } 
+ 
+            } 
+ 
+ 
+            @media(max-width:380px) { 
+ 
+                .wheel-container { 
+ 
+                    width: 
+                        calc(100vw - 34px); 
+ 
+                } 
+ 
+ 
+                .wheel-label { 
+ 
+                    font-size: 12px; 
+ 
+                } 
+ 
+ 
+                .wheel-label-small { 
+ 
+                    font-size: 10px; 
+ 
+                } 
+ 
+ 
+                .wheel-icon { 
+ 
+                    font-size: 19px; 
+ 
+                } 
+ 
+ 
+                .wheel-center { 
+ 
+                    width: 56px; 
+ 
+                    height: 56px; 
+ 
+                    font-size: 27px; 
+ 
+                } 
+ 
+            } 
+ 
+        </style> 
+ 
+ 
+        <h2> 
+            🎡 گردونه بدبختی 
+        </h2> 
+ 
+ 
+        <p class="desc"> 
+            نمی‌دونی با کدوم ابزار شروع کنی؟ 
+            بذار خود بدبختی برات تصمیم بگیره. 💀 
+        </p> 
+ 
+ 
+        <div class="wheel-wrapper"> 
+ 
+ 
+            <div class="wheel-title"> 
+ 
+                <h3> 
+                    🎯 شانست رو امتحان کن 
+                </h3> 
+ 
+                <p> 
+                    گردونه یکی از ابزارها رو تصادفی برات انتخاب می‌کنه. 
+                </p> 
+ 
+            </div> 
+ 
+ 
+            <div class="wheel-container"> 
+ 
+                <div class="wheel-pointer"></div> 
+ 
+ 
+                <div 
+                    class="wheel" 
+                    id="badbakhtiWheel" 
+                ></div> 
+ 
+ 
+                <div class="wheel-center"> 
+                    💀 
+                </div> 
+ 
+            </div> 
+ 
+ 
+            <button 
+                class="wheel-spin" 
+                id="wheelSpinBtn" 
+            > 
+                🎡 بچرخون! 
+            </button> 
+ 
+ 
+            <div 
+                class="wheel-result" 
+                id="wheelResult" 
+            ></div> 
+ 
+ 
+        </div> 
+ 
+    `, 
+ 
+ 
+    init() { 
+ 
+        const wheel = 
+            document.getElementById( 
+                "badbakhtiWheel" 
+            ); 
+ 
+ 
+        const spinButton = 
+            document.getElementById( 
+                "wheelSpinBtn" 
+            ); 
+ 
+ 
+        const result = 
+            document.getElementById( 
+                "wheelResult" 
+            ); 
+ 
+ 
+        if ( 
+            !wheel || 
+            !spinButton || 
+            !result 
+        ) { 
+ 
+            return; 
+ 
+        } 
+ 
+ 
+        /* 
+        ========================= 
+        ابزارهای گردونه 
+        ========================= 
+        */ 
+ 
+        const wheelTools = [ 
+ 
+            { 
+                id: "age", 
+                title: "سن یک بدبخت", 
+                icon: "🎂" 
+            }, 
+ 
+            { 
+                id: "badbakhti", 
+                title: "چقدر بدبختی؟", 
+                icon: "💀" 
+            }, 
+ 
+            { 
+                id: "block", 
+                title: "بلاک شده‌ای؟", 
+                icon: "🚫" 
+            }, 
+ 
+            { 
+                id: "brain", 
+                title: "مغزت چه وضعیه؟", 
+                icon: "🧠" 
+            }, 
+ 
+            { 
+                id: "decision", 
+                title: "تصمیم‌گیر", 
+                icon: "🤔" 
+            }, 
+ 
+            { 
+                id: "dice", 
+                title: "تاس بدبختی", 
+                icon: "🎲" 
+            }, 
+ 
+            { 
+                id: "fal", 
+                title: "فال بدبختی", 
+                icon: "🔮" 
+            }, 
+ 
+            { 
+                id: "friend", 
+                title: "دوست خوب یا بد؟", 
+                icon: "👥" 
+            }, 
+ 
+            { 
+                id: "life", 
+                title: "چقدر وقت داری؟", 
+                icon: "⏳" 
+            }, 
+ 
+            { 
+                id: "madrak", 
+                title: "مدرک بدبختی", 
+                icon: "📜" 
+            }, 
+ 
+            { 
+                id: "message", 
+                title: "بهش پیام بدم؟", 
+                icon: "💬" 
+            }, 
+ 
+            { 
+                id: "migration", 
+                title: "مهاجرت", 
+                icon: "✈️" 
+            }, 
+ 
+            { 
+                id: "money", 
+                title: "پولم چقدر می‌ارزه؟", 
+                icon: "💸" 
+            }, 
+ 
+            { 
+                id: "personality", 
+                title: "شخصیتت چیه؟", 
+                icon: "🧩" 
+            }, 
+ 
+            { 
+                id: "phone", 
+                title: "اعتیاد به گوشی", 
+                icon: "📱" 
+            }, 
+ 
+            { 
+                id: "situationship", 
+                title: "رابطه‌تون چیه؟", 
+                icon: "❤️" 
+            }, 
+ 
+            { 
+                id: "sleep", 
+                title: "الان باید بخوابم؟", 
+                icon: "😴" 
+            }, 
+ 
+            { 
+                id: "versus", 
+                title: "کدومتون بدبخت‌ترید؟", 
+                icon: "⚔️" 
+            }, 
+ 
+            { 
+                id: "why-single", 
+                title: "چرا سینگلی؟", 
+                icon: "💔" 
+            } 
+ 
+        ]; 
+ 
+ 
+        /* 
+        ========================= 
+        SVG 
+        ========================= 
+        */ 
+ 
+        const size = 1000; 
+ 
+        const center = size / 2; 
+ 
+        const radius = 470; 
+ 
+        const count = 
+            wheelTools.length; 
+ 
+        const angle = 
+            360 / count; 
+ 
+ 
+        let svg = ` 
+ 
+            <svg 
+                viewBox=" 
+                    0 0 
+                    ${size} 
+                    ${size} 
+                " 
+                xmlns=" 
                     http://www.w3.org/2000/svg
                 "
             >
@@ -1153,7 +1153,7 @@ export default {
 
                 /*
                 =========================
-                متن هوشمند
+                متن
                 =========================
                 */
 
@@ -1171,14 +1171,18 @@ export default {
 
 
                 /*
-                =========================
-                چرخش متن
-                =========================
+                هر متن در راستای شعاع
+                خودش قرار می‌گیرد.
                 */
 
                 let textRotation =
                     middle;
 
+
+                /*
+                اگر متن وارد نیمه پایین
+                شود، برعکس نمی‌شود.
+                */
 
                 if(
                     textRotation > 90 &&
@@ -1191,123 +1195,25 @@ export default {
 
 
                 /*
-                =========================
-                عرض واقعی قابل استفاده
-                =========================
-
-                عرض قطاع در محل متن
-                محاسبه می‌شود.
-
-                حاشیه امن باعث می‌شود
-                متن به خطوط قطاع نچسبد.
+                کوتاه کردن اسم‌های خیلی بلند
                 */
 
-                const availableWidth =
-
-                    2 *
-
-                    textRadius *
-
-                    Math.sin(
-                        (
-                            angle / 2
-                        ) *
-                        Math.PI /
-                        180
-                    ) *
-
-                    0.78;
+                let title =
+                    tool.title;
 
 
-                /*
-                =========================
-                محاسبه اندازه فونت
-                =========================
+                if(
+                    title.length > 15
+                ){
 
-                عنوان کوتاه‌تر:
-                فونت بزرگ‌تر
+                    title =
+                        title.slice(
+                            0,
+                            14
+                        ) + "…";
 
-                عنوان بلندتر:
-                فونت کوچک‌تر
+                }
 
-                متن همیشه یک خط است.
-                */
-
-                const titleLength =
-                    tool.title.length;
-
-
-                let fontSize =
-
-                    availableWidth /
-
-                    Math.max(
-                        titleLength * 0.62,
-                        1
-                    );
-
-
-                /*
-                محدوده فونت
-                */
-
-                fontSize =
-
-                    Math.max(
-                        13,
-                        Math.min(
-                            fontSize,
-                            24
-                        )
-                    );
-
-
-                /*
-                =========================
-                اندازه آیکون
-                =========================
-                */
-
-                const iconSize =
-
-                    Math.max(
-                        19,
-                        Math.min(
-                            fontSize * 1.35,
-                            29
-                        )
-                    );
-
-
-                /*
-                =========================
-                محل آیکون
-                =========================
-                */
-
-                const iconY =
-                    -(
-                        fontSize *
-                        0.95
-                    );
-
-
-                /*
-                =========================
-                محل عنوان
-                =========================
-                */
-
-                const titleY =
-                    fontSize *
-                    0.95;
-
-
-                /*
-                =========================
-                ساخت متن
-                =========================
-                */
 
                 svg += `
 
@@ -1318,7 +1224,6 @@ export default {
                                 ${textPoint.x},
                                 ${textPoint.y}
                             )
-
                             rotate(
                                 ${textRotation}
                             )
@@ -1330,19 +1235,14 @@ export default {
 
                             class="
                                 wheel-label
+                                wheel-icon
                             "
 
                             x="0"
 
-                            y="${iconY}"
-
-                            style="
-                                font-size:
-                                ${iconSize}px;
-                            "
+                            y="-16"
 
                         >
-
                             ${tool.icon}
 
                         </text>
@@ -1352,28 +1252,20 @@ export default {
 
                             class="
                                 wheel-label
+                                ${
+                                    title.length > 11
+                                    ? "wheel-label-small"
+                                    : ""
+                                }
                             "
 
                             x="0"
 
-                            y="${titleY}"
-
-                            style="
-                                font-size:
-                                ${fontSize}px;
-                            "
-
-                            textLength="
-                                ${availableWidth}
-                            "
-
-                            lengthAdjust="
-                                spacingAndGlyphs
-                            "
+                            y="13"
 
                         >
 
-                            ${tool.title}
+                            ${title}
 
                         </text>
 
@@ -1486,6 +1378,19 @@ export default {
             =========================
             محاسبه مرکز قطاع
             =========================
+
+            نکته مهم:
+
+            اولین قطاع از زاویه 0 شروع
+            می‌شود و مرکز آن angle / 2 است.
+
+            فلش دقیقاً در بالای گردونه
+            یعنی -90 درجه قرار دارد.
+
+            بنابراین برای اینکه مرکز قطاع
+            انتخاب‌شده دقیقاً زیر فلش قرار
+            بگیرد، باید اختلاف این دو زاویه
+            محاسبه شود.
             */
 
             const segmentCenter =
@@ -1574,6 +1479,10 @@ export default {
                 spinButton.textContent =
                     "🎡 دوباره بچرخون";
 
+
+                /*
+                ابزار واقعی همان قطاع
+                */
 
                 selectedTool =
                     wheelTools[
