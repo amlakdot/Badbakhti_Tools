@@ -254,7 +254,7 @@ export default {
 
                 font-weight: bold;
 
-                font-size: 21px;
+                font-size: 17px;
 
                 text-anchor: middle;
 
@@ -274,9 +274,16 @@ export default {
             }
 
 
+            .wheel-label-small {
+
+                font-size: 14px;
+
+            }
+
+
             .wheel-icon {
 
-                font-size: 29px;
+                font-size: 27px;
 
             }
 
@@ -653,16 +660,23 @@ export default {
 
                 .wheel-label {
 
-                    font-size: 15px;
+                    font-size: 14px;
 
                     stroke-width: 2.5px;
 
                 }
 
 
+                .wheel-label-small {
+
+                    font-size: 12px;
+
+                }
+
+
                 .wheel-icon {
 
-                    font-size: 23px;
+                    font-size: 22px;
 
                 }
 
@@ -681,14 +695,21 @@ export default {
 
                 .wheel-label {
 
-                    font-size: 13px;
+                    font-size: 12px;
+
+                }
+
+
+                .wheel-label-small {
+
+                    font-size: 10px;
 
                 }
 
 
                 .wheel-icon {
 
-                    font-size: 20px;
+                    font-size: 19px;
 
                 }
 
@@ -1132,7 +1153,7 @@ export default {
 
                 /*
                 =========================
-                متن
+                متن هوشمند
                 =========================
                 */
 
@@ -1150,16 +1171,14 @@ export default {
 
 
                 /*
-                متن در جهت قطاع
+                =========================
+                چرخش متن
+                =========================
                 */
 
                 let textRotation =
                     middle;
 
-
-                /*
-                جلوگیری از وارونه شدن متن
-                */
 
                 if(
                     textRotation > 90 &&
@@ -1173,92 +1192,115 @@ export default {
 
                 /*
                 =========================
-                اندازه متن
+                عرض واقعی قابل استفاده
                 =========================
 
-                اندازه بر اساس طول
-                عنوان تنظیم می‌شود.
+                عرض قطاع در محل متن
+                محاسبه می‌شود.
 
-                عنوان کوتاه:
-                بزرگ‌تر
-
-                عنوان متوسط:
-                متوسط
-
-                عنوان بلند:
-                کوچک‌تر
+                حاشیه امن باعث می‌شود
+                متن به خطوط قطاع نچسبد.
                 */
 
-                let title =
-                    tool.title;
+                const availableWidth =
 
+                    2 *
 
-                let fontSize =
-                    21;
+                    textRadius *
 
+                    Math.sin(
+                        (
+                            angle / 2
+                        ) *
+                        Math.PI /
+                        180
+                    ) *
 
-                if(
-                    title.length >= 18
-                ){
-
-                    fontSize =
-                        14;
-
-                }
-
-                else if(
-                    title.length >= 15
-                ){
-
-                    fontSize =
-                        15;
-
-                }
-
-                else if(
-                    title.length >= 12
-                ){
-
-                    fontSize =
-                        17;
-
-                }
-
-                else if(
-                    title.length >= 9
-                ){
-
-                    fontSize =
-                        19;
-
-                }
+                    0.78;
 
 
                 /*
                 =========================
-                اندازه ایموجی
+                محاسبه اندازه فونت
                 =========================
+
+                عنوان کوتاه‌تر:
+                فونت بزرگ‌تر
+
+                عنوان بلندتر:
+                فونت کوچک‌تر
+
+                متن همیشه یک خط است.
                 */
 
-                const iconSize =
+                const titleLength =
+                    tool.title.length;
+
+
+                let fontSize =
+
+                    availableWidth /
+
                     Math.max(
-                        21,
-                        fontSize + 8
+                        titleLength * 0.62,
+                        1
+                    );
+
+
+                /*
+                محدوده فونت
+                */
+
+                fontSize =
+
+                    Math.max(
+                        13,
+                        Math.min(
+                            fontSize,
+                            24
+                        )
                     );
 
 
                 /*
                 =========================
-                موقعیت متن
+                اندازه آیکون
+                =========================
+                */
+
+                const iconSize =
+
+                    Math.max(
+                        19,
+                        Math.min(
+                            fontSize * 1.35,
+                            29
+                        )
+                    );
+
+
+                /*
+                =========================
+                محل آیکون
                 =========================
                 */
 
                 const iconY =
-                    -(fontSize * .95);
+                    -(
+                        fontSize *
+                        0.95
+                    );
 
+
+                /*
+                =========================
+                محل عنوان
+                =========================
+                */
 
                 const titleY =
-                    fontSize * .95;
+                    fontSize *
+                    0.95;
 
 
                 /*
@@ -1276,6 +1318,7 @@ export default {
                                 ${textPoint.x},
                                 ${textPoint.y}
                             )
+
                             rotate(
                                 ${textRotation}
                             )
@@ -1287,7 +1330,6 @@ export default {
 
                             class="
                                 wheel-label
-                                wheel-icon
                             "
 
                             x="0"
@@ -1308,7 +1350,9 @@ export default {
 
                         <text
 
-                            class="wheel-label"
+                            class="
+                                wheel-label
+                            "
 
                             x="0"
 
@@ -1319,9 +1363,17 @@ export default {
                                 ${fontSize}px;
                             "
 
+                            textLength="
+                                ${availableWidth}
+                            "
+
+                            lengthAdjust="
+                                spacingAndGlyphs
+                            "
+
                         >
 
-                            ${title}
+                            ${tool.title}
 
                         </text>
 
@@ -1432,7 +1484,7 @@ export default {
 
             /*
             =========================
-            مرکز قطاع انتخاب‌شده
+            محاسبه مرکز قطاع
             =========================
             */
 
@@ -1523,10 +1575,6 @@ export default {
                     "🎡 دوباره بچرخون";
 
 
-                /*
-                ابزار واقعی همان قطاع
-                */
-
                 selectedTool =
                     wheelTools[
                         randomIndex
@@ -1546,9 +1594,7 @@ export default {
                             wheel-result-icon
                         "
                     >
-
                         ${selectedTool.icon}
-
                     </div>
 
 
@@ -1557,9 +1603,7 @@ export default {
                             wheel-result-title
                         "
                     >
-
                         ${selectedTool.title}
-
                     </div>
 
 
@@ -1568,7 +1612,6 @@ export default {
                             wheel-result-text
                         "
                     >
-
                         گردونه تصمیمش رو گرفته! 🎯
 
                         <br>
