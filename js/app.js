@@ -14,6 +14,151 @@ const COUNTER_API = "https://script.google.com/macros/s/AKfycbxwKYiZw0DfLvvp6zcD
 
 
 /* =========================
+   NEW TOOLS
+========================= */
+
+// ابزارهایی که در حال حاضر قدیمی هستند
+const INITIAL_TOOL_IDS = new Set([
+    "age",
+    "badbakhti",
+    "block",
+    "brain",
+    "decision",
+    "dice",
+    "fal",
+    "friend",
+    "life",
+    "madrak",
+    "message",
+    "migration",
+    "money",
+    "personality",
+    "phone",
+    "situationship",
+    "sleep",
+    "versus",
+    "why-single"
+]);
+
+const NEW_TOOLS_STORAGE_KEY = "badbakhti_new_tools";
+
+
+// دریافت لیست ابزارهایی که به عنوان جدید شناخته شده‌اند
+function getNewTools() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                NEW_TOOLS_STORAGE_KEY
+            );
+
+        if (!saved) {
+            return [];
+        }
+
+        const parsed = JSON.parse(saved);
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    } catch (e) {
+
+        return [];
+
+    }
+
+}
+
+
+// ذخیره لیست ابزارهای جدید
+function saveNewTools(ids) {
+
+    try {
+
+        localStorage.setItem(
+            NEW_TOOLS_STORAGE_KEY,
+            JSON.stringify(ids)
+        );
+
+    } catch (e) {
+
+        // اگر localStorage در دسترس نبود،
+        // پروژه بدون این قابلیت هم به کار خودش ادامه می‌دهد.
+
+    }
+
+}
+
+
+// بررسی و ثبت ابزارهای جدید
+function updateNewTools(toolsWithCount) {
+
+    let newTools =
+        getNewTools();
+
+    const currentIds =
+        new Set(
+            toolsWithCount.map(tool => tool.id)
+        );
+
+
+    // پاک کردن ابزارهایی که دیگر در پروژه وجود ندارند
+    newTools =
+        newTools.filter(
+            id => currentIds.has(id)
+        );
+
+
+    toolsWithCount.forEach(tool => {
+
+        const isInitialTool =
+            INITIAL_TOOL_IDS.has(tool.id);
+
+        const alreadyNew =
+            newTools.includes(tool.id);
+
+
+        // ابزارهایی که قبلاً جدید ثبت نشده‌اند
+        // و در لیست ابزارهای قدیمی اولیه هم نیستند،
+        // ابزار جدید محسوب می‌شوند.
+        if (
+            !isInitialTool &&
+            !alreadyNew &&
+            tool.count < 150
+        ) {
+
+            newTools.push(tool.id);
+
+        }
+
+
+        // وقتی ابزار به 150 استفاده رسید،
+        // وضعیت جدید بودن آن تمام می‌شود.
+        if (
+            alreadyNew &&
+            tool.count >= 150
+        ) {
+
+            newTools =
+                newTools.filter(
+                    id => id !== tool.id
+                );
+
+        }
+
+    });
+
+
+    saveNewTools(newTools);
+
+    return newTools;
+
+}
+
+
+/* =========================
    COUNTER FUNCTIONS
 ========================= */
 
@@ -121,13 +266,54 @@ async function renderHome(){
         })
     );
 
-    // مرتب‌سازی بر اساس بیشترین استفاده
-    toolsWithCount.sort((a, b) => b.count - a.count);
+
+    // بررسی ابزارهای جدید
+    const newTools =
+        updateNewTools(toolsWithCount);
+
+
+    // مرتب‌سازی:
+    // 1. ابزارهای جدید اول
+    // 2. سپس بر اساس بیشترین استفاده
+    toolsWithCount.sort((a, b) => {
+
+        const aIsNew =
+            newTools.includes(a.id);
+
+        const bIsNew =
+            newTools.includes(b.id);
+
+
+        if (aIsNew && !bIsNew) {
+            return -1;
+        }
+
+        if (!aIsNew && bIsNew) {
+            return 1;
+        }
+
+
+        return b.count - a.count;
+
+    });
+
 
     // رندر نهایی
     home.innerHTML =
-        toolsWithCount.map(tool => `
+        toolsWithCount.map(tool => {
+
+            const isNew =
+                newTools.includes(tool.id);
+
+            return `
             <div class="tool" data-id="${escapeHTML(tool.id)}">
+
+                ${
+                    isNew
+                    ? `<div class="new-tool-badge">🆕 ابزار جدید</div>`
+                    : ""
+                }
+
                 <div class="emoji">
                     ${tool.icon || "🧰"}
                 </div>
@@ -156,8 +342,12 @@ async function renderHome(){
                 <button class="open" data-tool="${escapeHTML(tool.id)}">
                     ${escapeHTML(tool.buttonText || "باز کردن")}
                 </button>
+
             </div>
-        `).join("");
+        `;
+
+        }).join("");
+
 
     // رویداد کلیک
     home.querySelectorAll("[data-tool]").forEach(button => {
