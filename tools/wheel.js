@@ -69,7 +69,7 @@ export default {
 
             /*
             =========================
-            WHEEL CONTAINER
+            گردونه
             =========================
             */
 
@@ -77,25 +77,18 @@ export default {
 
                 position: relative;
 
-                width: min(
-                    560px,
-                    calc(100vw - 50px)
-                );
+                width: min(580px, 88vw);
 
                 aspect-ratio: 1 / 1;
 
-                margin:
-                    15px auto
-                    28px;
-
-                flex-shrink: 0;
+                margin: 10px auto 25px;
 
             }
 
 
             /*
             =========================
-            POINTER
+            فلش
             =========================
             */
 
@@ -105,27 +98,24 @@ export default {
 
                 z-index: 30;
 
-                top: -2px;
+                top: -5px;
 
                 left: 50%;
 
-                transform:
-                    translateX(-50%);
+                transform: translateX(-50%);
 
                 width: 0;
 
                 height: 0;
 
-                border-left:
-                    17px solid transparent;
+                border-left: 18px solid transparent;
 
-                border-right:
-                    17px solid transparent;
+                border-right: 18px solid transparent;
 
-                border-top:
-                    38px solid var(--red);
+                border-top: 42px solid var(--red);
 
                 filter:
+
                     drop-shadow(
                         0 5px 8px
                         rgba(0,0,0,.45)
@@ -140,16 +130,15 @@ export default {
 
                 position: absolute;
 
-                top: -38px;
+                top: -42px;
 
-                left: -8px;
+                left: -9px;
 
-                width: 16px;
+                width: 18px;
 
-                height: 16px;
+                height: 18px;
 
-                background:
-                    var(--red);
+                background: var(--red);
 
                 border-radius: 50%;
 
@@ -158,7 +147,7 @@ export default {
 
             /*
             =========================
-            WHEEL
+            خود گردونه
             =========================
             */
 
@@ -166,39 +155,32 @@ export default {
 
                 position: absolute;
 
-                inset: 4px;
+                inset: 8px;
 
                 border-radius: 50%;
 
                 overflow: hidden;
 
                 border:
-                    6px solid
-                    rgba(255,255,255,.14);
+                    7px solid
+                    rgba(255,255,255,.12);
 
                 box-shadow:
 
-                    0 18px 50px
+                    0 20px 60px
                     rgba(0,0,0,.45),
 
                     inset 0 0 0 2px
                     rgba(255,255,255,.08);
 
-                transform:
-                    rotate(0deg);
+                transform: rotate(0deg);
 
                 transition:
                     transform
-                    5.8s
-                    cubic-bezier(
-                        .12,
-                        .72,
-                        .08,
-                        1
-                    );
+                    5.5s
+                    cubic-bezier(.12,.72,.08,1);
 
-                background:
-                    #182b3d;
+                background: #182b3d;
 
             }
 
@@ -216,21 +198,10 @@ export default {
             }
 
 
-            /*
-            =========================
-            SEGMENTS
-            =========================
-            */
-
             .wheel-segment {
 
                 stroke:
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .25
-                    );
+                    rgba(255,255,255,.22);
 
                 stroke-width: 2;
 
@@ -239,7 +210,7 @@ export default {
 
             /*
             =========================
-            TEXT
+            متن گردونه
             =========================
             */
 
@@ -265,7 +236,7 @@ export default {
                 paint-order: stroke;
 
                 stroke:
-                    rgba(0,0,0,.45);
+                    rgba(0,0,0,.35);
 
                 stroke-width: 3px;
 
@@ -274,23 +245,27 @@ export default {
             }
 
 
-            .wheel-label-small {
+            .wheel-label-icon {
 
-                font-size: 14px;
+                font-size: 27px;
+
+                stroke: none;
 
             }
 
 
-            .wheel-icon {
+            .wheel-label-title {
 
-                font-size: 27px;
+                font-size: 17px;
+
+                stroke-width: 3px;
 
             }
 
 
             /*
             =========================
-            CENTER
+            مرکز
             =========================
             */
 
@@ -298,21 +273,18 @@ export default {
 
                 position: absolute;
 
-                z-index: 20;
+                z-index: 25;
 
                 top: 50%;
 
                 left: 50%;
 
-                width: 78px;
+                width: 88px;
 
-                height: 78px;
+                height: 88px;
 
                 transform:
-                    translate(
-                        -50%,
-                        -50%
-                    );
+                    translate(-50%, -50%);
 
                 border-radius: 50%;
 
@@ -332,12 +304,7 @@ export default {
 
                 border:
                     5px solid
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .18
-                    );
+                    rgba(255,255,255,.18);
 
                 box-shadow:
 
@@ -345,14 +312,9 @@ export default {
                     rgba(0,0,0,.5),
 
                     inset 0 0 20px
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .08
-                    );
+                    rgba(255,255,255,.08);
 
-                font-size: 38px;
+                font-size: 42px;
 
                 user-select: none;
 
@@ -371,19 +333,14 @@ export default {
 
                 border:
                     2px solid
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        .08
-                    );
+                    rgba(255,255,255,.08);
 
             }
 
 
             /*
             =========================
-            SPIN BUTTON
+            دکمه چرخش
             =========================
             */
 
@@ -412,12 +369,7 @@ export default {
                 box-shadow:
 
                     0 10px 30px
-                    rgba(
-                        43,
-                        82,
-                        120,
-                        .3
-                    );
+                    rgba(43,82,120,.3);
 
                 transition: .2s;
 
@@ -432,12 +384,7 @@ export default {
                 box-shadow:
 
                     0 14px 35px
-                    rgba(
-                        43,
-                        82,
-                        120,
-                        .4
-                    );
+                    rgba(43,82,120,.4);
 
             }
 
@@ -454,8 +401,7 @@ export default {
 
                 opacity: .55;
 
-                cursor:
-                    not-allowed;
+                cursor: not-allowed;
 
                 transform: none;
 
@@ -464,7 +410,7 @@ export default {
 
             /*
             =========================
-            RESULT
+            نتیجه
             =========================
             */
 
@@ -478,8 +424,7 @@ export default {
 
                 border-radius: 22px;
 
-                background:
-                    #ffffff08;
+                background: #ffffff08;
 
                 border:
                     1px solid
@@ -570,8 +515,7 @@ export default {
 
                 border-radius: 15px;
 
-                background:
-                    var(--pink);
+                background: var(--pink);
 
                 color: white;
 
@@ -584,30 +528,19 @@ export default {
 
             /*
             =========================
-            MOBILE
+            موبایل
             =========================
             */
 
             @media(max-width:600px) {
 
-                .wheel-wrapper {
-
-                    width: 100%;
-
-                }
-
-
                 .wheel-container {
 
-                    width:
-                        min(
-                            390px,
-                            calc(100vw - 44px)
-                        );
+                    width: min(82vw, 350px);
 
-                    margin-top: 10px;
+                    margin-top: 15px;
 
-                    margin-bottom: 24px;
+                    margin-bottom: 22px;
 
                 }
 
@@ -616,42 +549,18 @@ export default {
 
                     inset: 3px;
 
-                    border-width: 4px;
-
-                }
-
-
-                .wheel-pointer {
-
-                    border-left-width: 13px;
-
-                    border-right-width: 13px;
-
-                    border-top-width: 31px;
-
-                }
-
-
-                .wheel-pointer::after {
-
-                    top: -31px;
-
-                    left: -6px;
-
-                    width: 12px;
-
-                    height: 12px;
+                    border-width: 5px;
 
                 }
 
 
                 .wheel-center {
 
-                    width: 62px;
+                    width: 68px;
 
-                    height: 62px;
+                    height: 68px;
 
-                    font-size: 30px;
+                    font-size: 33px;
 
                     border-width: 4px;
 
@@ -660,67 +569,98 @@ export default {
 
                 .wheel-label {
 
-                    font-size: 14px;
+                    font-size: 13px;
 
                     stroke-width: 2.5px;
 
                 }
 
 
-                .wheel-label-small {
+                .wheel-label-icon {
 
-                    font-size: 12px;
+                    font-size: 22px;
 
                 }
 
 
-                .wheel-icon {
+                .wheel-label-title {
 
-                    font-size: 22px;
+                    font-size: 13px;
+
+                }
+
+
+                .wheel-pointer {
+
+                    top: -4px;
+
+                    border-left-width: 14px;
+
+                    border-right-width: 14px;
+
+                    border-top-width: 34px;
+
+                }
+
+
+                .wheel-pointer::after {
+
+                    top: -34px;
+
+                    left: -7px;
+
+                    width: 14px;
+
+                    height: 14px;
 
                 }
 
             }
 
 
+            /*
+            =========================
+            موبایل خیلی کوچک
+            =========================
+            */
+
             @media(max-width:380px) {
 
                 .wheel-container {
 
-                    width:
-                        calc(100vw - 34px);
-
-                }
-
-
-                .wheel-label {
-
-                    font-size: 12px;
-
-                }
-
-
-                .wheel-label-small {
-
-                    font-size: 10px;
-
-                }
-
-
-                .wheel-icon {
-
-                    font-size: 19px;
+                    width: 78vw;
 
                 }
 
 
                 .wheel-center {
 
-                    width: 56px;
+                    width: 60px;
 
-                    height: 56px;
+                    height: 60px;
 
-                    font-size: 27px;
+                    font-size: 29px;
+
+                }
+
+
+                .wheel-label {
+
+                    font-size: 11px;
+
+                }
+
+
+                .wheel-label-icon {
+
+                    font-size: 19px;
+
+                }
+
+
+                .wheel-label-title {
+
+                    font-size: 11px;
 
                 }
 
@@ -741,7 +681,6 @@ export default {
 
 
         <div class="wheel-wrapper">
-
 
             <div class="wheel-title">
 
@@ -786,7 +725,6 @@ export default {
                 class="wheel-result"
                 id="wheelResult"
             ></div>
-
 
         </div>
 
@@ -951,7 +889,7 @@ export default {
 
         /*
         =========================
-        SVG
+        ساخت SVG
         =========================
         */
 
@@ -959,7 +897,7 @@ export default {
 
         const center = size / 2;
 
-        const radius = 470;
+        const radius = 465;
 
         const count =
             wheelTools.length;
@@ -971,26 +909,16 @@ export default {
         let svg = `
 
             <svg
-                viewBox="
-                    0 0
-                    ${size}
-                    ${size}
-                "
-                xmlns="
-                    http://www.w3.org/2000/svg
-                "
+                viewBox="0 0 ${size} ${size}"
+                xmlns="http://www.w3.org/2000/svg"
             >
 
-                <g>
+                <g
+                    transform="rotate(-90 ${center} ${center})"
+                >
 
         `;
 
-
-        /*
-        =========================
-        COLORS
-        =========================
-        */
 
         const segmentColors = [
 
@@ -1006,7 +934,7 @@ export default {
 
         /*
         =========================
-        POLAR
+        مختصات
         =========================
         */
 
@@ -1021,7 +949,6 @@ export default {
                 degrees *
                 Math.PI /
                 180;
-
 
             return {
 
@@ -1039,12 +966,6 @@ export default {
 
         }
 
-
-        /*
-        =========================
-        ARC
-        =========================
-        */
 
         function createArc(
             startAngle,
@@ -1070,37 +991,40 @@ export default {
 
 
             const largeArc =
-                endAngle - startAngle
-                > 180
+                endAngle - startAngle > 180
                 ? 1
                 : 0;
 
 
-            return `
+            return [
 
-                M ${center} ${center}
+                "M",
+                center,
+                center,
 
-                L ${start.x} ${start.y}
+                "L",
+                start.x,
+                start.y,
 
-                A ${radius} ${radius}
+                "A",
+                radius,
+                radius,
+                0,
+                largeArc,
+                1,
+                end.x,
+                end.y,
 
-                0
-                ${largeArc}
-                1
+                "Z"
 
-                ${end.x}
-                ${end.y}
-
-                Z
-
-            `;
+            ].join(" ");
 
         }
 
 
         /*
         =========================
-        SEGMENTS
+        ساخت قطاع و متن
         =========================
         */
 
@@ -1115,13 +1039,8 @@ export default {
                     start + angle;
 
 
-                /*
-                مرکز قطاع
-                */
-
                 const middle =
-                    start +
-                    angle / 2;
+                    start + angle / 2;
 
 
                 const color =
@@ -1137,28 +1056,24 @@ export default {
 
                         class="wheel-segment"
 
-                        d="
-                            ${createArc(
-                                start,
-                                end
-                            )}
-                        "
+                        d="${createArc(
+                            start,
+                            end
+                        )}"
 
                         fill="${color}"
 
-                    />
+                    ></path>
 
                 `;
 
 
                 /*
-                =========================
-                متن
-                =========================
+                محل متن
                 */
 
                 const textRadius =
-                    radius * .64;
+                    radius * .67;
 
 
                 const textPoint =
@@ -1171,8 +1086,95 @@ export default {
 
 
                 /*
-                هر متن در راستای شعاع
-                خودش قرار می‌گیرد.
+                کوتاه کردن عنوان‌های خیلی بلند
+                */
+
+                let title =
+                    tool.title;
+
+
+                /*
+                =========================
+                شکستن عنوان به دو خط
+                =========================
+                */
+
+                let words =
+                    title.split(" ");
+
+
+                let line1 = "";
+
+                let line2 = "";
+
+
+                if(words.length <= 1) {
+
+                    line1 =
+                        title;
+
+                }
+
+                else {
+
+                    words.forEach(
+                        word => {
+
+                            const test =
+                                line1
+                                ? line1 +
+                                  " " +
+                                  word
+                                : word;
+
+
+                            if(
+                                test.length <= 8
+                            ){
+
+                                line1 =
+                                    test;
+
+                            }
+
+                            else{
+
+                                line2 +=
+                                    (
+                                        line2
+                                        ? " "
+                                        : ""
+                                    ) +
+                                    word;
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /*
+                اگر خط دوم خیلی بلند بود
+                */
+
+                if(
+                    line2.length > 10
+                ){
+
+                    line2 =
+                        line2.slice(
+                            0,
+                            9
+                        ) +
+                        "…";
+
+                }
+
+
+                /*
+                زاویه متن
                 */
 
                 let textRotation =
@@ -1180,37 +1182,17 @@ export default {
 
 
                 /*
-                اگر متن وارد نیمه پایین
-                شود، برعکس نمی‌شود.
+                جلوگیری از وارونه شدن
+                متن
                 */
 
                 if(
-                    textRotation > 90 &&
-                    textRotation < 270
+                    middle > 90 &&
+                    middle < 270
                 ){
 
-                    textRotation += 180;
-
-                }
-
-
-                /*
-                کوتاه کردن اسم‌های خیلی بلند
-                */
-
-                let title =
-                    tool.title;
-
-
-                if(
-                    title.length > 15
-                ){
-
-                    title =
-                        title.slice(
-                            0,
-                            14
-                        ) + "…";
+                    textRotation =
+                        middle + 180;
 
                 }
 
@@ -1221,7 +1203,7 @@ export default {
 
                         transform="
                             translate(
-                                ${textPoint.x},
+                                ${textPoint.x}
                                 ${textPoint.y}
                             )
                             rotate(
@@ -1235,39 +1217,78 @@ export default {
 
                             class="
                                 wheel-label
-                                wheel-icon
+                                wheel-label-icon
                             "
 
                             x="0"
 
-                            y="-16"
+                            y="-22"
 
                         >
                             ${tool.icon}
-
                         </text>
 
 
-                        <text
+                        ${
+                            line2
 
-                            class="
-                                wheel-label
-                                ${
-                                    title.length > 11
-                                    ? "wheel-label-small"
-                                    : ""
-                                }
-                            "
+                            ? `
 
-                            x="0"
+                                <text
 
-                            y="13"
+                                    class="
+                                        wheel-label
+                                        wheel-label-title
+                                    "
 
-                        >
+                                    x="0"
 
-                            ${title}
+                                    y="2"
 
-                        </text>
+                                >
+                                    ${line1}
+                                </text>
+
+
+                                <text
+
+                                    class="
+                                        wheel-label
+                                        wheel-label-title
+                                    "
+
+                                    x="0"
+
+                                    y="22"
+
+                                >
+                                    ${line2}
+                                </text>
+
+                            `
+
+                            :
+
+                            `
+
+                                <text
+
+                                    class="
+                                        wheel-label
+                                        wheel-label-title
+                                    "
+
+                                    x="0"
+
+                                    y="7"
+
+                                >
+                                    ${line1}
+                                </text>
+
+                            `
+
+                        }
 
                     </g>
 
@@ -1292,14 +1313,7 @@ export default {
 
                     fill="none"
 
-                    stroke="
-                        rgba(
-                            255,
-                            255,
-                            255,
-                            .22
-                        )
-                    "
+                    stroke="rgba(255,255,255,.18)"
 
                     stroke-width="5"
 
@@ -1317,7 +1331,7 @@ export default {
 
         /*
         =========================
-        ROTATION STATE
+        وضعیت گردونه
         =========================
         */
 
@@ -1330,17 +1344,13 @@ export default {
 
         /*
         =========================
-        SPIN
+        چرخاندن
         =========================
         */
 
         spinButton.onclick = () => {
 
-            if(spinning){
-
-                return;
-
-            }
+            if(spinning) return;
 
 
             spinning = true;
@@ -1362,9 +1372,7 @@ export default {
 
 
             /*
-            =========================
             انتخاب تصادفی
-            =========================
             */
 
             const randomIndex =
@@ -1375,56 +1383,17 @@ export default {
 
 
             /*
-            =========================
-            محاسبه مرکز قطاع
-            =========================
-
-            نکته مهم:
-
-            اولین قطاع از زاویه 0 شروع
-            می‌شود و مرکز آن angle / 2 است.
-
-            فلش دقیقاً در بالای گردونه
-            یعنی -90 درجه قرار دارد.
-
-            بنابراین برای اینکه مرکز قطاع
-            انتخاب‌شده دقیقاً زیر فلش قرار
-            بگیرد، باید اختلاف این دو زاویه
-            محاسبه شود.
+            مرکز قطاع
             */
 
-            const segmentCenter =
+            const targetAngle =
                 randomIndex *
                 angle +
                 angle / 2;
 
 
-            const pointerAngle =
-                -90;
-
-
-            let requiredRotation =
-                pointerAngle -
-                segmentCenter;
-
-
             /*
-            نرمال کردن زاویه
-            */
-
-            requiredRotation =
-                (
-                    requiredRotation
-                    % 360
-                    + 360
-                )
-                % 360;
-
-
-            /*
-            =========================
-            دورهای اضافه
-            =========================
+            تعداد دور
             */
 
             const extraTurns =
@@ -1434,36 +1403,34 @@ export default {
                 );
 
 
-            const finalRotation =
+            /*
+            قرار دادن قطاع انتخاب‌شده
+            زیر فلش
+            */
+
+            const targetRotation =
 
                 currentRotation +
 
                 extraTurns * 360 +
 
-                requiredRotation;
+                (
+                    360 -
+                    targetAngle
+                );
 
 
             currentRotation =
-                finalRotation;
+                targetRotation;
 
-
-            /*
-            =========================
-            اجرای چرخش
-            =========================
-            */
 
             wheel.style.transform =
-                `
-                    rotate(
-                        ${finalRotation}deg
-                    )
-                `;
+                `rotate(${currentRotation}deg)`;
 
 
             /*
             =========================
-            پایان انیمیشن
+            پایان چرخش
             =========================
             */
 
@@ -1480,71 +1447,43 @@ export default {
                     "🎡 دوباره بچرخون";
 
 
-                /*
-                ابزار واقعی همان قطاع
-                */
-
                 selectedTool =
                     wheelTools[
                         randomIndex
                     ];
 
 
-                /*
-                =========================
-                نمایش نتیجه
-                =========================
-                */
-
                 result.innerHTML = `
 
                     <div
-                        class="
-                            wheel-result-icon
-                        "
+                        class="wheel-result-icon"
                     >
                         ${selectedTool.icon}
                     </div>
 
 
                     <div
-                        class="
-                            wheel-result-title
-                        "
+                        class="wheel-result-title"
                     >
                         ${selectedTool.title}
                     </div>
 
 
                     <div
-                        class="
-                            wheel-result-text
-                        "
+                        class="wheel-result-text"
                     >
-                        گردونه تصمیمش رو گرفته! 🎯
-
+                        گردونه تصمیمش رو گرفته!
                         <br>
-
-                        این ابزار امروز مال توئه.
-                        💀
-
+                        این ابزار امروز مال توئه. 💀
                     </div>
 
 
                     <button
-
                         class="wheel-open"
-
-                        id="
-                            wheelOpenTool
-                        "
-
+                        id="wheelOpenTool"
                     >
-
                         باز کردن ابزار
-
                         ${selectedTool.icon}
-
                     </button>
 
                 `;
@@ -1554,12 +1493,6 @@ export default {
                     "show"
                 );
 
-
-                /*
-                =========================
-                OPEN TOOL
-                =========================
-                */
 
                 const openButton =
                     document.getElementById(
@@ -1584,10 +1517,6 @@ export default {
                     }
 
 
-                    /*
-                    fallback
-                    */
-
                     if(
                         typeof window.openApp ===
                         "function"
@@ -1601,8 +1530,7 @@ export default {
 
                 };
 
-
-            }, 5900);
+            }, 5700);
 
         };
 
