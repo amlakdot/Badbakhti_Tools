@@ -5,19 +5,9 @@ import {
 
 /*
 ==================================================
-   SPIN WHEEL
-==================================================
-
-   فقط همین فایل برای گردونه استفاده می‌شود.
-   هیچ تغییری در app.js یا style.css لازم نیست.
-
+   گردونه بدبختی
 ==================================================
 */
-
-
-import {
-    Wheel
-} from "https://cdn.jsdelivr.net/npm/spin-wheel@5.0.2/dist/spin-wheel-esm.js";
 
 
 export default {
@@ -29,7 +19,7 @@ export default {
     title: "گردونه بدبختی",
 
     description:
-        "نمی‌دونی با کدوم ابزار ور بری؟ بذار خود گردونه برات تصمیم بگیره.",
+        "نمی‌دونی با کدوم ابزار ور بری؟ بذار گردونه برات تصمیم بگیره.",
 
     buttonText:
         "بچرخون 🎡",
@@ -41,91 +31,109 @@ export default {
             id="badbakhtiWheel"
             style="
                 width:100%;
-                max-width:650px;
+                max-width:700px;
                 margin:0 auto;
             "
         >
 
-            <div
+            <h2
                 style="
                     text-align:center;
-                    margin-bottom:20px;
+                    margin-top:0;
                 "
             >
-
-                <h2
-                    style="
-                        margin-bottom:8px;
-                    "
-                >
-                    🎡 گردونه بدبختی
-                </h2>
-
-                <p
-                    class="desc"
-                    style="
-                        margin:0;
-                    "
-                >
-                    بذار شانس تصمیم بگیره امروز با کدوم ابزار بدبخت بشی.
-                </p>
-
-            </div>
+                🎡 گردونه بدبختی
+            </h2>
 
 
-            <!-- WHEEL -->
+            <p
+                class="desc"
+                style="
+                    text-align:center;
+                "
+            >
+                بذار شانس تصمیم بگیره امروز با کدوم ابزار بدبخت بشی.
+            </p>
+
+
+            <!--
+            ==========================================
+                WHEEL AREA
+            ==========================================
+            -->
 
             <div
-                id="wheelContainer"
+                id="wheelArea"
                 style="
                     position:relative;
-                    width:min(90vw,620px);
+                    width:min(92vw,620px);
                     aspect-ratio:1;
-                    margin:25px auto 0;
+                    margin:30px auto;
                 "
             >
 
-                <div
+                <!-- گردونه -->
+
+                <canvas
                     id="wheelCanvas"
                     style="
+                        display:block;
                         width:100%;
                         height:100%;
                     "
-                ></div>
+                ></canvas>
 
 
-                <!-- POINTER -->
+                <!-- نشانگر -->
 
                 <div
                     style="
                         position:absolute;
-                        z-index:20;
-                        top:-2px;
+                        z-index:10;
+
+                        top:-4px;
                         left:50%;
-                        transform:translateX(-50%);
+
+                        transform:
+                            translateX(-50%);
+
                         width:0;
                         height:0;
-                        border-left:18px solid transparent;
-                        border-right:18px solid transparent;
-                        border-top:34px solid var(--red);
+
+                        border-left:
+                            19px solid transparent;
+
+                        border-right:
+                            19px solid transparent;
+
+                        border-top:
+                            38px solid var(--red);
+
                         filter:
                             drop-shadow(
-                                0 4px 7px
+                                0 4px 6px
                                 rgba(0,0,0,.45)
                             );
+
                         pointer-events:none;
                     "
                 ></div>
 
 
-                <!-- CENTER BUTTON -->
+                <!--
+                ======================================
+                    مرکز گردونه
+                ======================================
+                -->
 
                 <button
-                    id="wheelCenterButton"
+                    id="wheelCenter"
                     type="button"
+                    aria-label="چرخاندن گردونه"
                     style="
                         position:absolute;
-                        z-index:30;
+
+                        z-index:20;
 
                         top:50%;
                         left:50%;
@@ -133,8 +141,10 @@ export default {
                         transform:
                             translate(-50%,-50%);
 
-                        width:82px;
-                        height:82px;
+                        width:86px;
+                        height:86px;
+
+                        padding:0;
 
                         border-radius:50%;
 
@@ -145,23 +155,23 @@ export default {
                         background:
                             radial-gradient(
                                 circle at 35% 30%,
-                                #2c4358,
+                                #35536d,
                                 #142536
                             );
 
                         border:
                             5px solid
-                            rgba(255,255,255,.16);
+                            rgba(255,255,255,.2);
 
                         box-shadow:
                             0 8px 30px
-                            rgba(0,0,0,.5),
+                            rgba(0,0,0,.55),
 
                             inset
-                            0 2px 5px
+                            0 2px 8px
                             rgba(255,255,255,.12);
 
-                        font-size:36px;
+                        font-size:38px;
 
                         cursor:pointer;
 
@@ -176,31 +186,31 @@ export default {
             </div>
 
 
-            <!-- SPIN BUTTON -->
+            <!--
+            ==========================================
+                BUTTON
+            ==========================================
+            -->
 
             <button
-                id="wheelSpinButton"
+                id="wheelSpin"
                 class="primary"
                 type="button"
-                style="
-                    max-width:500px;
-                    margin:
-                        25px auto 0;
-                    display:block;
-                "
+                disabled
             >
-                🎡 بچرخون!
+                در حال آماده‌سازی گردونه...
             </button>
 
 
-            <!-- RESULT -->
+            <!--
+            ==========================================
+                RESULT
+            ==========================================
+            -->
 
             <div
                 id="wheelResult"
                 class="result"
-                style="
-                    margin-top:25px;
-                "
             ></div>
 
         </div>
@@ -212,13 +222,13 @@ export default {
 
 
         /*
-        ==================================================
-           ELEMENTS
-        ==================================================
+        ==========================================
+            ELEMENTS
+        ==========================================
         */
 
 
-        const wheelContainer =
+        const canvas =
             document.getElementById(
                 "wheelCanvas"
             );
@@ -226,13 +236,13 @@ export default {
 
         const spinButton =
             document.getElementById(
-                "wheelSpinButton"
+                "wheelSpin"
             );
 
 
         const centerButton =
             document.getElementById(
-                "wheelCenterButton"
+                "wheelCenter"
             );
 
 
@@ -243,9 +253,10 @@ export default {
 
 
         if(
-            !wheelContainer ||
+            !canvas ||
             !spinButton ||
-            !centerButton
+            !centerButton ||
+            !result
         ){
 
             return;
@@ -253,23 +264,57 @@ export default {
         }
 
 
+        const ctx =
+            canvas.getContext("2d");
+
+
+        let tools = [];
+
+        let rotation = 0;
+
+        let spinning = false;
+
+        let animationFrame = null;
+
 
         /*
-        ==================================================
-           LOAD TOOLS
-        ==================================================
+        ==========================================
+            COLORS
+        ==========================================
         */
 
-        let availableTools = [];
+
+        const colors = [
+
+            "#2b5278",
+            "#315b7c",
+            "#284967",
+            "#386685",
+            "#2d526f",
+            "#3d6d8d",
+            "#27455e",
+            "#426f8d",
+            "#31556e",
+            "#365f7c"
+
+        ];
 
 
-        async function loadWheelTools(){
+
+        /*
+        ==========================================
+            LOAD TOOLS
+        ==========================================
+        */
+
+
+        async function loadTools(){
 
             try{
 
                 const response =
                     await fetch(
-                        "../tools.json",
+                        "tools.json",
                         {
                             cache:"no-store"
                         }
@@ -289,48 +334,82 @@ export default {
                     await response.json();
 
 
+                /*
+                ----------------------------------
+                    تمام ابزارها
+                ----------------------------------
+                */
+
                 const modules =
                     await Promise.all(
 
                         files.map(
-                            file =>
-                                import(
-                                    `../tools/${file}?wheel=${Date.now()}`
-                                )
+                            async file => {
+
+                                try{
+
+                                    const module =
+                                        await import(
+                                            `./tools/${file}?wheel=${Date.now()}`
+                                        );
+
+                                    return (
+                                        module.default ||
+                                        module.tool
+                                    );
+
+                                }
+
+                                catch(error){
+
+                                    console.error(
+                                        "Wheel tool load error:",
+                                        file,
+                                        error
+                                    );
+
+                                    return null;
+
+                                }
+
+                            }
                         )
 
                     );
 
 
-                availableTools =
+                tools =
                     modules
-
-                        .map(
-                            module =>
-                                module.default ||
-                                module.tool
-                        )
-
+                        .filter(Boolean)
                         .filter(
                             tool =>
-                                tool &&
-                                tool.id &&
                                 tool.id !== "wheel"
                         );
 
 
                 if(
-                    availableTools.length === 0
+                    tools.length === 0
                 ){
 
                     throw new Error(
-                        "No tools found"
+                        "No tools loaded"
                     );
 
                 }
 
 
-                createWheel();
+                setupCanvas();
+
+
+                spinButton.disabled =
+                    false;
+
+
+                spinButton.innerHTML =
+                    "🎡 بچرخون!";
+
+
+                drawWheel();
 
 
             }
@@ -338,34 +417,34 @@ export default {
             catch(error){
 
                 console.error(
-                    "Wheel tools error:",
+                    "Wheel error:",
                     error
                 );
 
 
-                wheelContainer.innerHTML = `
+                spinButton.disabled =
+                    true;
 
-                    <div
-                        style="
-                            height:100%;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            text-align:center;
-                            padding:30px;
-                            color:var(--muted);
-                        "
-                    >
 
-                        ⚠️
+                spinButton.innerHTML =
+                    "خطا در بارگذاری گردونه";
 
-                        <br>
 
+                canvas.style.display =
+                    "none";
+
+
+                result.innerHTML = `
+
+                    <p>
                         ابزارها قابل بارگذاری نیستند.
-
-                    </div>
+                    </p>
 
                 `;
+
+                result.classList.add(
+                    "show"
+                );
 
             }
 
@@ -374,219 +453,619 @@ export default {
 
 
         /*
-        ==================================================
-           WHEEL COLORS
-        ==================================================
+        ==========================================
+            CANVAS SIZE
+        ==========================================
         */
 
 
-        const wheelColors = [
+        function setupCanvas(){
 
-            "#2b5278",
-            "#344f68",
-            "#385d78",
-            "#29445c",
-            "#3b5870",
-            "#31536f",
-            "#263f55",
-            "#42657e"
-
-        ];
+            const rect =
+                canvas.getBoundingClientRect();
 
 
-
-        /*
-        ==================================================
-           CREATE WHEEL
-        ==================================================
-        */
-
-
-        let wheel = null;
-
-
-        function createWheel(){
-
-
-            const items =
-                availableTools.map(
-                    (tool,index) => ({
-
-                        label:
-                            tool.title || tool.id,
-
-                        backgroundColor:
-                            wheelColors[
-                                index %
-                                wheelColors.length
-                            ],
-
-                        labelColor:
-                            "#ffffff",
-
-                        value:
-                            tool,
-
-                        weight:1
-
-                    })
+            const size =
+                Math.max(
+                    300,
+                    Math.floor(
+                        rect.width
+                    )
                 );
 
 
-
-            wheel = new Wheel(
-
-                wheelContainer,
-
-                {
-
-                    items:items,
+            const ratio =
+                window.devicePixelRatio || 1;
 
 
-                    /*
-                    ----------------------------------
-                       GENERAL
-                    ----------------------------------
-                    */
-
-                    radius:0.94,
-
-                    borderWidth:2,
-
-                    borderColor:
-                        "rgba(255,255,255,.16)",
-
-                    lineWidth:1.5,
-
-                    lineColor:
-                        "rgba(255,255,255,.20)",
+            canvas.width =
+                size * ratio;
 
 
-                    /*
-                    ----------------------------------
-                       LABELS
-                    ----------------------------------
-                    */
-
-                    itemLabelFont:
-                        "Tahoma, Arial, sans-serif",
-
-                    itemLabelAlign:
-                        "right",
-
-                    itemLabelColors:[
-                        "#ffffff"
-                    ],
-
-                    itemLabelFontSizeMax:
-                        24,
-
-                    itemLabelRadius:
-                        0.78,
-
-                    itemLabelRadiusMax:
-                        0.34,
-
-                    itemLabelRotation:
-                        0,
-
-                    itemLabelBaselineOffset:
-                        0,
+            canvas.height =
+                size * ratio;
 
 
-                    /*
-                    ----------------------------------
-                       POINTER
-                    ----------------------------------
-                    */
-
-                    pointerAngle:
-                        0,
-
-
-                    /*
-                    ----------------------------------
-                       QUALITY
-                    ----------------------------------
-                    */
-
-                    pixelRatio:
-                        window.devicePixelRatio || 1,
-
-
-                    /*
-                    ----------------------------------
-                       INTERACTION
-                    ----------------------------------
-                    */
-
-                    isInteractive:false
-
-                }
-
+            ctx.setTransform(
+                ratio,
+                0,
+                0,
+                ratio,
+                0,
+                0
             );
-
-
-            /*
-            ----------------------------------
-               RESULT AFTER SPIN
-            ----------------------------------
-            */
-
-
-            wheel.onRest = event => {
-
-                const index =
-                    event.currentIndex;
-
-
-                const selectedTool =
-                    availableTools[index];
-
-
-                if(!selectedTool){
-
-                    return;
-
-                }
-
-
-                showWinner(
-                    selectedTool
-                );
-
-            };
-
-
-            /*
-            ----------------------------------
-               PRELOAD READY
-            ----------------------------------
-            */
-
-            spinButton.disabled = false;
 
         }
 
 
 
         /*
-        ==================================================
-           SPIN
-        ==================================================
+        ==========================================
+            GET SIZE
+        ==========================================
         */
 
 
-        let spinning = false;
+        function getSize(){
+
+            return (
+                canvas.clientWidth ||
+                500
+            );
+
+        }
 
 
-        function spinWheel(){
+
+        /*
+        ==========================================
+            DRAW WHEEL
+        ==========================================
+        */
+
+
+        function drawWheel(){
+
+            if(
+                !tools.length
+            ){
+
+                return;
+
+            }
+
+
+            const size =
+                getSize();
+
+
+            const center =
+                size / 2;
+
+
+            const radius =
+                size * 0.46;
+
+
+            ctx.clearRect(
+                0,
+                0,
+                size,
+                size
+            );
+
+
+            ctx.save();
+
+
+            ctx.translate(
+                center,
+                center
+            );
+
+
+            ctx.rotate(
+                rotation
+            );
+
+
+            const slice =
+                (
+                    Math.PI * 2
+                ) /
+                tools.length;
+
+
+            /*
+            ----------------------------------
+                OUTER SHADOW
+            ----------------------------------
+            */
+
+            ctx.beginPath();
+
+            ctx.arc(
+                0,
+                0,
+                radius + 4,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.shadowColor =
+                "rgba(0,0,0,.5)";
+
+            ctx.shadowBlur =
+                25;
+
+            ctx.fillStyle =
+                "#101c29";
+
+            ctx.fill();
+
+
+            ctx.shadowBlur =
+                0;
+
+
+
+            /*
+            ----------------------------------
+                SLICES
+            ----------------------------------
+            */
+
+
+            tools.forEach(
+                (tool,index) => {
+
+                    const start =
+                        -Math.PI / 2 +
+                        index * slice;
+
+
+                    const end =
+                        start + slice;
+
+
+                    /*
+                    ------------------------------
+                        SECTOR
+                    ------------------------------
+                    */
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(
+                        0,
+                        0
+                    );
+
+                    ctx.arc(
+                        0,
+                        0,
+                        radius,
+                        start,
+                        end
+                    );
+
+                    ctx.closePath();
+
+
+                    ctx.fillStyle =
+                        colors[
+                            index %
+                            colors.length
+                        ];
+
+
+                    ctx.fill();
+
+
+                    /*
+                    ------------------------------
+                        SECTOR BORDER
+                    ------------------------------
+                    */
+
+                    ctx.strokeStyle =
+                        "rgba(255,255,255,.22)";
+
+                    ctx.lineWidth =
+                        1.5;
+
+                    ctx.stroke();
+
+
+
+                    /*
+                    ------------------------------
+                        TEXT
+                    ------------------------------
+                    */
+
+
+                    drawLabel(
+                        tool,
+                        index,
+                        slice,
+                        radius
+                    );
+
+                }
+            );
+
+
+            /*
+            ----------------------------------
+                OUTER BORDER
+            ----------------------------------
+            */
+
+            ctx.beginPath();
+
+            ctx.arc(
+                0,
+                0,
+                radius,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.strokeStyle =
+                "rgba(255,255,255,.28)";
+
+            ctx.lineWidth =
+                3;
+
+            ctx.stroke();
+
+
+            ctx.restore();
+
+
+            /*
+            ----------------------------------
+                CENTER RING
+            ----------------------------------
+            */
+
+            ctx.beginPath();
+
+            ctx.arc(
+                center,
+                center,
+                48,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.strokeStyle =
+                "rgba(255,255,255,.16)";
+
+            ctx.lineWidth =
+                2;
+
+            ctx.stroke();
+
+        }
+
+
+
+        /*
+        ==========================================
+            DRAW LABEL
+        ==========================================
+        */
+
+
+        function drawLabel(
+            tool,
+            index,
+            slice,
+            radius
+        ){
+
+            const size =
+                getSize();
+
+
+            const center =
+                size / 2;
+
+
+            const middleAngle =
+                -Math.PI / 2 +
+                index * slice +
+                slice / 2;
+
+
+            /*
+            ----------------------------------
+                TEXT POSITION
+            ----------------------------------
+            */
+
+            const textRadius =
+                radius * 0.68;
+
+
+            const x =
+                Math.cos(
+                    middleAngle
+                ) *
+                textRadius;
+
+
+            const y =
+                Math.sin(
+                    middleAngle
+                ) *
+                textRadius;
+
+
+            ctx.save();
+
+
+            ctx.translate(
+                center + x,
+                center + y
+            );
+
+
+            /*
+            ----------------------------------
+                TEXT ROTATION
+            ----------------------------------
+            */
+
+            let textAngle =
+                middleAngle;
+
+
+            /*
+            متن همیشه خوانا باقی می‌ماند
+            */
+
+            if(
+                textAngle >
+                Math.PI / 2 &&
+                textAngle <
+                Math.PI * 1.5
+            ){
+
+                textAngle += Math.PI;
+
+            }
+
+
+            ctx.rotate(
+                textAngle
+            );
+
+
+            /*
+            ----------------------------------
+                TEXT
+            ----------------------------------
+            */
+
+            const title =
+                tool.title ||
+                tool.id;
+
+
+            const maxWidth =
+                Math.max(
+                    65,
+                    radius *
+                    slice *
+                    0.82
+                );
+
+
+            let fontSize =
+                Math.min(
+                    20,
+                    Math.max(
+                        11,
+                        radius *
+                        slice *
+                        0.23
+                    )
+                );
+
+
+            ctx.font =
+                `bold ${fontSize}px Tahoma, Arial, sans-serif`;
+
+
+            ctx.textAlign =
+                "center";
+
+
+            ctx.textBaseline =
+                "middle";
+
+
+            ctx.fillStyle =
+                "#ffffff";
+
+
+            ctx.shadowColor =
+                "rgba(0,0,0,.45)";
+
+
+            ctx.shadowBlur =
+                4;
+
+
+            /*
+            ----------------------------------
+                WRAP TEXT
+            ----------------------------------
+            */
+
+            const words =
+                String(title)
+                    .split(/\s+/);
+
+
+            const lines = [];
+
+            let line = "";
+
+
+            words.forEach(
+                word => {
+
+                    const test =
+                        line
+                        ? line + " " + word
+                        : word;
+
+
+                    if(
+                        ctx.measureText(
+                            test
+                        ).width >
+                        maxWidth
+                    ){
+
+                        if(line){
+
+                            lines.push(
+                                line
+                            );
+
+                        }
+
+                        line =
+                            word;
+
+                    }
+
+                    else{
+
+                        line =
+                            test;
+
+                    }
+
+                }
+            );
+
+
+            if(line){
+
+                lines.push(
+                    line
+                );
+
+            }
+
+
+            /*
+            ----------------------------------
+                محدود کردن تعداد خطوط
+            ----------------------------------
+            */
+
+            const maxLines =
+                slice < 0.45
+                ? 2
+                : 3;
 
 
             if(
+                lines.length >
+                maxLines
+            ){
+
+                lines.length =
+                    maxLines;
+
+
+                let last =
+                    lines[
+                        maxLines - 1
+                    ];
+
+
+                if(
+                    last.length > 2
+                ){
+
+                    last =
+                        last.slice(
+                            0,
+                            Math.max(
+                                1,
+                                last.length - 1
+                            )
+                        ) +
+                        "…";
+
+                }
+
+
+                lines[
+                    maxLines - 1
+                ] =
+                    last;
+
+            }
+
+
+            const lineHeight =
+                fontSize * 1.25;
+
+
+            const totalHeight =
+                lines.length *
+                lineHeight;
+
+
+            lines.forEach(
+                (text,lineIndex) => {
+
+                    ctx.fillText(
+
+                        text,
+
+                        0,
+
+                        (
+                            lineIndex *
+                            lineHeight
+                        ) -
+                        totalHeight / 2 +
+                        lineHeight / 2
+
+                    );
+
+                }
+            );
+
+
+            ctx.restore();
+
+        }
+
+
+
+        /*
+        ==========================================
+            SPIN
+        ==========================================
+        */
+
+
+        function spin(){
+
+            if(
                 spinning ||
-                !wheel ||
-                availableTools.length === 0
+                !tools.length
             ){
 
                 return;
@@ -597,10 +1076,12 @@ export default {
             spinning = true;
 
 
-            spinButton.disabled = true;
+            spinButton.disabled =
+                true;
 
 
-            centerButton.disabled = true;
+            centerButton.disabled =
+                true;
 
 
             result.classList.remove(
@@ -608,41 +1089,248 @@ export default {
             );
 
 
-            result.innerHTML = "";
+            result.innerHTML =
+                "";
 
 
             /*
             ----------------------------------
-               RANDOM TOOL
+                RANDOM WINNER
             ----------------------------------
             */
 
-
-            const randomIndex =
+            const winnerIndex =
                 Math.floor(
                     Math.random() *
-                    availableTools.length
+                    tools.length
                 );
 
 
+            const slice =
+                (
+                    Math.PI * 2
+                ) /
+                tools.length;
+
+
             /*
             ----------------------------------
-               SPIN
+                TARGET
             ----------------------------------
             */
 
-            wheel.spinToItem(
+            /*
+                فلش همیشه بالا قرار دارد.
 
-                randomIndex,
+                مرکز قطاع برنده را به
+                بالای گردونه می‌آوریم.
+            */
 
-                5000,
+            const currentNormalized =
+                (
+                    rotation %
+                    (Math.PI * 2)
+                );
 
-                true,
 
-                7,
+            const targetCenter =
+                winnerIndex * slice +
+                slice / 2;
 
-                1
 
+            let targetRotation =
+                -targetCenter;
+
+
+            /*
+            ----------------------------------
+                فاصله چرخش
+            ----------------------------------
+            */
+
+            let delta =
+                targetRotation -
+                currentNormalized;
+
+
+            while(
+                delta < 0
+            ){
+
+                delta +=
+                    Math.PI * 2;
+
+            }
+
+
+            /*
+            حداقل ۶ دور
+            */
+
+            const fullTurns =
+                6 +
+                Math.floor(
+                    Math.random() * 3
+                );
+
+
+            const finalRotation =
+                rotation +
+                delta +
+                fullTurns *
+                Math.PI *
+                2;
+
+
+            const startRotation =
+                rotation;
+
+
+            const duration =
+                5200 +
+                Math.random() *
+                800;
+
+
+            const startTime =
+                performance.now();
+
+
+            /*
+            ----------------------------------
+                EASING
+            ----------------------------------
+            */
+
+            function easeOut(t){
+
+                return 1 -
+                    Math.pow(
+                        1 - t,
+                        5
+                    );
+
+            }
+
+
+
+            /*
+            ----------------------------------
+                ANIMATION
+            ----------------------------------
+            */
+
+            function animate(
+                now
+            ){
+
+                const elapsed =
+                    now -
+                    startTime;
+
+
+                const progress =
+                    Math.min(
+                        elapsed /
+                        duration,
+                        1
+                    );
+
+
+                const eased =
+                    easeOut(
+                        progress
+                    );
+
+
+                rotation =
+                    startRotation +
+                    (
+                        finalRotation -
+                        startRotation
+                    ) *
+                    eased;
+
+
+                drawWheel();
+
+
+                if(
+                    progress < 1
+                ){
+
+                    animationFrame =
+                        requestAnimationFrame(
+                            animate
+                        );
+
+                }
+
+                else{
+
+                    rotation =
+                        finalRotation;
+
+
+                    drawWheel();
+
+
+                    finishSpin(
+                        winnerIndex
+                    );
+
+                }
+
+            }
+
+
+            animationFrame =
+                requestAnimationFrame(
+                    animate
+                );
+
+        }
+
+
+
+        /*
+        ==========================================
+            FINISH
+        ==========================================
+        */
+
+
+        function finishSpin(
+            winnerIndex
+        ){
+
+            spinning =
+                false;
+
+
+            spinButton.disabled =
+                false;
+
+
+            centerButton.disabled =
+                false;
+
+
+            const tool =
+                tools[
+                    winnerIndex
+                ];
+
+
+            if(!tool){
+
+                return;
+
+            }
+
+
+            showResult(
+                tool
             );
 
         }
@@ -650,14 +1338,15 @@ export default {
 
 
         /*
-        ==================================================
-           SHOW WINNER
-        ==================================================
+        ==========================================
+            SHOW RESULT
+        ==========================================
         */
 
 
-        function showWinner(tool){
-
+        function showResult(
+            tool
+        ){
 
             const icon =
                 tool.icon ||
@@ -682,7 +1371,7 @@ export default {
                         font-size:14px;
                     "
                 >
-                    گردونه تصمیمش رو گرفت...
+                    🎯 گردونه انتخاب کرد:
                 </div>
 
 
@@ -690,11 +1379,14 @@ export default {
                     style="
                         font-size:28px;
                         font-weight:bold;
-                        margin:10px 0;
+                        margin:
+                            10px 0
+                            15px;
                     "
                 >
                     ${escapeHTML(
-                        tool.title || tool.id
+                        tool.title ||
+                        tool.id
                     )}
                 </div>
 
@@ -705,21 +1397,19 @@ export default {
                         line-height:2;
                     "
                 >
-                    امروز نوبت این ابزار بدبختیه.
+                    دیگه انتخاب با تو نیست.
+                    برو ببین این ابزار چه بلایی سرت میاره. 💀
                 </p>
 
 
                 <button
-                    id="wheelOpenWinner"
+                    id="openWheelTool"
                     class="primary"
                     type="button"
-                    style="
-                        margin-top:15px;
-                    "
                 >
                     ${escapeHTML(
                         tool.buttonText ||
-                        "بریم سراغش"
+                        "باز کردن ابزار"
                     )}
                 </button>
 
@@ -733,75 +1423,60 @@ export default {
 
             const openButton =
                 document.getElementById(
-                    "wheelOpenWinner"
+                    "openWheelTool"
                 );
 
 
             if(openButton){
 
-                openButton.onclick = () => {
+                openButton.onclick =
+                    () => {
 
-                    openSelectedTool(
-                        tool
-                    );
+                        openTool(
+                            tool
+                        );
 
-                };
+                    };
 
             }
-
-
-            spinning = false;
-
-
-            spinButton.disabled = false;
-
-
-            centerButton.disabled = false;
 
         }
 
 
 
         /*
-        ==================================================
-           OPEN SELECTED TOOL
-        ==================================================
+        ==========================================
+            OPEN TOOL
+        ==========================================
         */
 
 
-        function openSelectedTool(tool){
+        function openTool(
+            tool
+        ){
 
-
-            /*
-            app.js خودش دکمه ابزار انتخاب‌شده
-            را ساخته و listener به آن وصل کرده.
-
-            بنابراین به جای دست زدن به app.js،
-            همان دکمه موجود را پیدا می‌کنیم
-            و کلیک می‌کنیم.
-            */
-
-
-            const button =
-                document.querySelector(
-                    `[data-tool="${CSS.escape(tool.id)}"]`
+            const buttons =
+                document.querySelectorAll(
+                    "[data-tool]"
                 );
 
 
-            if(button){
+            for(
+                const button of buttons
+            ){
 
-                button.click();
+                if(
+                    button.dataset.tool ===
+                    tool.id
+                ){
 
-                return;
+                    button.click();
+
+                    return;
+
+                }
 
             }
-
-
-            /*
-            ----------------------------------
-               Fallback
-            ----------------------------------
-            */
 
 
             console.warn(
@@ -814,25 +1489,25 @@ export default {
 
 
         /*
-        ==================================================
-           BUTTON EVENTS
-        ==================================================
+        ==========================================
+            EVENTS
+        ==========================================
         */
 
 
         spinButton.onclick =
-            spinWheel;
+            spin;
 
 
         centerButton.onclick =
-            spinWheel;
+            spin;
 
 
 
         /*
-        ==================================================
-           CENTER BUTTON HOVER
-        ==================================================
+        ==========================================
+            CENTER HOVER
+        ==========================================
         */
 
 
@@ -840,16 +1515,12 @@ export default {
             "mouseenter",
             () => {
 
-                if(!spinning){
+                if(
+                    !spinning
+                ){
 
                     centerButton.style.transform =
                         "translate(-50%,-50%) scale(1.08)";
-
-                    centerButton.style.boxShadow =
-                        `
-                        0 10px 35px rgba(0,0,0,.55),
-                        inset 0 2px 5px rgba(255,255,255,.15)
-                        `;
 
                 }
 
@@ -864,11 +1535,47 @@ export default {
                 centerButton.style.transform =
                     "translate(-50%,-50%) scale(1)";
 
-                centerButton.style.boxShadow =
-                    `
-                    0 8px 30px rgba(0,0,0,.5),
-                    inset 0 2px 5px rgba(255,255,255,.12)
-                    `;
+            }
+        );
+
+
+
+        /*
+        ==========================================
+            RESIZE
+        ==========================================
+        */
+
+
+        let resizeTimer;
+
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                clearTimeout(
+                    resizeTimer
+                );
+
+
+                resizeTimer =
+                    setTimeout(
+                        () => {
+
+                            if(
+                                !spinning
+                            ){
+
+                                setupCanvas();
+
+                                drawWheel();
+
+                            }
+
+                        },
+                        150
+                    );
 
             }
         );
@@ -876,16 +1583,17 @@ export default {
 
 
         /*
-        ==================================================
-           START
-        ==================================================
+        ==========================================
+            START
+        ==========================================
         */
 
 
-        spinButton.disabled = true;
+        spinButton.disabled =
+            true;
 
 
-        loadWheelTools();
+        loadTools();
 
     }
 
