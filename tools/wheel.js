@@ -7,202 +7,631 @@ export default {
     title: "گردونه بدبختی",
 
     description:
-        "بذار شانس تصمیم بگیره امروز کدوم ابزار بدبختی رو باید امتحان کنی.",
+        "بچرخون ببین امروز کدوم ابزار بدبختی قراره سراغت بیاد.",
 
     buttonText:
-        "چرخوندن گردونه 🎡",
+        "بچرخون گردونه 🎡",
 
 
     html: `
 
-        <div
-            style="
-                text-align:center;
-            "
-        >
+        <style>
 
-            <h2>
-                🎡 گردونه بدبختی
-            </h2>
+            .wheel-wrapper {
 
-            <p class="desc">
-                نمی‌دونی کدوم ابزار رو انتخاب کنی؟
-                <br>
-                بذار خود گردونه برات تصمیم بگیره. 💀
-            </p>
+                width: 100%;
+
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+
+                justify-content: center;
+
+                margin-top: 10px;
+
+                overflow: hidden;
+
+            }
 
 
-            <div
-                id="wheelStatus"
-                style="
-                    margin:
-                        15px
-                        0
-                        20px;
+            .wheel-title {
 
-                    color:
-                        var(--muted);
+                text-align: center;
 
-                    font-size:
-                        14px;
+                margin-bottom: 25px;
 
-                    min-height:
-                        22px;
-                "
-            >
-                در حال آماده‌سازی گردونه...
+            }
+
+
+            .wheel-title h3 {
+
+                margin: 0 0 8px;
+
+                font-size: 24px;
+
+            }
+
+
+            .wheel-title p {
+
+                margin: 0;
+
+                color: var(--muted);
+
+                line-height: 1.8;
+
+                font-size: 14px;
+
+            }
+
+
+            .wheel-container {
+
+                position: relative;
+
+                width: min(620px, 94vw);
+
+                aspect-ratio: 1 / 1;
+
+                margin: 10px auto 25px;
+
+            }
+
+
+            .wheel-pointer {
+
+                position: absolute;
+
+                z-index: 20;
+
+                top: -7px;
+
+                left: 50%;
+
+                transform: translateX(-50%);
+
+                width: 0;
+
+                height: 0;
+
+                border-left: 18px solid transparent;
+
+                border-right: 18px solid transparent;
+
+                border-top: 42px solid var(--red);
+
+                filter:
+
+                    drop-shadow(
+
+                        0 5px 8px
+
+                        rgba(0,0,0,.45)
+
+                    );
+
+            }
+
+
+            .wheel-pointer::after {
+
+                content: "";
+
+                position: absolute;
+
+                top: -42px;
+
+                left: -9px;
+
+                width: 18px;
+
+                height: 18px;
+
+                background: var(--red);
+
+                border-radius: 50%;
+
+            }
+
+
+            .wheel {
+
+                position: absolute;
+
+                inset: 8px;
+
+                border-radius: 50%;
+
+                overflow: hidden;
+
+                border:
+
+                    7px solid
+
+                    rgba(255,255,255,.12);
+
+                box-shadow:
+
+                    0 20px 60px
+
+                    rgba(0,0,0,.45),
+
+                    inset 0 0 0 2px
+
+                    rgba(255,255,255,.08);
+
+                transform: rotate(0deg);
+
+                transition:
+
+                    transform
+
+                    5.5s
+
+                    cubic-bezier(.12,.72,.08,1);
+
+                background: #182b3d;
+
+            }
+
+
+            .wheel svg {
+
+                width: 100%;
+
+                height: 100%;
+
+                display: block;
+
+                overflow: visible;
+
+            }
+
+
+            .wheel-segment {
+
+                stroke:
+
+                    rgba(255,255,255,.22);
+
+                stroke-width: 1.5;
+
+            }
+
+
+            .wheel-label {
+
+                fill: white;
+
+                font-family:
+
+                    Tahoma,
+
+                    Arial,
+
+                    sans-serif;
+
+                font-weight: bold;
+
+                font-size: 12px;
+
+                text-anchor: middle;
+
+                dominant-baseline: middle;
+
+                pointer-events: none;
+
+            }
+
+
+            .wheel-label-small {
+
+                font-size: 10px;
+
+            }
+
+
+            .wheel-center {
+
+                position: absolute;
+
+                z-index: 15;
+
+                top: 50%;
+
+                left: 50%;
+
+                width: 88px;
+
+                height: 88px;
+
+                transform:
+
+                    translate(-50%, -50%);
+
+                border-radius: 50%;
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                background:
+
+                    radial-gradient(
+
+                        circle at 35% 30%,
+
+                        #304b63,
+
+                        #142434 70%
+
+                    );
+
+                border:
+
+                    5px solid
+
+                    rgba(255,255,255,.18);
+
+                box-shadow:
+
+                    0 8px 25px
+
+                    rgba(0,0,0,.5),
+
+                    inset 0 0 20px
+
+                    rgba(255,255,255,.08);
+
+                font-size: 42px;
+
+                user-select: none;
+
+            }
+
+
+            .wheel-center::after {
+
+                content: "";
+
+                position: absolute;
+
+                inset: -8px;
+
+                border-radius: 50%;
+
+                border:
+
+                    2px solid
+
+                    rgba(255,255,255,.08);
+
+            }
+
+
+            .wheel-spin {
+
+                width: 100%;
+
+                padding: 16px;
+
+                border-radius: 17px;
+
+                background:
+
+                    linear-gradient(
+
+                        135deg,
+
+                        var(--pink),
+
+                        #386c9d
+
+                    );
+
+                color: white;
+
+                font-size: 18px;
+
+                font-weight: bold;
+
+                box-shadow:
+
+                    0 10px 30px
+
+                    rgba(43,82,120,.3);
+
+                transition: .2s;
+
+            }
+
+
+            .wheel-spin:hover {
+
+                transform:
+
+                    translateY(-2px);
+
+                box-shadow:
+
+                    0 14px 35px
+
+                    rgba(43,82,120,.4);
+
+            }
+
+
+            .wheel-spin:active {
+
+                transform:
+
+                    scale(.98);
+
+            }
+
+
+            .wheel-spin:disabled {
+
+                opacity: .55;
+
+                cursor: not-allowed;
+
+                transform: none;
+
+            }
+
+
+            .wheel-result {
+
+                width: 100%;
+
+                margin-top: 22px;
+
+                padding: 22px;
+
+                border-radius: 22px;
+
+                background: #ffffff08;
+
+                border:
+
+                    1px solid
+
+                    #ffffff0d;
+
+                text-align: center;
+
+                display: none;
+
+            }
+
+
+            .wheel-result.show {
+
+                display: block;
+
+                animation:
+
+                    wheelResultAppear
+
+                    .4s
+
+                    ease;
+
+            }
+
+
+            @keyframes wheelResultAppear {
+
+                from {
+
+                    opacity: 0;
+
+                    transform:
+
+                        translateY(10px)
+
+                        scale(.97);
+
+                }
+
+                to {
+
+                    opacity: 1;
+
+                    transform:
+
+                        translateY(0)
+
+                        scale(1);
+
+                }
+
+            }
+
+
+            .wheel-result-icon {
+
+                font-size: 48px;
+
+                margin-bottom: 8px;
+
+            }
+
+
+            .wheel-result-title {
+
+                font-size: 24px;
+
+                font-weight: bold;
+
+                margin-bottom: 8px;
+
+            }
+
+
+            .wheel-result-text {
+
+                color: var(--muted);
+
+                font-size: 14px;
+
+                line-height: 1.9;
+
+                margin-bottom: 18px;
+
+            }
+
+
+            .wheel-open {
+
+                width: 100%;
+
+                padding: 14px;
+
+                border-radius: 15px;
+
+                background: var(--pink);
+
+                color: white;
+
+                font-weight: bold;
+
+                font-size: 16px;
+
+            }
+
+
+            @media(max-width:600px) {
+
+                .wheel-container {
+
+                    width: min(94vw, 430px);
+
+                }
+
+
+                .wheel {
+
+                    inset: 4px;
+
+                    border-width: 5px;
+
+                }
+
+
+                .wheel-center {
+
+                    width: 70px;
+
+                    height: 70px;
+
+                    font-size: 34px;
+
+                }
+
+
+                .wheel-label {
+
+                    font-size: 9px;
+
+                }
+
+
+                .wheel-label-small {
+
+                    font-size: 8px;
+
+                }
+
+
+                .wheel-pointer {
+
+                    border-left-width: 14px;
+
+                    border-right-width: 14px;
+
+                    border-top-width: 34px;
+
+                }
+
+
+                .wheel-pointer::after {
+
+                    top: -34px;
+
+                    left: -7px;
+
+                    width: 14px;
+
+                    height: 14px;
+
+                }
+
+            }
+
+        </style>
+
+
+        <h2>
+            🎡 گردونه بدبختی
+        </h2>
+
+
+        <p class="desc">
+            نمی‌دونی با کدوم ابزار شروع کنی؟
+            بذار خود بدبختی برات تصمیم بگیره. 💀
+        </p>
+
+
+        <div class="wheel-wrapper">
+
+            <div class="wheel-title">
+
+                <h3>
+                    🎯 شانست رو امتحان کن
+                </h3>
+
+                <p>
+                    گردونه یکی از ابزارها رو تصادفی برات انتخاب می‌کنه.
+                </p>
+
             </div>
 
 
-            <div
-                id="wheelStage"
-                style="
-                    position:relative;
+            <div class="wheel-container">
 
-                    width:
-                        min(
-                            100%,
-                            560px
-                        );
+                <div class="wheel-pointer"></div>
 
-                    aspect-ratio:
-                        1;
-
-                    margin:
-                        10px
-                        auto
-                        25px;
-
-                    display:flex;
-
-                    align-items:center;
-
-                    justify-content:center;
-                "
-            >
-
-                <!--
-                    فلش ثابت انتخاب
-                -->
 
                 <div
-                    style="
-                        position:absolute;
-
-                        z-index:10;
-
-                        top:-4px;
-
-                        left:50%;
-
-                        transform:
-                            translateX(-50%);
-
-                        width:0;
-                        height:0;
-
-                        border-left:
-                            17px
-                            solid
-                            transparent;
-
-                        border-right:
-                            17px
-                            solid
-                            transparent;
-
-                        border-top:
-                            32px
-                            solid
-                            var(--red);
-
-                        filter:
-                            drop-shadow(
-                                0
-                                4px
-                                8px
-                                rgba(
-                                    0,
-                                    0,
-                                    0,
-                                    .45
-                                )
-                            );
-
-                        pointer-events:none;
-                    "
-                ></div>
-
-
-                <canvas
+                    class="wheel"
                     id="badbakhtiWheel"
-                    style="
-                        display:block;
-
-                        width:100%;
-                        height:100%;
-
-                        border-radius:50%;
-
-                        filter:
-                            drop-shadow(
-                                0
-                                20px
-                                40px
-                                rgba(
-                                    0,
-                                    0,
-                                    0,
-                                    .35
-                                )
-                            );
-
-                        cursor:pointer;
-                    "
-                ></canvas>
-
-
-                <!--
-                    حلقه بیرونی
-                -->
-
-                <div
-                    style="
-                        position:absolute;
-
-                        inset:0;
-
-                        border-radius:50%;
-
-                        border:
-                            5px
-                            solid
-                            rgba(
-                                255,
-                                255,
-                                255,
-                                .10
-                            );
-
-                        pointer-events:none;
-                    "
                 ></div>
+
+
+                <div class="wheel-center">
+                    💀
+                </div>
 
             </div>
 
 
             <button
-                class="primary"
-                id="spinWheelBtn"
-                disabled
+                class="wheel-spin"
+                id="wheelSpinBtn"
             >
-                آماده‌سازی...
+                🎡 بچرخون!
             </button>
 
 
             <div
+                class="wheel-result"
                 id="wheelResult"
-                class="result"
             ></div>
 
         </div>
@@ -212,21 +641,15 @@ export default {
 
     init() {
 
-        const canvas =
+        const wheel =
             document.getElementById(
                 "badbakhtiWheel"
             );
 
 
-        const button =
+        const spinButton =
             document.getElementById(
-                "spinWheelBtn"
-            );
-
-
-        const status =
-            document.getElementById(
-                "wheelStatus"
+                "wheelSpinBtn"
             );
 
 
@@ -236,24 +659,11 @@ export default {
             );
 
 
-        if(
-            !canvas ||
-            !button
-        ){
-            return;
-        }
-
-
-        const ctx =
-            canvas.getContext(
-                "2d"
-            );
-
-
-        if(!ctx){
-
-            status.textContent =
-                "مرورگرت از Canvas پشتیبانی نمی‌کند.";
+        if (
+            !wheel ||
+            !spinButton ||
+            !result
+        ) {
 
             return;
 
@@ -261,200 +671,585 @@ export default {
 
 
         /*
-        =================================
-        تنظیمات
-        =================================
+        =========================
+        ابزارهای گردونه
+        =========================
         */
 
-        const TAU =
-            Math.PI * 2;
+        const wheelTools = [
 
+            {
+                id: "age",
+                title: "سن یک بدبخت",
+                icon: "🎂"
+            },
 
-        let items = [];
+            {
+                id: "badbakhti",
+                title: "چقدر بدبختی؟",
+                icon: "💀"
+            },
 
+            {
+                id: "block",
+                title: "بلاک شده‌ای؟",
+                icon: "🚫"
+            },
 
-        let rotation = 0;
+            {
+                id: "brain",
+                title: "مغزت چه وضعیه؟",
+                icon: "🧠"
+            },
 
+            {
+                id: "decision",
+                title: "تصمیم‌گیر",
+                icon: "🤔"
+            },
 
-        let spinning = false;
+            {
+                id: "dice",
+                title: "تاس بدبختی",
+                icon: "🎲"
+            },
 
+            {
+                id: "fal",
+                title: "فال بدبختی",
+                icon: "🔮"
+            },
 
-        let animationFrame = null;
+            {
+                id: "friend",
+                title: "دوست خوب یا بد؟",
+                icon: "👥"
+            },
 
+            {
+                id: "life",
+                title: "چقدر وقت داری؟",
+                icon: "⏳"
+            },
 
-        let audioContext = null;
+            {
+                id: "madrak",
+                title: "مدرک بدبختی",
+                icon: "📜"
+            },
 
+            {
+                id: "message",
+                title: "بهش پیام بدم؟",
+                icon: "💬"
+            },
 
-        let lastSegment = -1;
+            {
+                id: "migration",
+                title: "مهاجرت",
+                icon: "✈️"
+            },
 
+            {
+                id: "money",
+                title: "پولم چقدر می‌ارزه؟",
+                icon: "💸"
+            },
 
-        let cssSize = 0;
+            {
+                id: "personality",
+                title: "شخصیتت چیه؟",
+                icon: "🧩"
+            },
 
+            {
+                id: "phone",
+                title: "اعتیاد به گوشی",
+                icon: "📱"
+            },
 
-        /*
-        =================================
-        گرفتن ابزارها
-        =================================
+            {
+                id: "situationship",
+                title: "رابطه‌تون چیه؟",
+                icon: "❤️"
+            },
 
-        ابزارها مستقیماً از همان
-        tools.json پروژه خوانده می‌شوند.
+            {
+                id: "sleep",
+                title: "الان باید بخوابم؟",
+                icon: "😴"
+            },
 
-        wheel.js خودش دوباره import نمی‌شود
-        تا حلقه import ایجاد نشود.
-        =================================
-        */
+            {
+                id: "versus",
+                title: "کدومتون بدبخت‌ترید؟",
+                icon: "⚔️"
+            },
 
-
-        async function loadWheelItems(){
-
-            try{
-
-                const response =
-                    await fetch(
-                        "../tools.json",
-                        {
-                            cache:
-                                "no-store"
-                        }
-                    );
-
-
-                if(!response.ok){
-
-                    throw new Error(
-                        "tools.json not found"
-                    );
-
-                }
-
-
-                const files =
-                    await response.json();
-
-
-                const wheelFiles =
-                    files.filter(
-                        file => {
-
-                            const clean =
-                                String(file)
-                                    .split("?")[0]
-                                    .toLowerCase();
-
-                            return (
-                                clean !==
-                                "wheel.js"
-                            );
-
-                        }
-                    );
-
-
-                const modules =
-                    await Promise.all(
-
-                        wheelFiles.map(
-                            async file => {
-
-                                try{
-
-                                    const module =
-                                        await import(
-                                            `../tools/${file}?wheel=${Date.now()}`
-                                        );
-
-                                    return (
-                                        module.default ||
-                                        module.tool ||
-                                        null
-                                    );
-
-                                }
-
-                                catch(error){
-
-                                    console.warn(
-                                        "Wheel could not load:",
-                                        file,
-                                        error
-                                    );
-
-                                    return null;
-
-                                }
-
-                            }
-                        )
-
-                    );
-
-
-                items =
-                    modules
-                        .filter(Boolean)
-                        .filter(
-                            tool =>
-                                tool.id &&
-                                tool.title
-                        );
-
-
-                if(
-                    items.length <
-                    2
-                ){
-
-                    throw new Error(
-                        "Not enough tools"
-                    );
-
-                }
-
-
-                drawWheel();
-
-
-                status.textContent =
-                    `${persianNumber(items.length)} ابزار آماده‌ان؛ ببینیم قرعه به نام کدوم بدبخت می‌افته. 💀`;
-
-
-                button.disabled =
-                    false;
-
-
-                button.textContent =
-                    "چرخوندن گردونه 🎡";
-
-
+            {
+                id: "why-single",
+                title: "چرا سینگلی؟",
+                icon: "💔"
             }
 
-            catch(error){
+        ];
 
-                console.error(
-                    "Wheel error:",
-                    error
+
+        /*
+        =========================
+        ساخت SVG گردونه
+        =========================
+        */
+
+        const size = 1000;
+
+        const center = size / 2;
+
+        const radius = 465;
+
+        const count =
+            wheelTools.length;
+
+        const angle =
+            360 / count;
+
+
+        let svg = `
+
+            <svg
+                viewBox="0 0 ${size} ${size}"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+
+                <defs>
+
+                    <filter
+                        id="wheelShadow"
+                        x="-30%"
+                        y="-30%"
+                        width="160%"
+                        height="160%"
+                    >
+
+                        <filter
+                            id="none"
+                        >
+                        </filter>
+
+                    </filter>
+
+                </defs>
+
+                <g
+                    transform="rotate(-90 ${center} ${center})"
+                >
+        `;
+
+
+        /*
+        =========================
+        رنگ قطاع‌ها
+        =========================
+        */
+
+        const segmentColors = [
+
+            "#2b5278",
+            "#23496d",
+            "#315f87",
+            "#1f405f",
+            "#396d96",
+            "#274f72"
+
+        ];
+
+
+        /*
+        =========================
+        تبدیل مختصات
+        =========================
+        */
+
+        function polarToCartesian(
+            cx,
+            cy,
+            r,
+            degrees
+        ) {
+
+            const radians =
+                degrees *
+                Math.PI /
+                180;
+
+            return {
+
+                x:
+                    cx +
+                    r *
+                    Math.cos(radians),
+
+                y:
+                    cy +
+                    r *
+                    Math.sin(radians)
+
+            };
+
+        }
+
+
+        function createArc(
+            startAngle,
+            endAngle
+        ) {
+
+            const start =
+                polarToCartesian(
+                    center,
+                    center,
+                    radius,
+                    startAngle
                 );
 
 
-                status.textContent =
-                    "خطا در بارگذاری گردونه";
+            const end =
+                polarToCartesian(
+                    center,
+                    center,
+                    radius,
+                    endAngle
+                );
+
+
+            const largeArc =
+                endAngle - startAngle
+                > 180
+                ? 1
+                : 0;
+
+
+            return [
+
+                "M",
+                center,
+                center,
+
+                "L",
+                start.x,
+                start.y,
+
+                "A",
+                radius,
+                radius,
+                0,
+                largeArc,
+                1,
+                end.x,
+                end.y,
+
+                "Z"
+
+            ].join(" ");
+
+        }
+
+
+        /*
+        =========================
+        ساخت قطاع‌ها
+        =========================
+        */
+
+        wheelTools.forEach(
+            (tool, index) => {
+
+                const start =
+                    index * angle;
+
+
+                const end =
+                    start + angle;
+
+
+                const middle =
+                    start +
+                    angle / 2;
+
+
+                const color =
+                    segmentColors[
+                        index %
+                        segmentColors.length
+                    ];
+
+
+                svg += `
+
+                    <path
+                        class="wheel-segment"
+                        d="${createArc(
+                            start,
+                            end
+                        )}"
+                        fill="${color}"
+                    ></path>
+
+                `;
+
+
+                /*
+                =========================
+                جای متن
+                =========================
+                */
+
+                const textRadius =
+                    radius * .68;
+
+
+                const textPoint =
+                    polarToCartesian(
+                        center,
+                        center,
+                        textRadius,
+                        middle
+                    );
+
+
+                /*
+                متن را در راستای شعاع قرار می‌دهیم.
+                */
+
+                const textRotation =
+                    middle;
+
+
+                const shortTitle =
+                    tool.title.length > 17
+                    ? tool.title.slice(
+                        0,
+                        16
+                    ) + "…"
+                    : tool.title;
+
+
+                svg += `
+
+                    <g
+                        transform="
+                            translate(
+                                ${textPoint.x}
+                                ${textPoint.y}
+                            )
+                            rotate(
+                                ${textRotation}
+                            )
+                        "
+                    >
+
+                        <text
+                            class="
+                                wheel-label
+                                ${
+                                    shortTitle.length > 13
+                                    ? "wheel-label-small"
+                                    : ""
+                                }
+                            "
+                            x="0"
+                            y="-8"
+                        >
+                            ${tool.icon}
+                        </text>
+
+                        <text
+                            class="
+                                wheel-label
+                                ${
+                                    shortTitle.length > 13
+                                    ? "wheel-label-small"
+                                    : ""
+                                }
+                            "
+                            x="0"
+                            y="13"
+                        >
+                            ${shortTitle}
+                        </text>
+
+                    </g>
+
+                `;
+
+            }
+        );
+
+
+        svg += `
+
+                </g>
+
+                <circle
+                    cx="${center}"
+                    cy="${center}"
+                    r="${radius}"
+                    fill="none"
+                    stroke="rgba(255,255,255,.18)"
+                    stroke-width="5"
+                />
+
+            </svg>
+
+        `;
+
+
+        wheel.innerHTML = svg;
+
+
+        /*
+        =========================
+        وضعیت
+        =========================
+        */
+
+        let currentRotation = 0;
+
+        let spinning = false;
+
+        let selectedTool = null;
+
+
+        /*
+        =========================
+        چرخاندن
+        =========================
+        */
+
+        spinButton.onclick = () => {
+
+            if(spinning) return;
+
+
+            spinning = true;
+
+            selectedTool = null;
+
+            result.classList.remove(
+                "show"
+            );
+
+            spinButton.disabled = true;
+
+            spinButton.textContent =
+                "💀 داره تصمیم می‌گیره...";
+
+
+            /*
+            حداقل ۵ دور کامل
+            + انتخاب تصادفی
+            */
+
+            const randomIndex =
+                Math.floor(
+                    Math.random() *
+                    count
+                );
+
+
+            /*
+            مرکز قطاع انتخاب‌شده
+            */
+
+            const targetAngle =
+                randomIndex *
+                angle +
+                angle / 2;
+
+
+            /*
+            فلش در بالای گردونه است.
+            برای قرار دادن قطاع انتخاب‌شده
+            زیر فلش، به اندازه منفی زاویه
+            می‌چرخانیم.
+            */
+
+            const extraTurns =
+                5 +
+                Math.floor(
+                    Math.random() * 3
+                );
+
+
+            const targetRotation =
+
+                currentRotation +
+
+                extraTurns * 360 +
+
+                (
+                    360 -
+                    targetAngle
+                );
+
+
+            currentRotation =
+                targetRotation;
+
+
+            wheel.style.transform =
+                `rotate(${currentRotation}deg)`;
+
+
+            setTimeout(() => {
+
+                spinning = false;
+
+                spinButton.disabled =
+                    false;
+
+                spinButton.textContent =
+                    "🎡 دوباره بچرخون";
+
+
+                selectedTool =
+                    wheelTools[
+                        randomIndex
+                    ];
 
 
                 result.innerHTML = `
 
                     <div
-                        class="big"
+                        class="wheel-result-icon"
                     >
-                        💀
+                        ${selectedTool.icon}
                     </div>
 
-                    <h3>
-                        خطا در بارگذاری گردونه
-                    </h3>
 
-                    <p>
-                        ابزارها قابل بارگذاری نیستند.
-                    </p>
+                    <div
+                        class="wheel-result-title"
+                    >
+                        ${selectedTool.title}
+                    </div>
+
+
+                    <div
+                        class="wheel-result-text"
+                    >
+                        گردونه تصمیمش رو گرفته!
+                        <br>
+                        این ابزار امروز مال توئه. 💀
+                    </div>
+
+
+                    <button
+                        class="wheel-open"
+                        id="wheelOpenTool"
+                    >
+                        باز کردن ابزار
+                        ${selectedTool.icon}
+                    </button>
 
                 `;
 
@@ -463,1566 +1258,59 @@ export default {
                     "show"
                 );
 
-            }
 
-        }
-
-
-        /*
-        =================================
-        Canvas Size
-        =================================
-        */
-
-        function resizeCanvas(){
-
-            const rect =
-                canvas.getBoundingClientRect();
-
-
-            cssSize =
-                Math.max(
-                    260,
-                    Math.floor(
-                        rect.width
-                    )
-                );
-
-
-            const dpr =
-                Math.min(
-                    window.devicePixelRatio ||
-                    1,
-                    2
-                );
-
-
-            canvas.width =
-                cssSize * dpr;
-
-
-            canvas.height =
-                cssSize * dpr;
-
-
-            ctx.setTransform(
-                dpr,
-                0,
-                0,
-                dpr,
-                0,
-                0
-            );
-
-
-            drawWheel();
-
-        }
-
-
-        /*
-        =================================
-        رنگ‌های گردونه
-        =================================
-        */
-
-        const colors = [
-
-            "#2b5278",
-            "#304f70",
-            "#355a7c",
-            "#3b6488",
-            "#416d91",
-            "#37617f",
-            "#31566f",
-            "#294c65",
-            "#3d607b",
-            "#466c88",
-            "#345b78",
-            "#3e6680"
-
-        ];
-
-
-        /*
-        =================================
-        شکستن متن
-        =================================
-        */
-
-        function wrapText(
-            text,
-            maxWidth,
-            font
-        ){
-
-            ctx.font = font;
-
-
-            const words =
-                String(text)
-                    .trim()
-                    .split(/\s+/);
-
-
-            const lines = [];
-
-
-            let current = "";
-
-
-            for(
-                const word of words
-            ){
-
-                const test =
-                    current
-                    ? current + " " + word
-                    : word;
-
-
-                if(
-                    ctx.measureText(
-                        test
-                    ).width <= maxWidth
-                ){
-
-                    current =
-                        test;
-
-                }
-
-                else{
-
-                    if(current){
-
-                        lines.push(
-                            current
-                        );
-
-                    }
-
-                    current =
-                        word;
-
-                }
-
-            }
-
-
-            if(current){
-
-                lines.push(
-                    current
-                );
-
-            }
-
-
-            return lines;
-
-        }
-
-
-        /*
-        =================================
-        متن داخل هر سگمنت
-        =================================
-        */
-
-        function drawSegmentText(
-            item,
-            index,
-            center,
-            radius,
-            segmentAngle
-        ){
-
-            const startAngle =
-                -Math.PI / 2 +
-                index *
-                segmentAngle;
-
-
-            const middleAngle =
-                startAngle +
-                segmentAngle / 2;
-
-
-            ctx.save();
-
-
-            ctx.translate(
-                center,
-                center
-            );
-
-
-            ctx.rotate(
-                middleAngle
-            );
-
-
-            /*
-            متن در قسمت بیرونی
-            و داخل محدوده خودش
-            */
-
-            const textRadius =
-                radius * 0.66;
-
-
-            ctx.translate(
-                textRadius,
-                0
-            );
-
-
-            /*
-            متن را نسبت به شعاع
-            خوانا نگه می‌داریم.
-            */
-
-            let textAngle =
-                middleAngle;
-
-
-            /*
-            برای نیمه چپ گردونه
-            متن برعکس نشود.
-            */
-
-            const normalized =
-                (
-                    middleAngle +
-                    Math.PI * 2
-                ) %
-                (Math.PI * 2);
-
-
-            if(
-                normalized >
-                Math.PI / 2 &&
-                normalized <
-                Math.PI * 1.5
-            ){
-
-                ctx.rotate(
-                    Math.PI
-                );
-
-            }
-
-
-            const segmentWidth =
-                Math.max(
-                    42,
-                    radius *
-                    segmentAngle *
-                    0.72
-                );
-
-
-            let fontSize;
-
-
-            if(
-                items.length <= 8
-            ){
-
-                fontSize = 17;
-
-            }
-
-            else if(
-                items.length <= 12
-            ){
-
-                fontSize = 14;
-
-            }
-
-            else if(
-                items.length <= 16
-            ){
-
-                fontSize = 12;
-
-            }
-
-            else{
-
-                fontSize = 10;
-
-            }
-
-
-            const font =
-                `bold ${fontSize}px Tahoma, Arial, sans-serif`;
-
-
-            const lines =
-                wrapText(
-                    item.title,
-                    segmentWidth,
-                    font
-                );
-
-
-            const maxLines =
-                items.length > 14
-                ? 2
-                : 3;
-
-
-            const visibleLines =
-                lines.slice(
-                    0,
-                    maxLines
-                );
-
-
-            if(
-                lines.length >
-                maxLines &&
-                visibleLines.length
-            ){
-
-                visibleLines[
-                    visibleLines.length - 1
-                ] += "…";
-
-            }
-
-
-            ctx.font =
-                font;
-
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.textBaseline =
-                "middle";
-
-
-            /*
-            سایه برای خوانایی
-            */
-
-            ctx.shadowColor =
-                "rgba(0,0,0,.45)";
-
-            ctx.shadowBlur =
-                5;
-
-            ctx.shadowOffsetY =
-                2;
-
-
-            ctx.fillStyle =
-                "#ffffff";
-
-
-            const lineHeight =
-                fontSize *
-                1.25;
-
-
-            const totalHeight =
-                visibleLines.length *
-                lineHeight;
-
-
-            visibleLines.forEach(
-                (line, lineIndex) => {
-
-                    const y =
-                        (
-                            lineIndex *
-                            lineHeight
-                        ) -
-                        (
-                            totalHeight -
-                            lineHeight
-                        ) / 2;
-
-
-                    ctx.fillText(
-                        line,
-                        0,
-                        y
-                    );
-
-                }
-            );
-
-
-            ctx.restore();
-
-        }
-
-
-        /*
-        =================================
-        رسم کامل گردونه
-        =================================
-        */
-
-        function drawWheel(){
-
-            if(
-                !items.length ||
-                !cssSize
-            ){
-
-                return;
-
-            }
-
-
-            const center =
-                cssSize / 2;
-
-
-            const radius =
-                center - 7;
-
-
-            const segmentAngle =
-                TAU /
-                items.length;
-
-
-            ctx.clearRect(
-                0,
-                0,
-                cssSize,
-                cssSize
-            );
-
-
-            ctx.save();
-
-
-            /*
-            خود گردونه می‌چرخد
-            */
-
-            ctx.translate(
-                center,
-                center
-            );
-
-
-            ctx.rotate(
-                rotation
-            );
-
-
-            ctx.translate(
-                -center,
-                -center
-            );
-
-
-            /*
-            سایه داخلی
-            */
-
-            ctx.beginPath();
-
-            ctx.arc(
-                center,
-                center,
-                radius,
-                0,
-                TAU
-            );
-
-            ctx.fillStyle =
-                "#101c28";
-
-            ctx.fill();
-
-
-            /*
-            سگمنت‌ها
-            */
-
-            for(
-                let i = 0;
-                i < items.length;
-                i++
-            ){
-
-                const startAngle =
-                    -Math.PI / 2 +
-                    i *
-                    segmentAngle;
-
-
-                const endAngle =
-                    startAngle +
-                    segmentAngle;
-
-
-                /*
-                بخش رنگی
-                */
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    center,
-                    center
-                );
-
-                ctx.arc(
-                    center,
-                    center,
-                    radius,
-                    startAngle,
-                    endAngle
-                );
-
-                ctx.closePath();
-
-
-                ctx.fillStyle =
-                    colors[
-                        i %
-                        colors.length
-                    ];
-
-
-                ctx.fill();
-
-
-                /*
-                خط جداکننده
-                */
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    center,
-                    center
-                );
-
-                ctx.lineTo(
-                    center +
-                    Math.cos(
-                        startAngle
-                    ) *
-                    radius,
-
-                    center +
-                    Math.sin(
-                        startAngle
-                    ) *
-                    radius
-                );
-
-
-                ctx.strokeStyle =
-                    "rgba(255,255,255,.16)";
-
-
-                ctx.lineWidth =
-                    2;
-
-
-                ctx.stroke();
-
-
-                /*
-                متن
-                */
-
-                drawSegmentText(
-                    items[i],
-                    i,
-                    center,
-                    radius,
-                    segmentAngle
-                );
-
-            }
-
-
-            /*
-            حلقه داخلی
-            */
-
-            ctx.beginPath();
-
-            ctx.arc(
-                center,
-                center,
-                radius * 0.23,
-                0,
-                TAU
-            );
-
-
-            ctx.fillStyle =
-                "#142536";
-
-
-            ctx.fill();
-
-
-            ctx.strokeStyle =
-                "rgba(255,255,255,.18)";
-
-
-            ctx.lineWidth =
-                3;
-
-
-            ctx.stroke();
-
-
-            /*
-            حلقه تزئینی داخلی
-            */
-
-            ctx.beginPath();
-
-            ctx.arc(
-                center,
-                center,
-                radius * 0.29,
-                0,
-                TAU
-            );
-
-
-            ctx.strokeStyle =
-                "rgba(255,255,255,.08)";
-
-
-            ctx.lineWidth =
-                2;
-
-
-            ctx.stroke();
-
-
-            /*
-            💀 وسط گردونه
-
-            چون روی Canvas کشیده می‌شود،
-            همراه خود گردونه می‌چرخد.
-            */
-
-            ctx.font =
-                `${Math.floor(
-                    radius * 0.16
-                )}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
-
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.textBaseline =
-                "middle";
-
-
-            ctx.shadowColor =
-                "rgba(0,0,0,.5)";
-
-
-            ctx.shadowBlur =
-                8;
-
-
-            ctx.fillText(
-                "💀",
-                center,
-                center
-            );
-
-
-            ctx.restore();
-
-
-            /*
-            حلقه بیرونی روشن
-            */
-
-            ctx.beginPath();
-
-            ctx.arc(
-                center,
-                center,
-                radius,
-                0,
-                TAU
-            );
-
-
-            ctx.strokeStyle =
-                "rgba(255,255,255,.20)";
-
-
-            ctx.lineWidth =
-                5;
-
-
-            ctx.stroke();
-
-        }
-
-
-        /*
-        =================================
-        Audio
-        =================================
-        */
-
-        function createAudio(){
-
-            try{
-
-                if(!audioContext){
-
-                    audioContext =
-                        new (
-                            window.AudioContext ||
-                            window.webkitAudioContext
-                        )();
-
-                }
-
-
-                if(
-                    audioContext.state ===
-                    "suspended"
-                ){
-
-                    audioContext.resume();
-
-                }
-
-            }
-
-            catch(error){
-
-                audioContext =
-                    null;
-
-            }
-
-        }
-
-
-        function tick(){
-
-            if(!audioContext){
-
-                return;
-
-            }
-
-
-            try{
-
-                const now =
-                    audioContext.currentTime;
-
-
-                const oscillator =
-                    audioContext.createOscillator();
-
-
-                const gain =
-                    audioContext.createGain();
-
-
-                oscillator.type =
-                    "sine";
-
-
-                oscillator.frequency.setValueAtTime(
-                    720,
-                    now
-                );
-
-
-                oscillator.frequency.exponentialRampToValueAtTime(
-                    420,
-                    now + 0.035
-                );
-
-
-                gain.gain.setValueAtTime(
-                    0.055,
-                    now
-                );
-
-
-                gain.gain.exponentialRampToValueAtTime(
-                    0.001,
-                    now + 0.045
-                );
-
-
-                oscillator.connect(
-                    gain
-                );
-
-
-                gain.connect(
-                    audioContext.destination
-                );
-
-
-                oscillator.start(
-                    now
-                );
-
-
-                oscillator.stop(
-                    now + 0.05
-                );
-
-            }
-
-            catch(error){
-
-                // صدا اختیاری است؛
-                // نباید باعث خرابی گردونه شود.
-
-            }
-
-        }
-
-
-        /*
-        =================================
-        مشخص کردن سگمنت زیر فلش
-        =================================
-        */
-
-        function getSelectedIndex(){
-
-            const segmentAngle =
-                TAU /
-                items.length;
-
-
-            /*
-            فلش در زاویه
-            -PI/2 قرار دارد.
-
-            چون گردونه rotation دارد،
-            زاویه مربوط به نقطه فلش
-            را به سیستم مختصات گردونه
-            برمی‌گردانیم.
-            */
-
-            let angle =
-                (
-                    -Math.PI / 2 -
-                    rotation +
-                    TAU
-                ) % TAU;
-
-
-            angle =
-                (
-                    angle +
-                    Math.PI / 2
-                ) % TAU;
-
-
-            return Math.floor(
-                angle /
-                segmentAngle
-            ) % items.length;
-
-        }
-
-
-        /*
-        =================================
-        Ease Out Quart
-        =================================
-        */
-
-        function easeOutQuart(t){
-
-            return 1 -
-                Math.pow(
-                    1 - t,
-                    4
-                );
-
-        }
-
-
-        /*
-        =================================
-        Spin
-        =================================
-        */
-
-        function spin(){
-
-            if(
-                spinning ||
-                items.length < 2
-            ){
-
-                return;
-
-            }
-
-
-            createAudio();
-
-
-            spinning =
-                true;
-
-
-            button.disabled =
-                true;
-
-
-            result.classList.remove(
-                "show"
-            );
-
-
-            result.innerHTML =
-                "";
-
-
-            status.textContent =
-                "گردونه داره تصمیم می‌گیره... 💀";
-
-
-            /*
-            نتیجه از قبل مشخص می‌شود.
-
-            انیمیشن فقط وظیفه دارد
-            گردونه را به آن نتیجه برساند.
-            */
-
-            const winnerIndex =
-                Math.floor(
-                    Math.random() *
-                    items.length
-                );
-
-
-            const segmentAngle =
-                TAU /
-                items.length;
-
-
-            /*
-            مرکز سگمنت برنده
-            */
-
-            const winnerCenter =
-                winnerIndex *
-                segmentAngle +
-                segmentAngle / 2;
-
-
-            /*
-            فلش در -PI/2 است.
-
-            باید winnerCenter را
-            دقیقاً زیر فلش قرار دهیم.
-            */
-
-            const targetBase =
-                -Math.PI / 2 -
-                winnerCenter;
-
-
-            const currentNormalized =
-                (
-                    rotation %
-                    TAU +
-                    TAU
-                ) % TAU;
-
-
-            let targetNormalized =
-                (
-                    targetBase %
-                    TAU +
-                    TAU
-                ) % TAU;
-
-
-            let delta =
-                targetNormalized -
-                currentNormalized;
-
-
-            if(
-                delta < 0
-            ){
-
-                delta += TAU;
-
-            }
-
-
-            /*
-            چند دور کامل اضافه
-            */
-
-            const fullTurns =
-                5 +
-                Math.floor(
-                    Math.random() * 2
-                );
-
-
-            /*
-            کمی offset تصادفی
-            داخل همان سگمنت.
-
-            این باعث می‌شود همیشه
-            دقیقاً وسط سگمنت نایستد.
-            */
-
-            const safeMargin =
-                segmentAngle *
-                0.18;
-
-
-            const randomOffset =
-                (
-                    Math.random() *
-                    (
-                        segmentAngle -
-                        safeMargin * 2
-                    )
-                ) -
-                (
-                    segmentAngle -
-                    safeMargin * 2
-                ) / 2;
-
-
-            const targetRotation =
-                rotation +
-                delta +
-                fullTurns * TAU +
-                randomOffset;
-
-
-            const startRotation =
-                rotation;
-
-
-            const duration =
-                4800 +
-                Math.random() *
-                900;
-
-
-            const startTime =
-                performance.now();
-
-
-            lastSegment =
-                getSelectedIndex();
-
-
-            function animate(now){
-
-                if(!spinning){
-
-                    return;
-
-                }
-
-
-                const elapsed =
-                    now -
-                    startTime;
-
-
-                const progress =
-                    Math.min(
-                        elapsed /
-                        duration,
-                        1
+                const openButton =
+                    document.getElementById(
+                        "wheelOpenTool"
                     );
 
 
-                const eased =
-                    easeOutQuart(
-                        progress
-                    );
-
-
-                rotation =
-                    startRotation +
-                    (
-                        targetRotation -
-                        startRotation
-                    ) *
-                    eased;
-
-
-                drawWheel();
-
-
-                /*
-                صدای عبور از هر سگمنت
-                */
-
-                const currentSegment =
-                    getSelectedIndex();
-
-
-                if(
-                    currentSegment !==
-                    lastSegment
-                ){
-
-                    tick();
-
-
-                    lastSegment =
-                        currentSegment;
-
-                }
-
-
-                if(
-                    progress < 1
-                ){
-
-                    animationFrame =
-                        requestAnimationFrame(
-                            animate
-                        );
-
-                    return;
-
-                }
-
-
-                /*
-                پایان
-                */
-
-                rotation =
-                    targetRotation;
-
-
-                drawWheel();
-
-
-                spinning =
-                    false;
-
-
-                button.disabled =
-                    false;
-
-
-                button.textContent =
-                    "دوباره بچرخون 🎡";
-
-
-                /*
-                نتیجه واقعی همان نتیجه‌ای است
-                که قبل از انیمیشن انتخاب شده بود.
-                */
-
-                showWinner(
-                    items[winnerIndex]
-                );
-
-            }
-
-
-            animationFrame =
-                requestAnimationFrame(
-                    animate
-                );
-
-        }
-
-
-        /*
-        =================================
-        نمایش برنده
-        =================================
-        */
-
-        function showWinner(
-            winner
-        ){
-
-            if(!winner){
-
-                return;
-
-            }
-
-
-            status.textContent =
-                "گردونه تصمیمش رو گرفت. 💀";
-
-
-            result.innerHTML = `
-
-                <div
-                    class="big"
-                >
-                    ${winner.icon || "🧰"}
-                </div>
-
-
-                <h2>
-                    انتخاب شد:
-                </h2>
-
-
-                <div
-                    style="
-                        font-size:26px;
-                        font-weight:bold;
-                        margin:15px 0;
-                    "
-                >
-                    ${escapeHTML(
-                        winner.title
-                    )}
-                </div>
-
-
-                <p>
-                    خب...
-                    دیگه انتخاب با تو نیست. 😐
-                </p>
-
-
-                <button
-                    class="primary"
-                    id="openWheelWinner"
-                >
-                    ${escapeHTML(
-                        winner.buttonText ||
-                        "باز کردن ابزار"
-                    )}
-                </button>
-
-            `;
-
-
-            result.classList.add(
-                "show"
-            );
-
-
-            const openButton =
-                document.getElementById(
-                    "openWheelWinner"
-                );
-
-
-            if(openButton){
-
-                openButton.onclick =
-                    () => {
-
-                        openSelectedTool(
-                            winner.id
-                        );
-
-                    };
-
-            }
-
-        }
-
-
-        /*
-        =================================
-        باز کردن ابزار انتخاب‌شده
-        =================================
-
-        openApp در app.js export نشده.
-        بنابراین از همان دکمه واقعی ابزار
-        استفاده می‌کنیم.
-
-        اینطوری هیچ تغییری در app.js
-        لازم نیست.
-        =================================
-        */
-
-        function openSelectedTool(
-            id
-        ){
-
-            const backButton =
-                document.getElementById(
-                    "backButton"
-                );
-
-
-            /*
-            اول از ابزار فعلی خارج شو
-            تا Home دوباره نمایش داده شود.
-            */
-
-            if(backButton){
-
-                backButton.click();
-
-            }
-
-
-            /*
-            بعد دکمه همان ابزار را
-            پیدا و کلیک کن.
-            */
-
-            setTimeout(
-                () => {
-
-                    const selector =
-                        `[data-tool="${cssEscape(id)}"]`;
-
-
-                    const toolButton =
+                openButton.onclick = () => {
+
+                    /*
+                    ابزار اصلی پروژه
+                    از طریق دکمه‌ای که app.js
+                    برای هر ابزار ساخته،
+                    باز می‌شود.
+                    */
+
+                    const targetButton =
                         document.querySelector(
-                            selector
+                            `[data-tool="${selectedTool.id}"]`
                         );
 
 
-                    if(toolButton){
+                    if(targetButton){
 
-                        toolButton.click();
+                        targetButton.click();
+
+                        return;
 
                     }
 
-                },
-                80
-            );
 
-        }
+                    /*
+                    اگر دکمه در DOM نبود،
+                    تلاش می‌کنیم openApp موجود
+                    پروژه را صدا بزنیم.
+                    */
 
+                    if(
+                        typeof window.openApp ===
+                        "function"
+                    ){
 
-        /*
-        =================================
-        CSS Escape
-        =================================
-        */
+                        window.openApp(
+                            selectedTool.id
+                        );
 
-        function cssEscape(
-            value
-        ){
+                    }
 
-            if(
-                window.CSS &&
-                typeof window.CSS.escape ===
-                "function"
-            ){
+                };
 
-                return window.CSS.escape(
-                    String(value)
-                );
+            }, 5700);
 
-            }
-
-
-            return String(value)
-                .replace(
-                    /["\\]/g,
-                    "\\$&"
-                );
-
-        }
-
-
-        /*
-        =================================
-        HTML Escape
-        =================================
-        */
-
-        function escapeHTML(
-            text
-        ){
-
-            return String(text)
-
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
-
-        }
-
-
-        /*
-        =================================
-        اعداد فارسی
-        =================================
-        */
-
-        function persianNumber(
-            value
-        ){
-
-            return String(value)
-
-                .replace(
-                    /0/g,
-                    "۰"
-                )
-
-                .replace(
-                    /1/g,
-                    "۱"
-                )
-
-                .replace(
-                    /2/g,
-                    "۲"
-                )
-
-                .replace(
-                    /3/g,
-                    "۳"
-                )
-
-                .replace(
-                    /4/g,
-                    "۴"
-                )
-
-                .replace(
-                    /5/g,
-                    "۵"
-                )
-
-                .replace(
-                    /6/g,
-                    "۶"
-                )
-
-                .replace(
-                    /7/g,
-                    "۷"
-                )
-
-                .replace(
-                    /8/g,
-                    "۸"
-                )
-
-                .replace(
-                    /9/g,
-                    "۹"
-                );
-
-        }
-
-
-        /*
-        =================================
-        Events
-        =================================
-        */
-
-        button.addEventListener(
-            "click",
-            spin
-        );
-
-
-        canvas.addEventListener(
-            "click",
-            () => {
-
-                if(
-                    !spinning &&
-                    !button.disabled
-                ){
-
-                    spin();
-
-                }
-
-            }
-        );
-
-
-        /*
-        =================================
-        Resize
-        =================================
-        */
-
-        const resizeObserver =
-            new ResizeObserver(
-                () => {
-
-                    resizeCanvas();
-
-                }
-            );
-
-
-        resizeObserver.observe(
-            canvas
-        );
-
-
-        /*
-        =================================
-        شروع
-        =================================
-        */
-
-        requestAnimationFrame(
-            () => {
-
-                resizeCanvas();
-
-                loadWheelItems();
-
-            }
-        );
+        };
 
     }
 
